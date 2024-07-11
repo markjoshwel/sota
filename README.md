@@ -114,38 +114,64 @@ and then exported as .pdfs to `Documentation/*.pdf`
 | Wizard | Mark |
 | :----: | :--: |
 
-TODO ☆\*: .｡. o(≧▽≦)o .｡.:\*☆
+instructions:
 
-tentative instructions:
+```text
+python sync.py
+```
 
-1. ensure your repo is up-to-date with the forge
+if it screams at you, fix them
 
-    ```text
-    git push origin main
-    ```
+if it breaks, refer to the resident "wizard"
 
-    ```text
-    git pull origin main
-    ```
-
-    if you have issues syncing, fix em first
-
-2. run the sync script
-
-    ```text
-    python sync.py
-    ```
-
-    for what the script does, see the script itself: [sync.py](sync.py)
+for what the script does, see the script itself: [sync.py](sync.py)
 
 ## Licence and Credits
 
-Software Source Code, unless otherwise stated, is licenced under the 0BSD licence.
-For more information, see [LICENCE.0BSD](LICENCE.0BSD).
+"NP resources" hereby refers to resources provided by Ngee Ann Polytechnic (NP) for the
+development of the project
 
-Everything else, from assets to documentation, unless otherwise stated,
-is licenced under a Modified Unsplash Licence.
-For more information, see [LICENCE.UNSPLASH](LICENCE.UNSPLASH).
+1. software source code
+
+   software source code, unless otherwise stated, is licenced under the 0bsd licence.
+   for more information, see [LICENCE.0BSD](LICENCE.0BSD)
+
+   considering how much youtube tutorials were used on ryans end,
+   i doubt we extenstively used NP resources
+
+2. models made with ["extensive use of NP resources"](https://www.np.edu.sg/student_ip):
+
+   specifically coming from, or in part have had the following software and/or
+   services involved:
+
+   - Autodesk Maya
+   - Adobe Substance 3D
+     - Substance 3D Modeler
+     - Substance 3D Sampler
+     - Substance 3D Designer
+     - Substance 3D Painter
+     - Substance 3D Stager
+     - Substance 3D Assets
+  
+   would be all rights reserved, unless otherwise stated
+
+   (_i mean mr q said this already lol_)
+
+   the only exception to this is if the model was made in blender, and doesn't
+   touch substance painter, in which it falls under the modified unsplash licence
+   noted below
+
+3. whatever's left
+
+   everything else, from assets to documentation, unless otherwise stated,
+   is licenced under a modified unsplash licence.
+   for more information, see [LICENCE.UNSPLASH](LICENCE.UNSPLASH)
+
+   **disclaimer**: the creative lead (mark) has been using adobe software even
+   [before enrolling into np](https://github.com/markjoshwel/portfolio-eae/blob/main/public/assets/skill-adobe.png),
+   so whether or not it's "extensive use" is fair game lol
+
+   (_also yea i don't really have a better example than my eae portfolio oops_)
 
 ### Third-party Licences
 
