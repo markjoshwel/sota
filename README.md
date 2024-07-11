@@ -11,7 +11,7 @@ Submission Mirror: <https://github.com/markjoshwel/sota>
 |:--------:|:-------------------------------:|:------------------:|:-------------:|:--------------:|
 | mark     | creative and technical director | senior programmer  | @mark         | @markjoshwel   |
 | ryan     | programmer                      | generalist         | @ryan         | @sc0rch-thinks |
-| sai      | lead 3d artist                  | quality checker    | @sippy-thinks | @sai-thinks    |
+| sai      | lead 3d artist                  | quality checker    | @sai-thinks | @sippy-thinks    |
 
 - [Handbook](#handbook)
   - [on 3D Modelling (Maya, Blender, ZBrush, etc.)](#on-3d-modelling-maya-blender-zbrush-etc)
