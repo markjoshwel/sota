@@ -1,17 +1,17 @@
 <p align="center" width="100%">
-    <img width="50%" src="Design/Exports/ss-logo-alt-horizontal-bordered-on_dark.svg"> 
+    <img width="50%" src="Design/Exports/ss-logo-alt-horizontal-bordered-on_dark.svg" alt="sota staircase Horizontal Logo"> 
 </p>
 
-# The sota staircase Monorepository
+# The sota staircase Mono-repository
 
 Primary Repository: <https://forge.joshwel.co/mark/sota>  
 Submission Mirror: <https://github.com/markjoshwel/sota>
 
-| **Name** |         **Primary Role**        | **Secondary Role** |   **Forge**   |   **GitHub**   |
-|:--------:|:-------------------------------:|:------------------:|:-------------:|:--------------:|
-| mark     | creative and technical director | senior programmer  | @mark         | @markjoshwel   |
-| ryan     | programmer                      | generalist         | @ryan         | @sc0rch-thinks |
-| sai      | lead 3d artist                  | quality checker    | @sai-thinks | @sippy-thinks    |
+| **Name** |        **Primary Role**         | **Secondary Role** |  **Forge**  |   **GitHub**   |
+|:--------:|:-------------------------------:|:------------------:|:-----------:|:--------------:|
+|   mark   | creative and technical director | senior programmer  |    @mark    |  @markjoshwel  |
+|   ryan   |           programmer            |     generalist     |    @ryan    | @sc0rch-thinks |
+|   sai    |         lead 3d artist          |  quality checker   | @sai-thinks | @sippy-thinks  |
 
 - [Handbook](#handbook)
   - [on 3D Modelling (Maya, Blender, ZBrush, etc.)](#on-3d-modelling-maya-blender-zbrush-etc)
@@ -27,8 +27,8 @@ Submission Mirror: <https://github.com/markjoshwel/sota>
 
 ### on 3D Modelling (Maya, Blender, ZBrush, etc.)
 
-| Lead | Sai  |
-| :--: | :--: |
+| Lead | Sai |
+|:----:|:---:|
 
 design-as-in-modelling your assets with modularity in mind, anything that can
 be modular should be modular
@@ -51,7 +51,7 @@ Modelling
 ├── Modulars
 │   ├── <Asset Name>_lowpoly
 │   └── <Asset Name>_highpoly
-└── Heros
+└── Heroes
     ├── <Asset Name>_lowpoly
     │   └── *.fbx
     └── <Asset Name>_highpoly
@@ -60,9 +60,10 @@ Modelling
 ### on Graphic and UI/UX Design
 
 | Lead | Mark |
-| :--: | :--: |
+|:----:|:----:|
 
-if it involves the brand: follow the brand guidelines at [Documents/sota staircase Brand Guidelines.pdf](Documents/sota%20staircase%20Brand%20Guidelines.pdf)
+if it involves the brand:
+follow the brand guidelines at [Documentation/sota staircase Brand Guidelines.pdf](Documentation/sota%20staircase%20Brand%20Guidelines.pdf)
 
 and then send it to mark for approval (●'◡'●)
 
@@ -74,7 +75,7 @@ organise as you wish but make sure it's logical
 ### on Game Development
 
 | Lead | Mark |
-| :--: | :--: |
+|:----:|:----:|
 
 1. make changes
 
@@ -89,35 +90,35 @@ organise as you wish but make sure it's logical
 
    ![example](Documentation/Examples/reformat.png)
 
-5. push **to the forge**, or branch off and make a pull request if there's conflicts
+5. push **to the forge**, or branch off and make a pull request if there are conflicts
 
 ### on Game and Level Design
 
-| Lead | kinda everyone moreso mark |
-| :--: | :------------------------: |
+| Lead | kinda everyone more so mark |
+|:----:|:---------------------------:|
 
-this just discuss with the group; either through the telegram group or through an issue
+for this, just discuss with the group; either through the telegram group or through an issue
 on [the forge](https://forge.joshwel.co/mark/sota/issues)
 
 ### on Documentation (for All Modules)
 
-| Lead | kinda everyone moreso mark |
-| :--: | :------------------------: |
+| Lead | kinda everyone more so mark |
+|:----:|:---------------------------:|
 
-follow the brand guidelines at [Documents/sota staircase Brand Guidelines.pdf](Documents/sota%20staircase%20Brand%20Guidelines.pdf)
+follow the brand guidelines at [Documentation/sota staircase Brand Guidelines.pdf](Documentation/sota%20staircase%20Brand%20Guidelines.pdf)
 
-source files (.docx, .fig, etc) should be in the respective modules' directory,
+source files (.docx, .fig, etc.) should be in the respective modules' directory,
 and then exported as .pdfs to `Documentation/*.pdf`
 
 ### on Repository Syncing
 
 | Wizard | Mark |
-| :----: | :--: |
+|:------:|:----:|
 
 instructions:
 
 ```text
-python sync.py
+python restepper.py
 ```
 
 if it screams at you, fix them
@@ -133,11 +134,11 @@ development of the project
 
 1. software source code
 
-   software source code, unless otherwise stated, is licenced under the 0bsd licence.
+   software source code, unless otherwise stated, is licenced under the 0BSD licence.
    for more information, see [LICENCE.0BSD](LICENCE.0BSD)
 
-   considering how much youtube tutorials were used on ryans end,
-   i doubt we extenstively used NP resources
+   considering how many YouTube tutorials were used on ryan's end,
+   I doubt we extensively used NP resources
 
 2. models made with ["extensive use of NP resources"](https://www.np.edu.sg/student_ip):
 
@@ -157,11 +158,11 @@ development of the project
 
    (_i mean mr q said this already lol_)
 
-   the only exception to this is if the model was made in blender, and doesn't
+   the only exception to this is if the model was made in blender and doesn't
    touch substance painter, in which it falls under the modified unsplash licence
    noted below
 
-3. whatever's left
+3. whatever is left
 
    everything else, from assets to documentation, unless otherwise stated,
    is licenced under a modified unsplash licence.
@@ -169,20 +170,22 @@ development of the project
 
    **disclaimer**: the creative lead (mark) has been using adobe software even
    [before enrolling into np](https://github.com/markjoshwel/portfolio-eae/blob/main/public/assets/skill-adobe.png),
-   so whether or not it's "extensive use" is fair game lol
+   so whether it's "extensive use" is fair game lol
 
-   (_also yea i don't really have a better example than my eae portfolio oops_)
+   (_also yea I don't really have a better example than my eae portfolio oops_)
 
 ### Third-party Licences
 
-Exceptions to the above licences are as follows:
+exceptions to the above licences are as follows:
 
 > Template:
 > ```
-> - `path/to/file`: (Asset/Work Name) by (Author Name)  
->   (Licence Name)
+> - (Asset/Work Name) by (Author Name): (Licence Name)
+>   `directory path, file path or glob pattern`
 > ```
 > Example:
 >
-> - `Game/Assets/Character/Frogman`: Frogman by Frog Creator  
->   Standard Unity Asset Store EULA (Extension Asset)
+> - Frogman by Frog Creator: Standard Unity Asset Store EULA (Extension Asset)  
+>   `Assets/Characters/Frogman`
+>
+> comma-separate multiple licences, and use code blocks if you need to list multiple files/directories/patterns
