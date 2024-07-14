@@ -1,79 +1,132 @@
 # sota staircase ReStepper
+# forge -> github one-way repo sync script
 # licence: 0BSD
-
-from os.path import getsize
+from multiprocessing.pool import ThreadPool
 from pathlib import Path
 from pprint import pformat
-from shutil import copytree
-from subprocess import CompletedProcess, run
-from sys import argv, stderr
+from shutil import copy2, copytree
+from subprocess import CompletedProcess
+from subprocess import run as _run
+from sys import argv, executable
 from tempfile import TemporaryDirectory
 from textwrap import indent
+from time import time
 from traceback import format_tb
-from typing import Any, Callable, Final, TypeVar
+from typing import Callable, Final, TypeVar
 
 try:
-    from gitignore_parser import parse_gitignore  # type: ignore
-except ImportError:
-    print(
-        "critical error: 'gitignore_parser' is not installed, please run 'pip install gitignore-parser' to install it"
+    from sidestepper import (
+        SOTA_SIDESTEP_MAX_WORKERS,
+        find_large_files,
+        generate_command_failure_message,
+        run,
+        write_sotaignore,
     )
-    exit(1)
+except EnvironmentError:
+    # specific error raised when third-party modules not found, but were automatically
+    # installed, so we need to restart the script
+    exit(_run([executable, Path(__file__).absolute(), *argv[1:]]).returncode)
+
+# we can only guarantee third-party modules are installed after sidestepper
+from tqdm import tqdm
 
 # constants
 INDENT: Final[str] = "   "
-
 REPO_DIR: Final[Path] = Path(__file__).parent
 REPO_SOTAIGNORE: Final[Path] = REPO_DIR.joinpath(".sotaignore")
 REPO_URL_GITHUB: Final[str] = "github.com/markjoshwel/sota"
 REPO_URL_FORGE: Final[str] = "forge.joshwel.co/mark/sota"
-
 COMMIT_MESSAGE: Final[str] = "chore(restep): sync with forge"
 COMMIT_AUTHOR: Final[str] = "sota staircase ReStepper <ssrestepper@joshwel.co>"
-
 NEUTERED_GITATTRIBUTES: Final[str] = (
     """# auto detect text files and perform lf normalization\n* text=auto\n"""
 )
 
-# generics because i <3 static types
-Rc = TypeVar("Rc")
-
 # dictionary to share state across steps
 r: dict[str, str] = {}
 
+R = TypeVar("R")
 
-def _default_post_func(rc: Rc) -> Rc:
+
+class CopyHighway:
     """
-    default post-call function for steps, does nothing
+    multithreaded file copying class that gives a copy2-like function
+    for use with shutil.copytree(); also displays a progress bar
+    """
+
+    def __init__(self, message: str, total: int):
+        """
+        multithreaded file copying class that gives a copy2-like function
+        for use with shutil.copytree()
+
+        args:
+            message: str
+                message to display in the progress bar
+            total: int
+                total number of files to copy
+        """
+        self.pool = ThreadPool(
+            processes=SOTA_SIDESTEP_MAX_WORKERS,
+        )
+        self.pbar = tqdm(
+            total=total,
+            desc=message,
+            unit=" files",
+            leave=False,
+        )
+
+    def callback(self, a: R):
+        self.pbar.update()
+        return a
+
+    def copy2(self, source: str, dest: str):
+        """shutil.copy2()-like function for use with shutil.copytree()"""
+        self.pool.apply_async(copy2, args=(source, dest), callback=self.callback)
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.pool.close()
+        self.pool.join()
+        self.pbar.close()
+
+
+def _default_post_func(cp: R) -> R:
+    """
+    default post-call function for steps; does nothing
 
     for steps that return a CompletedProcess, this function will run the
     `_command_post_func` function
 
     args:
-        rc: Rc
+        cp: R
             return object from a step function
+
+    returns: R
+        the return object from the step function
     """
-    if isinstance(rc, CompletedProcess):
-        _command_post_func(rc)
-    return rc
+    if isinstance(cp, CompletedProcess):
+        _command_post_func(cp)
+    return cp
 
 
 def _command_post_func(
-    rc: CompletedProcess,
+    cp: CompletedProcess,
     fail_on_error: bool = True,
     quit_early: bool = False,
     quit_message: str = "the command gave unexpected output",
 ) -> CompletedProcess:
     """
-    default post-call function for command steps, checks if the command was
+    default post-call function for command steps; checks if the command was
     successful and prints the output if it wasn't
 
     if the command was successful, the stdout and stderr are stored in the
     shared state dictionary r under 'stdout' and 'stderr' respectively
 
     args:
-        rc: CompletedProcess
-            return object from subprocess.run
+        cp: CompletedProcess
+            return object from subprocess.run()
         fail_on_error: bool
             whether to fail on error
         quit_early: bool
@@ -81,169 +134,87 @@ def _command_post_func(
         quit_message: str
             the message to print if quitting early
 
-    returns:
-        CompletedProcess
-            the return object from subprocess.run
+    returns: CompletedProcess
+        the return object from subprocess.run()
     """
 
     if quit_early:
-        print(f"\n\nfailure: {quit_message}\n", file=stderr)
+        print(f"\n\nfailure: {quit_message}\n")
 
     else:
-        r["stdout"] = rc.stdout.decode() if isinstance(rc.stdout, bytes) else "\0"
-        r["stderr"] = rc.stderr.decode() if isinstance(rc.stderr, bytes) else "\0"
+        r["stdout"] = cp.stdout.decode() if isinstance(cp.stdout, bytes) else "\0"
+        r["stderr"] = cp.stderr.decode() if isinstance(cp.stderr, bytes) else "\0"
         r["blank/stdout"] = "yes" if (r["stdout"].strip() == "") else ""
         r["blank/stderr"] = "yes" if (r["stderr"].strip() == "") else ""
         r["blank"] = "yes" if (r["blank/stdout"] and r["blank/stderr"]) else ""
-        r["errored"] = "" if (rc.returncode == 0) else str(rc.returncode)
+        r["errored"] = "" if (cp.returncode == 0) else str(cp.returncode)
 
         # return if the command was successful
         # or if we're not failing on error
-        if (rc.returncode == 0) or (not fail_on_error):
-            return rc
-
+        if (cp.returncode == 0) or (not fail_on_error):
+            return cp
         else:
-            print(
-                f"\n\nfailure: command '{rc.args}' failed with exit code {rc.returncode}",
-                f"{INDENT}stdout:",
-                (
-                    indent(text=rc.stdout.decode(), prefix=f"{INDENT}{INDENT}")
-                    if (isinstance(rc.stdout, bytes) and (rc.stdout != b""))
-                    else f"{INDENT}{INDENT}(no output)"
-                ),
-                f"{INDENT}stderr:",
-                (
-                    indent(text=rc.stderr.decode(), prefix=f"{INDENT}{INDENT}")
-                    if (isinstance(rc.stderr, bytes) and (rc.stderr != b""))
-                    else f"{INDENT}{INDENT}(no output)"
-                )
-                + "\n",
-                sep="\n",
-            )
+            print(generate_command_failure_message(cp))
 
     exit(
-        rc.returncode if (isinstance(rc.returncode, int) and rc.returncode != 0) else 1
+        cp.returncode if (isinstance(cp.returncode, int) and cp.returncode != 0) else 1
     )
 
 
-def get_large_files(target_dir: Path, max_bytes: int = 100000000) -> list[Path]:
+def post_filter_repo_check(cp: CompletedProcess) -> CompletedProcess:
     """
-    recursively iterate through a directory and find files that are over a
-    certain size, respecting any .gitignore files
-
-    args:
-        target_dir: Path
-            the directory to search
-        max_bytes: int
-            the maximum size in bytes
-
-    returns:
-        list[Path]
-            list of large files
+    post-call function for checking if git-filter-repo is installed
+    and optionally installing it if it isn't
     """
 
-    gitignore_matchers: dict[Path, Callable[[Any], bool]] = {}
-    large_files: list[Path] = []
-    all_files: list[Path] = []
-    for f in target_dir.rglob("*"):
-        if not f.is_file():
-            continue
-        if str(REPO_DIR.joinpath(".git")) in str(f.parent):
-            continue
-        all_files.append(f)
+    if cp.returncode == 0:
+        return cp
 
-    target_dir_gitignore = target_dir.joinpath(".gitignore")
-    if not target_dir_gitignore.exists():
-        return []
-
-    # first pass: check for .gitignore files
-    for repo_file in all_files:
-        # is this not a .gitignore file? skip
-        if repo_file.name != ".gitignore":
-            continue
-
-        # if we're here, the file is a .gitignore file
-        # add it to the parser
-        gitignore_matchers[repo_file.parent] = parse_gitignore(
-            repo_file, base_dir=repo_file.parent
+    if input("git filter-repo is not installed, install it? y/n: ").lower() != "y":
+        print(
+            "install it using 'pip install git-filter-repo' "
+            "or 'pipx install git-filter-repo'",
         )
+        return cp
 
-    for repo_file in all_files:
-        # if the file is a directory, skip
-        # if not repo_file.is_file():
-        #     continue
+    # check if pipx is installed
+    use_pipx = False
 
-        # # if we're in the .git directory, skip
-        # if str(REPO_DIR.joinpath(".git/")) in str(repo_file):
-        #     continue
+    check_pipx_cp = run(["pipx", "--version"])
+    if check_pipx_cp.returncode == 0:
+        use_pipx = True
+    else:
+        run([executable, "-m", "pip", "install", "pipx"])
 
-        # check if it's ignored
-        for ignore_dir, matcher in gitignore_matchers.items():
-            # if we're not in the ignore directory, skip
-            if str(ignore_dir) not in str(repo_file):
-                continue
+        # double check
+        check_pipx_cp = run(["pipx", "--version"])
+        if check_pipx_cp.returncode == 0:
+            use_pipx = True
+        # if pipx still can't be found, might be some environment fuckery
 
-            # if the file is ignored, skip
-            if matcher(repo_file):
-                # print("ignored:", repo_file)
-                continue
-
-        # if we're here, the file is not ignored
-        # check if it's over 100mb
-
-        if getsize(repo_file) > 100000000:
-            large_files.append(repo_file)
-
-    return large_files
-
-
-def generate_sotaignore(large_files: list[Path]) -> None:
-    """
-    generate a .sotaignore file from a list of large files and the existing
-    .sotaignore file
-
-    args:
-        large_files: list[Path]
-            list of large files
-    """
-
-    old_sotaignore = (
-        REPO_SOTAIGNORE.read_text().strip().splitlines()
-        if REPO_SOTAIGNORE.exists()
-        else []
+    # install git-filter-repo
+    pip_invocation: list[str] = ["pipx"] if use_pipx else [executable, "-m", "pip"]
+    print(
+        f"running '{' '.join([*pip_invocation, "install", "git-filter-repo"])}'... ",
+        end="",
     )
+    install_rc = run([*pip_invocation, "install", "git-filter-repo"])
+    if install_rc.returncode != 0:
+        print("error")
+        _command_post_func(install_rc)
+    else:
+        print("done\n")
 
-    new_sotaignore = [ln for ln in old_sotaignore] + [
-        lf.relative_to(REPO_DIR).as_posix()
-        for lf in large_files
-        if lf.relative_to(REPO_DIR).as_posix() not in old_sotaignore
-    ]
-
-    # check if the sotaignore file starts with a comment
-
-    if new_sotaignore and not new_sotaignore[0].startswith("#"):
-        new_sotaignore.insert(
-            0,
-            "# unless you know what you're doing, don't edit this file",
-        )
-        new_sotaignore.insert(
-            0,
-            "# anything here either can't or shouldn't be uploaded github",
-        )
-        new_sotaignore.insert(
-            0,
-            "#",
-        )
-        new_sotaignore.insert(
-            0,
-            "# .sotaignore file generated by sota staircase ReStepper",
+    # check if it is reachable
+    if run(["git", "filter-repo", "--version"]).returncode != 0:
+        # revert
+        run([*pip_invocation, "uninstall", "git-filter-repo"])
+        print(
+            "failure: could not install git-filter-repo automatically. "
+            "do it yourself o(*≧▽≦)ツ┏━┓"
         )
 
-    if new_sotaignore == []:
-        return
-
-    REPO_SOTAIGNORE.touch(exist_ok=True)
-    REPO_SOTAIGNORE.write_text("\n".join(new_sotaignore) + "\n", encoding="utf-8")
+    return cp
 
 
 def rewrite_gitattributes(target_dir: Path) -> None:
@@ -260,101 +231,94 @@ def rewrite_gitattributes(target_dir: Path) -> None:
         repo_file.write_text(NEUTERED_GITATTRIBUTES, encoding="utf-8")
 
 
-# helper function for running steps
 def step(
-    func: Callable[[], Rc],
+    func: Callable[[], R],
     desc: str = "",
-    post_func: Callable[[Rc], Rc] = _default_post_func,
-) -> Rc:
+    post_func: Callable[[R], R] = _default_post_func,
+    post_print: bool = True,
+) -> R:
     """
     helper function for running steps
 
     args:
         desc: str
             description of the step
-        func: Callable[[], Rc]
+        func: Callable[[], R]
             function to run
-        post_func: Callable[[Rc], Rc]
-            post function to run after func
+        post_func: Callable[[R], R]
+            post-function to run after func
+        post_print: bool
+            whether to print done after the step
 
     returns:
-        Rc
+        R
             return object from func
     """
 
     # run the function
     if desc != "":
-        print(f"{desc}..", end="", file=stderr)
-        stderr.flush()
+        print(f"{desc}..", end="", flush=True)
+
+    start_time = time()
 
     try:
-        rc = func()
+        cp = func()
 
     except Exception as exc:
         print(
             f"\n\nfailure running step: {exc} ({exc.__class__.__name__})",
             "\n".join(format_tb(exc.__traceback__)) + "\n",
-            file=stderr,
             sep="\n",
         )
         exit(1)
 
     if desc != "":
-        print(".", end="", file=stderr)
-        stderr.flush()
+        print(".", end="", flush=True)
 
-    # run the post function
+    # run the post-function
     try:
-        rp = post_func(rc)
+        rp = post_func(cp)
 
     except Exception as exc:
         print(
             f"\n\nfailure running post-step: {exc} ({exc.__class__.__name__})",
             "\n".join(format_tb(exc.__traceback__)) + "\n",
-            file=stderr,
             sep="\n",
         )
         exit(1)
 
+    end_time = time()
+
     # yay
-    if desc != "":
-        print(" done", file=stderr)
-        stderr.flush()
+    if desc != "" and post_print:
+        print(f" done in {end_time - start_time:.2f}″", flush=True)
 
     return rp
 
 
-def post_remote_v(rc: CompletedProcess) -> CompletedProcess:
+def post_remote_v(cp: CompletedProcess) -> CompletedProcess:
     """
     post-call function for 'git remote -v' command, parses the output and
     checks for the forge and github remotes, storing them in the shared state
     under 'remote/forge', 'remote/forge/url', 'remote/github', and
     'remote/github/url' respectively
-
-    args:
-        rc: CompletedProcess
-            return object from subprocess.run
-
-    returns:
-        CompletedProcess
-            return object from subprocess.run
     """
 
-    if not isinstance(rc.stdout, bytes):
-        return _command_post_func(rc)
+    if not isinstance(cp.stdout, bytes):
+        return _command_post_func(cp)
 
-    for line in rc.stdout.decode().split("\n"):
+    for line in cp.stdout.decode().split("\n"):
         # github  https://github.com/markjoshwel/sota (fetch)
         # github  https://github.com/markjoshwel/sota (push)
         # origin  https://forge.joshwel.co/mark/sota.git (fetch)
         # origin  https://forge.joshwel.co/mark/sota.git (push)
 
-        sline = line.split(maxsplit=1)
+        split_line = line.split(maxsplit=1)
         if len(line) < 2:
             continue
 
         # remote='origin'  url='https://forge.joshwel.co/mark/sota.git (fetch)'
-        remote, url = sline
+        remote, url = split_line
 
         # clean up the url
         if (REPO_URL_FORGE in url) or (REPO_URL_GITHUB in url):
@@ -369,7 +333,7 @@ def post_remote_v(rc: CompletedProcess) -> CompletedProcess:
             r["remote/github"] = remote
             r["remote/github/url"] = url
 
-    return _command_post_func(rc)
+    return _command_post_func(cp)
 
 
 def err(message: str, exc: Exception | None = None) -> None:
@@ -398,7 +362,6 @@ def err(message: str, exc: Exception | None = None) -> None:
             )
         )
         + (indent(text=pformat(r), prefix=INDENT) + "\n"),
-        file=stderr,
         sep="\n",
     )
     exit(1)
@@ -409,6 +372,7 @@ def main() -> None:
     command line entry point
     """
 
+    cumulative_start_time = time()
     with TemporaryDirectory(delete="--keep" not in argv) as dir_temp:
         print(
             "\nsota staircase ReStepper\n"
@@ -420,53 +384,76 @@ def main() -> None:
 
         # helper partial function for command
         def cmd(
-            command: str, wd: Path | str = dir_temp, **kwargs
+            command: str,
+            wd: Path | str = dir_temp,
+            capture_output: bool = True,
+            give_input: str | None = None,
         ) -> Callable[[], CompletedProcess]:
             return lambda: run(
                 command,
-                shell=True,
                 cwd=wd,
-                capture_output=True,
-                **kwargs,
+                capture_output=capture_output,
+                give_input=give_input,
             )
 
         step(
             func=cmd("git filter-repo --version"),
-            post_func=lambda rc: _command_post_func(
-                rc,
-                quit_early=rc.returncode != 0,
-                quit_message="git filter-repo is not installed, install it using 'pip install git-filter-repo' or 'pipx install git-filter-repo'",
-            ),
+            post_func=post_filter_repo_check,
         )
 
-        step(func=cmd("git status --porcelain", wd=REPO_DIR))
+        step(cmd("git status --porcelain", wd=REPO_DIR))
         if (not r["blank"]) and ("--iknowwhatimdoing" not in argv):
             err(
                 "critical error: repository is not clean, please commit changes first",
             )
 
-        step(
-            desc="1 pre\tgenerating .sotaignore",
-            func=lambda: generate_sotaignore(get_large_files(REPO_DIR)),
-        )
+        if "--skipsotaignoregen" not in argv:
+            (print("1 pre | finding large files", end="", flush=True),)
+            start_time = time()
+            large_files = find_large_files(REPO_DIR)
+            end_time = time()
+            print(
+                "1 pre | finding large files... "
+                f"done in {end_time - start_time:.2f}″ (found {len(large_files)})"
+            )
 
-        step(
-            desc="2 pre\tduplicating repo",
-            func=lambda: (
-                copytree(
-                    src=REPO_DIR,
-                    dst=dir_temp,
-                    dirs_exist_ok=True,
+            if large_files:
+                start_time = time()
+                was_written = step(
+                    desc="2 pre | writing .sotaignore",
+                    func=lambda: write_sotaignore(large_files),
+                    post_func=lambda cp: cp,
+                    post_print=False,
                 )
-            ),
+                end_time = time()
+                if was_written:
+                    print(f" done in {end_time - start_time:.2f}″")
+                else:
+                    print(" not needed")
+
+        print("3 pre | duplicating repo... pre-scanning", end="", flush=True)
+
+        start_time = time()
+        with CopyHighway(
+            "3 pre | duplicating repo", total=len(list(REPO_DIR.rglob("*")))
+        ) as copier:
+            copytree(
+                src=REPO_DIR,
+                dst=dir_temp,
+                copy_function=copier.copy2,
+                dirs_exist_ok=True,
+            )
+        end_time = time()
+        print(
+            f"3 pre | duplicating repo... done in {end_time - start_time:.2f}″",
+            flush=True,
         )
 
-        step(
-            func=cmd('python -c "import pathlib; print(pathlib.Path.cwd().absolute())"')
-        )
+        step(cmd('python -c "import pathlib; print(pathlib.Path.cwd().absolute())"'))
         if str(Path(dir_temp).absolute()) != r["stdout"].strip():
             err(
-                f"critical error (whuh? internal?): not inside the temp dir '{str(Path(dir_temp).absolute())}'"
+                "critical error (whuh? internal?): "
+                f"not inside the temp dir '{str(Path(dir_temp).absolute())}'"
             )
 
         # check for forge and github remotes
@@ -478,31 +465,31 @@ def main() -> None:
             err("critical error (whuh?): no forge remote found")
 
         # get the current branch
-        step(
-            func=cmd("git branch --show-current"),
-        )
+        step(cmd("git branch --show-current"))
         branch = r["stdout"].strip()
         if r.get("errored", "yes") or branch == "":
             err("critical error (whuh?): couldn't get current branch")
 
-        step(func=cmd(f"git fetch {r['remote/forge']}"))
-        step(func=cmd(f"git rev-list HEAD...{r['remote/forge']}/{branch} --count"))
+        step(cmd(f"git fetch {r['remote/forge']}"))
+        step(cmd(f"git rev-list HEAD...{r['remote/forge']}/{branch} --count"))
         if (r.get("stdout", "").strip() != "0") and ("--dirty" not in argv):
             err(
-                "critical error (whuh?): not up to date with forge... sync your changes first?"
+                "critical error (whuh?): "
+                "not up to date with forge... sync your changes first?"
             )
 
-        step(desc="3 lfs\tfetch lfs objects", func=cmd("git lfs fetch"))
+        step(desc="4 lfs | fetch lfs objects", func=cmd("git lfs fetch"))
 
         step(
-            desc="4 lfs\tmigrating lfs objects",
+            desc="5 lfs | migrating lfs objects",
             func=cmd(
-                'git lfs migrate export --everything --include="*" --remote=origin'
+                'git lfs migrate export --everything --include="*" --remote=origin',
+                give_input="y\n",
             ),
         )
 
         step(
-            desc="5 lfs\tuninstall lfs in repo",
+            desc="6 lfs | uninstall lfs in repo",
             func=cmd("git lfs uninstall"),
         )
 
@@ -511,42 +498,50 @@ def main() -> None:
         )
         if not r["blank"]:
             err(
-                "critical error (whuh? internal?): lfs objects still exist post-migrate and uninstall"
+                "critical error (whuh? internal?): "
+                "lfs objects still exist post-migrate and uninstall"
             )
 
-        temp_sotaignore = Path(dir_temp).joinpath(".sotaignore")
-
-        if temp_sotaignore.exists():
+        if REPO_SOTAIGNORE.exists():
             try:
-                sotaignore = temp_sotaignore.read_text(encoding="utf-8").strip()
+                sotaignore = REPO_SOTAIGNORE.read_text(encoding="utf-8").strip()
             except Exception as exc:
                 err("critical error: couldn't read .sotaignore file", exc=exc)
 
-            sotaignore_large_files: list[str] = [
+            sotaignored_files: list[str] = [
                 line
                 for line in sotaignore.splitlines()
                 if not line.startswith("#") and line.strip() != ""
             ]
 
-            # FUTURE: if this becomes slow, start chunking --path arguments
-            # https://stackoverflow.com/questions/43762338/how-to-remove-file-from-git-history
+            step(
+                desc=f"7 lfs | filtering {len(sotaignored_files)} file(s)",
+                func=cmd(
+                    "git filter-repo --force --invert-paths "
+                    + " ".join(f'--path ""{lf}' "" for lf in sotaignored_files)
+                ),
+            )
 
-            for n, lf in enumerate(sotaignore_large_files, start=1):
-                step(
-                    desc=f"6 lfs\tfilter ({n}/{len(sotaignore_large_files)}) - {lf}",
-                    func=cmd(f'git filter-repo --force --invert-paths --path "{lf}"'),
-                )
+            # also copy to the temp repo; step 5 (lfs migrate) wipes uncommitted changes
+            copy2(REPO_SOTAIGNORE, Path(dir_temp).joinpath(".sotaignore"))
 
         step(
-            desc="7 fin\tneuter .gitattributes",
+            desc="8 fin | neuter .gitattributes",
             func=lambda: rewrite_gitattributes(Path(dir_temp)),
         )
 
+        def add_and_commit() -> CompletedProcess:
+            cp = cmd("git add *")()
+            if cp.returncode != 0:
+                return cp
+            return cmd(
+                "git commit --allow-empty "
+                f'-am "{COMMIT_MESSAGE}" --author="{COMMIT_AUTHOR}"',
+            )()
+
         step(
-            desc="8 fin\tcommit",
-            func=cmd(
-                f"""git commit -am "{COMMIT_MESSAGE}" --author="{COMMIT_AUTHOR}" --allow-empty""",
-            ),
+            desc="9 fin | commit",
+            func=add_and_commit,
         )
 
         if r.get("remote/github") is None:
@@ -558,7 +553,7 @@ def main() -> None:
             r["remote/github"] = "github"
 
         step(
-            desc=f"9 fin\tpushing to github/{branch}",
+            desc=f"X fin | pushing to github/{branch}",
             func=cmd(
                 f"git push {r['remote/github']} {branch} --force"
                 if ("--test" not in argv)
@@ -566,12 +561,17 @@ def main() -> None:
             ),
         )
 
-        step(
-            desc="X fin\tcleanup",
-            func=lambda: None,
-        )
-
-    print("\n--- done! ☆*: .｡. o(≧▽≦)o .｡.:*☆ ---\n", file=stderr)
+    cumulative_end_time = time()
+    time_taken = cumulative_end_time - cumulative_start_time
+    time_taken_string: str
+    if time_taken > 60:
+        time_taken_string = f"{int(time_taken // 60)}′{int(time_taken % 60)}″"
+    else:
+        time_taken_string = f"{time_taken:.2f}″"
+    print(
+        f"\n--- done! took {time_taken_string}~ " "☆*: .｡. o(≧▽≦)o .｡.:*☆ ---",
+        flush=True,
+    )
 
 
 if __name__ == "__main__":
