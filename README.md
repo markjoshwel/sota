@@ -269,3 +269,12 @@ exceptions to the above licences are as follows:
   - Interior Dining Chair: https://www.ikea.com/sg/en/p/kaettil-chair-white-knisa-light-grey-50500340/
   - Interior Dining Table: https://www.ikea.com/sg/en/p/moerbylanga-lustebo-table-and-4-chairs-oak-veneer-brown-stained-viarp-beige-brown-s49523521/
   - Interior Sofa: https://www.ikea.com/sg/en/p/kivik-2-seat-sofa-tresund-anthracite-s79482821/
+  - Interior Desk: https://www.ikea.com/sg/en/p/lagkapten-alex-desk-white-stained-oak-white-s29417654/
+  - Interior Office Chair: https://secretlab.sg/products/titan-evo-2022-series?sku=M07-E24PU-ASHHH1R
+  - Interior Wardrobe: https://www.ikea.com/sg/en/p/musken-wardrobe-with-2-doors-3-drawers-white-50378684/
+  - Interior Fridge: https://www.harveynorman.com.sg/home-appliances/kitchen-appliances-en/fridges/bosch-fridge-kfn96axea.html
+  - Interior Induction Stove: https://www.electrolux.com.sg/appliances/stoves-hobs/ehi8255be/
+  - Interior Pots And Pans: https://hexclad.com/products/pots-and-pans-set
+  - Interior Kitchen Cabinets: https://www.thesimsresource.com/downloads/details/category/sims4-sets-objects-kitchen/title/dream-kitchen-set-pt-1/id/1680892/
+  
+
