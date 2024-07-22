@@ -257,3 +257,15 @@ exceptions to the above licences are as follows:
 >   `Assets/Characters/Frogman`
 >
 > comma-separate multiple licences, and use code blocks if you need to list multiple files/directories/patterns
+
+- Various References: All Rights Reserved
+  - HDB Corridor: https://dollarsandsense.sg/hdb-lease-buyback-scheme-now-open-to-all-flats-heres-how-it-works/
+  - HDB Corridor: https://www.propertyguru.com.sg/property-guides/can-you-own-the-space-in-front-of-your-hdb-flat-10697
+  - Firewatch screenshots from the king of fnaf: https://www.youtube.com/watch?v=gyKg7xmVIKw&t=1763s
+  - HDB House Interior:https://www.swissinterior.com.sg/blog/4-room-hdb-interior-design-ideas
+  - Interior Lamp: https://www.ikea.com/sg/en/p/taernaby-table-lamp-dimmable-anthracite-60323894/
+  - Interior Bedside Table: https://www.ikea.com/sg/en/p/nordkisa-bedside-table-bamboo-40447678/
+  - Interior Bedframe: https://www.ikea.com/sg/en/p/ramnefjaell-upholstered-bed-frame-kilanda-light-beige-luroey-s29560166/#content
+  - Interior Dining Chair: https://www.ikea.com/sg/en/p/kaettil-chair-white-knisa-light-grey-50500340/
+  - Interior Dining Table: https://www.ikea.com/sg/en/p/moerbylanga-lustebo-table-and-4-chairs-oak-veneer-brown-stained-viarp-beige-brown-s49523521/
+  - Interior Sofa: https://www.ikea.com/sg/en/p/kivik-2-seat-sofa-tresund-anthracite-s79482821/
