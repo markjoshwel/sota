@@ -262,7 +262,7 @@ exceptions to the above licences are as follows:
   - HDB Corridor: https://dollarsandsense.sg/hdb-lease-buyback-scheme-now-open-to-all-flats-heres-how-it-works/
   - HDB Corridor: https://www.propertyguru.com.sg/property-guides/can-you-own-the-space-in-front-of-your-hdb-flat-10697
   - Firewatch screenshots from the king of fnaf: https://www.youtube.com/watch?v=gyKg7xmVIKw&t=1763s
-  - HDB House Interior:https://www.swissinterior.com.sg/blog/4-room-hdb-interior-design-ideas
+  - HDB House Interior:https://www.swissinterior.com.sg/blog/4-room-hdb-interior-design-ideas, https://qanvast.com/sg/articles/types-of-3-room-bto-flat-layouts-which-ones-are-unique-2822
   - Interior Lamp: https://www.ikea.com/sg/en/p/taernaby-table-lamp-dimmable-anthracite-60323894/
   - Interior Bedside Table: https://www.ikea.com/sg/en/p/nordkisa-bedside-table-bamboo-40447678/
   - Interior Bedframe: https://www.ikea.com/sg/en/p/ramnefjaell-upholstered-bed-frame-kilanda-light-beige-luroey-s29560166/#content
