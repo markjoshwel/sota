@@ -183,25 +183,19 @@ def post_filter_repo_check(cp: CompletedProcess) -> CompletedProcess:
     check_pipx_cp = run(["pipx", "--version"])
     if check_pipx_cp.returncode == 0:
         use_pipx = True
-    else:
-        run([executable, "-m", "pip", "install", "pipx"])
-
-        # double check
-        check_pipx_cp = run(["pipx", "--version"])
-        if check_pipx_cp.returncode == 0:
-            use_pipx = True
-        # if pipx still can't be found, might be some environment fuckery
 
     # install git-filter-repo
     pip_invocation: list[str] = ["pipx"] if use_pipx else [executable, "-m", "pip"]
     print(
         f"running '{' '.join([*pip_invocation, "install", "git-filter-repo"])}'... ",
         end="",
+        flush=True,
     )
     install_rc = run([*pip_invocation, "install", "git-filter-repo"])
     if install_rc.returncode != 0:
         print("error")
         _command_post_func(install_rc)
+        exit(install_rc.returncode)
     else:
         print("done\n")
 
@@ -213,6 +207,7 @@ def post_filter_repo_check(cp: CompletedProcess) -> CompletedProcess:
             "failure: could not install git-filter-repo automatically. "
             "do it yourself o(*≧▽≦)ツ┏━┓"
         )
+        exit(-1)
 
     return cp
 
