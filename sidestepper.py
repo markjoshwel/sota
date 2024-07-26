@@ -205,6 +205,24 @@ def one_sided(a: A, bbb: Iterable[B]) -> Iterator[OneSided[A, B]]:
         yield OneSided(a, b)
 
 
+def generate_time_elapsed_string(time_taken: float) -> str:
+    """generates a human-readable time-elapsed string from a time taken float"""
+    hours = int(time_taken // 3600)
+    minutes = int(time_taken % 3600 // 60)
+    seconds = int(time_taken % 60)
+
+    time_taken_string: str
+
+    if time_taken > 3600:
+        time_taken_string = f"{hours}h {minutes}′ {seconds}″"
+    elif time_taken > 60:
+        time_taken_string = f"{minutes}′ {seconds}″"
+    else:
+        time_taken_string = f"{time_taken:.2f}″"
+
+    return time_taken_string
+
+
 @dataclass(eq=True, frozen=True)
 class SideStepIgnoreMatcher:
     """immutable gitignore matcher"""
@@ -234,7 +252,7 @@ class SideStepIgnoreMatcher:
             root=self.root, rules=self.rules + ((gitignore.parent, tuple(new_ruleset)),)
         )
 
-    def match(self, file: Path) -> bool:
+    def match(self, file: Path | str) -> bool:
         """returns True if the file is ignored by any of the rules in the gitignore files, False otherwise"""
         matched = False
 
@@ -270,6 +288,24 @@ class SideStepIgnoreMatcher:
     @cache
     def _possibly_negated(self, ruleset: tuple[IgnoreRule, ...]) -> bool:
         return any(rule.negation for rule in ruleset)
+
+
+@dataclass(eq=True, frozen=True)
+class LargeFileFilterResult:
+    """
+    result data structure of the large file filter
+
+    files: tuple[Path, ...]
+        large files found
+    matcher: SideStepIgnoreMatcher
+        the *ignore matcher instance
+    ignore_directories: tuple[Path, ...]
+        directories that were ignored
+    """
+
+    files: tuple[Path, ...]
+    matcher: SideStepIgnoreMatcher
+    ignore_directories: tuple[Path, ...]
 
 
 def _parallel() -> bool:
@@ -311,7 +347,7 @@ def _iter_files(
         yield target_file
 
 
-def iter_files(target_dir: Path) -> tuple[list[Path], SideStepIgnoreMatcher]:
+def iter_files(target_dir: Path) -> tuple[tuple[Path, ...], SideStepIgnoreMatcher]:
     """
     get all non-git files and register .gitignore files
 
@@ -319,8 +355,8 @@ def iter_files(target_dir: Path) -> tuple[list[Path], SideStepIgnoreMatcher]:
         target_dir: Path
             the directory to search in
 
-    returns: tuple[list[Path], SideStepIgnoreMatcher]
-        list of all files in the target directory and a SideStepIgnoreMatcher instance
+    returns: tuple[tuple[Path, ...], SideStepIgnoreMatcher]
+        tuple of all files in the target directory and a SideStepIgnoreMatcher instance
     """
 
     all_files: list[Path] = []
@@ -335,7 +371,7 @@ def iter_files(target_dir: Path) -> tuple[list[Path], SideStepIgnoreMatcher]:
         if file.name == ".gitignore":
             sim = sim.add_gitignore(file)
 
-    return all_files, sim
+    return tuple(all_files), sim
 
 
 def _filter_sim_match(
@@ -372,9 +408,10 @@ def _filter_ign_dirs_and_size(os: OneSided[list[Path], Path]) -> Path | None:
         return None
 
 
-def _find_large_files_single(target: Path) -> list[Path]:
+def _find_large_files_single(
+    files: tuple[Path, ...], sim: SideStepIgnoreMatcher
+) -> LargeFileFilterResult:
     """single-process implementation of find_large_files"""
-    files, sim = iter_files(target)
     ignore_dirs: list[Path] = []
 
     _files = []
@@ -394,15 +431,21 @@ def _find_large_files_single(target: Path) -> list[Path]:
         leave=False,
         total=len(_files),
     ):
-        if f := _filter_ign_dirs_and_size(fds_os):
+        f = _filter_ign_dirs_and_size(fds_os)
+        if f is not None:
             large_files.append(f)
 
-    return large_files
+    return LargeFileFilterResult(
+        files=tuple(large_files),
+        matcher=sim,
+        ignore_directories=tuple(ignore_dirs),
+    )
 
 
-def _find_large_files_parallel(target: Path) -> list[Path]:
+def _find_large_files_parallel(
+    files: tuple[Path, ...], sim: SideStepIgnoreMatcher
+) -> LargeFileFilterResult:
     """multiprocess implementation of find_large_files"""
-    files, sim = iter_files(target)
     manager = Manager()
     ignore_dirs: ListProxy[Path] = manager.list()
 
@@ -420,40 +463,51 @@ def _find_large_files_parallel(target: Path) -> list[Path]:
         if f is not None
     ]
 
-    return [
-        f
-        for f in process_map(
-            _filter_ign_dirs_and_size,
-            one_sided(a=ignore_dirs, bbb=_files),
-            desc="1 pre | finding large files - dir rematching (3/3)",
-            leave=False,
-            chunksize=SOTA_SIDESTEP_CHUNK_SIZE,
-            max_workers=SOTA_SIDESTEP_MAX_WORKERS,
-            total=len(files),
-        )
-        if f is not None
-    ]
+    large_files: tuple[Path, ...] = tuple(
+        [
+            f
+            for f in process_map(
+                _filter_ign_dirs_and_size,
+                one_sided(a=ignore_dirs, bbb=_files),
+                desc="1 pre | finding large files - dir rematching (3/3)",
+                leave=False,
+                chunksize=SOTA_SIDESTEP_CHUNK_SIZE,
+                max_workers=SOTA_SIDESTEP_MAX_WORKERS,
+                total=len(files),
+            )
+            if f is not None
+        ]
+    )
+
+    return LargeFileFilterResult(
+        files=large_files,
+        matcher=sim,
+        ignore_directories=tuple(ignore_dirs),
+    )
 
 
-def find_large_files(target: Path) -> list[Path]:
+def find_large_files(
+    files: tuple[Path, ...], matcher: SideStepIgnoreMatcher
+) -> LargeFileFilterResult:
     """
     finds all files larger than a certain size in a directory;
     uses SOTA_SIDESTEP_LARGE_FILE_SIZE as the size threshold
 
     args:
-        target_dir: Path
-            the directory to search in
+        files: tuple[Path, ...]
+            list of files to search through
+        matcher: SideStepIgnoreMatcher
+            the ignore matcher instance from iter_files()
 
-    returns: list[Path]
-        list of large files
+    returns: LargeFileFilterResult
     """
     if _parallel():
-        return _find_large_files_parallel(target)
+        return _find_large_files_parallel(files, matcher)
     else:
-        return _find_large_files_single(target)
+        return _find_large_files_single(files, matcher)
 
 
-def write_sotaignore(large_files: list[Path]) -> bool:
+def write_sotaignore(large_files: tuple[Path, ...]) -> bool:
     """
     writes out a .sotaignore file with a list of large files,
     updating an existing one if already present
@@ -514,23 +568,35 @@ def main() -> None:
 
     cumulative_start_time = time()
 
-    print(f"1/2{INDENT}finding large files... ", end="", file=stderr)
+    print(f"1/3{INDENT}pre-scanning repository... ", end="", file=stderr)
     start_time = time()
-    large_files = find_large_files(REPO_DIR)
+    files, sim = iter_files(REPO_DIR)
     end_time = time()
     print(
-        f"1/2{INDENT}finding large files... "
-        f"done in {end_time - start_time:.2f}″ "
+        f"1/3{INDENT}pre-scanning repository... "
+        f"done in {generate_time_elapsed_string(end_time - start_time)} "
+        f"(found {len(files)})",
+        file=stderr,
+    )
+
+    print(f"2/3{INDENT}finding large files... ", end="", file=stderr)
+    start_time = time()
+    large_files = find_large_files(files, sim).files
+    end_time = time()
+    print(
+        f"2/3{INDENT}finding large files... "
+        f"done in {generate_time_elapsed_string(end_time - start_time)} "
         f"(found {len(large_files)})",
         file=stderr,
     )
 
-    print(f"2/2{INDENT}writing .sotaignore file... ", end="", file=stderr)
+    print(f"3/3{INDENT}writing .sotaignore file... ", end="", file=stderr)
     start_time = time()
     was_written = write_sotaignore(large_files)
     end_time = time()
     print(
-        ("done" if was_written else "skipped") + f" in {end_time - start_time:.2f}″\n",
+        ("done" if was_written else "skipped")
+        + f" in {generate_time_elapsed_string(end_time - start_time)}\n",
         file=stderr,
     )
 
@@ -538,14 +604,9 @@ def main() -> None:
         print(file.relative_to(REPO_DIR))
 
     cumulative_end_time = time()
-    time_taken = cumulative_end_time - cumulative_start_time
-    time_taken_string: str
-    if time_taken > 60:
-        time_taken_string = f"{int(time_taken // 60)}′{int(time_taken % 60)}″"
-    else:
-        time_taken_string = f"{time_taken:.2f}″"
     print(
-        f"\n--- done! took {time_taken_string}~ " "☆*: .｡. o(≧▽≦)o .｡.:*☆ ---",
+        f"\n--- done! took {generate_time_elapsed_string(cumulative_end_time - cumulative_start_time)}~ "
+        "☆*: .｡. o(≧▽≦)o .｡.:*☆ ---",
         flush=True,
         file=stderr,
     )

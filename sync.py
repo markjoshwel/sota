@@ -17,8 +17,11 @@ from typing import Callable, Final, TypeVar
 try:
     from sidestepper import (
         SOTA_SIDESTEP_MAX_WORKERS,
+        LargeFileFilterResult,
         find_large_files,
         generate_command_failure_message,
+        generate_time_elapsed_string,
+        iter_files,
         run,
         write_sotaignore,
     )
@@ -54,7 +57,7 @@ class CopyHighway:
     for use with shutil.copytree(); also displays a progress bar
     """
 
-    def __init__(self, message: str, total: int):
+    def __init__(self, message: str, total: int, lff_result: LargeFileFilterResult):
         """
         multithreaded file copying class that gives a copy2-like function
         for use with shutil.copytree()
@@ -64,6 +67,8 @@ class CopyHighway:
                 message to display in the progress bar
             total: int
                 total number of files to copy
+            lff_result: LargeFileFilterResult
+                result of the large file filter
         """
         self.pool = ThreadPool(
             processes=SOTA_SIDESTEP_MAX_WORKERS,
@@ -74,13 +79,27 @@ class CopyHighway:
             unit=" files",
             leave=False,
         )
+        self.lff_result = lff_result
 
     def callback(self, a: R):
         self.pbar.update()
         return a
 
-    def copy2(self, source: str, dest: str):
+    def copy2(self, source: Path | str, dest: Path | str) -> None:
         """shutil.copy2()-like function for use with shutil.copytree()"""
+
+        # ignore check 1: dir
+        for ign_dir in self.lff_result.ignore_directories:
+            if str(ign_dir) in str(source):
+                return None
+
+        # ignore check 2: file
+        # ... we don't need to use the trytrytry method
+        # ... because we already did that as part of the large file filter,
+        # ... and as such we checked for it with the first check above
+        if self.lff_result.matcher.match(source):
+            return None
+
         self.pool.apply_async(copy2, args=(source, dest), callback=self.callback)
 
     def __enter__(self):
@@ -286,7 +305,10 @@ def step(
 
     # yay
     if desc != "" and post_print:
-        print(f" done in {end_time - start_time:.2f}″", flush=True)
+        print(
+            f" done in {generate_time_elapsed_string(end_time - start_time)}",
+            flush=True,
+        )
 
     return rp
 
@@ -402,14 +424,17 @@ def main() -> None:
                 "critical error: repository is not clean, please commit changes first",
             )
 
+        start_time = time()
+        print("1 pre | finding large files", end="", flush=True)
+        files, sim = iter_files(REPO_DIR)
+
         if "--skipsotaignoregen" not in argv:
-            (print("1 pre | finding large files", end="", flush=True),)
-            start_time = time()
-            large_files = find_large_files(REPO_DIR)
+            flf_filter_result = find_large_files(files, sim)
+            large_files = flf_filter_result.files
             end_time = time()
             print(
                 "1 pre | finding large files... "
-                f"done in {end_time - start_time:.2f}″ (found {len(large_files)})"
+                f"done in {generate_time_elapsed_string(end_time - start_time)} (found {len(large_files)})"
             )
 
             if large_files:
@@ -422,15 +447,25 @@ def main() -> None:
                 )
                 end_time = time()
                 if was_written:
-                    print(f" done in {end_time - start_time:.2f}″")
+                    print(
+                        f" done in {generate_time_elapsed_string(end_time - start_time)}"
+                    )
                 else:
                     print(" not needed")
+        else:
+            end_time = time()
+            print(
+                "1 pre | finding large files... "
+                f"skipped in {generate_time_elapsed_string(end_time - start_time)}"
+            )
 
         print("3 pre | duplicating repo... pre-scanning", end="", flush=True)
 
         start_time = time()
         with CopyHighway(
-            "3 pre | duplicating repo", total=len(list(REPO_DIR.rglob("*")))
+            message="3 pre | duplicating repo",
+            total=len(list(REPO_DIR.rglob("*"))),
+            lff_result=flf_filter_result,
         ) as copier:
             copytree(
                 src=REPO_DIR,
@@ -440,7 +475,7 @@ def main() -> None:
             )
         end_time = time()
         print(
-            f"3 pre | duplicating repo... done in {end_time - start_time:.2f}″",
+            f"3 pre | duplicating repo... done in {generate_time_elapsed_string(end_time - start_time)}",
             flush=True,
         )
 
@@ -548,7 +583,7 @@ def main() -> None:
             r["remote/github"] = "github"
 
         step(
-            desc=f"X fin | pushing to github/{branch}",
+            desc=f"X fin | pushing to {r['remote/github']}/{branch}",
             func=cmd(
                 f"git push {r['remote/github']} {branch} --force"
                 if ("--test" not in argv)
@@ -557,14 +592,9 @@ def main() -> None:
         )
 
     cumulative_end_time = time()
-    time_taken = cumulative_end_time - cumulative_start_time
-    time_taken_string: str
-    if time_taken > 60:
-        time_taken_string = f"{int(time_taken // 60)}′{int(time_taken % 60)}″"
-    else:
-        time_taken_string = f"{time_taken:.2f}″"
     print(
-        f"\n--- done! took {time_taken_string}~ " "☆*: .｡. o(≧▽≦)o .｡.:*☆ ---",
+        f"\n--- done! took {generate_time_elapsed_string(cumulative_end_time - cumulative_start_time)}~ "
+        "☆*: .｡. o(≧▽≦)o .｡.:*☆ ---",
         flush=True,
     )
 
