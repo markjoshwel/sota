@@ -50,13 +50,14 @@ Modelling
 │   └── <Asset Name>
 │       ├── *.png
 │       └── ...
-├── Modulars
-│   ├── <Asset Name>_lowpoly
-│   └── <Asset Name>_highpoly
-└── Heroes
-    ├── <Asset Name>_lowpoly
-    │   └── *.fbx
-    └── <Asset Name>_highpoly
+└── Exports
+    ├── Modulars
+    │   ├── <Asset Name>_lowpoly
+    │   └── <Asset Name>_highpoly
+    └── Heroes
+        ├── <Asset Name>_lowpoly
+        │   └── *.fbx
+        └── <Asset Name>_highpoly
 ```
 
 ### on Graphic and UI/UX Design
@@ -246,35 +247,44 @@ in student work during the course of our study
 
 exceptions to the above licences are as follows:
 
-> Template:
-> ```
-> - (Asset/Work Name) by (Author Name): (Licence Name)
->   `directory path, file path or glob pattern`
-> ```
-> Example:
->
-> - Frogman by Frog Creator: Standard Unity Asset Store EULA (Extension Asset)  
->   `Assets/Characters/Frogman`
->
-> comma-separate multiple licences, and use code blocks if you need to list multiple files/directories/patterns
+template:
+
+```
+- (Asset/Work Name) by (Author Name): (Licence Name)
+  `directory path, file path or glob pattern`
+```
+
+example:
+
+- Frogman by Frog Creator: Standard Unity Asset Store EULA (Extension Asset)  
+  `Assets/Characters/Frogman`
+
+comma-separate multiple licences, and use code blocks if you need to list multiple files/directories/patterns
+
+---
 
 - Various References: All Rights Reserved
-  - HDB Corridor: https://dollarsandsense.sg/hdb-lease-buyback-scheme-now-open-to-all-flats-heres-how-it-works/
-  - HDB Corridor: https://www.propertyguru.com.sg/property-guides/can-you-own-the-space-in-front-of-your-hdb-flat-10697
-  - Firewatch screenshots from the king of fnaf: https://www.youtube.com/watch?v=gyKg7xmVIKw&t=1763s
-  - HDB House Interior:https://www.swissinterior.com.sg/blog/4-room-hdb-interior-design-ideas, https://qanvast.com/sg/articles/types-of-3-room-bto-flat-layouts-which-ones-are-unique-2822
-  - Interior Lamp: https://www.ikea.com/sg/en/p/taernaby-table-lamp-dimmable-anthracite-60323894/
-  - Interior Bedside Table: https://www.ikea.com/sg/en/p/nordkisa-bedside-table-bamboo-40447678/
-  - Interior Bedframe: https://www.ikea.com/sg/en/p/ramnefjaell-upholstered-bed-frame-kilanda-light-beige-luroey-s29560166/#content
-  - Interior Dining Chair: https://www.ikea.com/sg/en/p/kaettil-chair-white-knisa-light-grey-50500340/
-  - Interior Dining Table: https://www.ikea.com/sg/en/p/moerbylanga-lustebo-table-and-4-chairs-oak-veneer-brown-stained-viarp-beige-brown-s49523521/
-  - Interior Sofa: https://www.ikea.com/sg/en/p/kivik-2-seat-sofa-tresund-anthracite-s79482821/
-  - Interior Desk: https://www.ikea.com/sg/en/p/lagkapten-alex-desk-white-stained-oak-white-s29417654/
-  - Interior Office Chair: https://secretlab.sg/products/titan-evo-2022-series?sku=M07-E24PU-ASHHH1R
-  - Interior Wardrobe: https://www.ikea.com/sg/en/p/musken-wardrobe-with-2-doors-3-drawers-white-50378684/
-  - Interior Fridge: https://www.harveynorman.com.sg/home-appliances/kitchen-appliances-en/fridges/bosch-fridge-kfn96axea.html
-  - Interior Induction Stove: https://www.electrolux.com.sg/appliances/stoves-hobs/ehi8255be/
-  - Interior Pots And Pans: https://hexclad.com/products/pots-and-pans-set
-  - Interior Kitchen Cabinets: https://www.thesimsresource.com/downloads/details/category/sims4-sets-objects-kitchen/title/dream-kitchen-set-pt-1/id/1680892/
+    - HDB Corridor: https://dollarsandsense.sg/hdb-lease-buyback-scheme-now-open-to-all-flats-heres-how-it-works/
+    - HDB
+      Corridor: https://www.propertyguru.com.sg/property-guides/can-you-own-the-space-in-front-of-your-hdb-flat-10697
+    - Firewatch Screenshots from The King of FNaF: https://www.youtube.com/watch?v=gyKg7xmVIKw&t=1763s
+    - HDB House
+      Interior:https://www.swissinterior.com.sg/blog/4-room-hdb-interior-design-ideas, https://qanvast.com/sg/articles/types-of-3-room-bto-flat-layouts-which-ones-are-unique-2822
+    - Interior Lamp: https://www.ikea.com/sg/en/p/taernaby-table-lamp-dimmable-anthracite-60323894/
+    - Interior Bedside Table: https://www.ikea.com/sg/en/p/nordkisa-bedside-table-bamboo-40447678/
+    - Interior
+      Bed-frame: https://www.ikea.com/sg/en/p/ramnefjaell-upholstered-bed-frame-kilanda-light-beige-luroey-s29560166/#content
+    - Interior Dining Chair: https://www.ikea.com/sg/en/p/kaettil-chair-white-knisa-light-grey-50500340/
+    - Interior Dining
+      Table: https://www.ikea.com/sg/en/p/moerbylanga-lustebo-table-and-4-chairs-oak-veneer-brown-stained-viarp-beige-brown-s49523521/
+    - Interior Sofa: https://www.ikea.com/sg/en/p/kivik-2-seat-sofa-tresund-anthracite-s79482821/
+    - Interior Desk: https://www.ikea.com/sg/en/p/lagkapten-alex-desk-white-stained-oak-white-s29417654/
+    - Interior Office Chair: https://secretlab.sg/products/titan-evo-2022-series?sku=M07-E24PU-ASHHH1R
+    - Interior Wardrobe: https://www.ikea.com/sg/en/p/musken-wardrobe-with-2-doors-3-drawers-white-50378684/
+    - Interior
+      Fridge: https://www.harveynorman.com.sg/home-appliances/kitchen-appliances-en/fridges/bosch-fridge-kfn96axea.html
+    - Interior Induction Stove: https://www.electrolux.com.sg/appliances/stoves-hobs/ehi8255be/
+    - Interior Pots And Pans: https://hexclad.com/products/pots-and-pans-set
+    - Interior Kitchen
+      Cabinets: https://www.thesimsresource.com/downloads/details/category/sims4-sets-objects-kitchen/title/dream-kitchen-set-pt-1/id/1680892/
   
-
