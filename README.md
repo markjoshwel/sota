@@ -136,7 +136,7 @@ the following environment variables can be set:
   how many workers to use for repository duplication,
   default is how many cpu threads are available
 
-the following command line arguments can be used:
+the following command line flags can be used:
 
 - `--skipsotaignoregen`  
   skips generating a `.sotaignore` file,
@@ -144,6 +144,9 @@ the following command line arguments can be used:
 
 - `--test`  
   does everything except actually pushing to GitHub
+
+- `--dupethelongway`  
+  duplicates the repository wholly, disrespecting any .gitignore files
 
 there's more, but god forbid you need to use them unless you're changing the script,
 search for `argv` in the script if you're comfortable with dragons
@@ -191,7 +194,7 @@ the following environment variables can be set:
   the large file finding algorithm
   (now called SideStepper because names are fun, sue me)
 
-the following command line arguments can be used:
+the following command line flags can be used:
 
 - `--parallel`  
   same behaviour as setting the `SOTA_SIDESTEP_PARALLEL` environment variable
@@ -287,4 +290,3 @@ comma-separate multiple licences, and use code blocks if you need to list multip
     - Interior Pots And Pans: https://hexclad.com/products/pots-and-pans-set
     - Interior Kitchen
       Cabinets: https://www.thesimsresource.com/downloads/details/category/sims4-sets-objects-kitchen/title/dream-kitchen-set-pt-1/id/1680892/
-  
