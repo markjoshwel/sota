@@ -56,12 +56,15 @@ class CopyHighway:
     multithreaded file copying class that gives a copy2-like function
     for use with shutil.copytree(); also displays a progress bar
     """
+
     pool: ThreadPool
     pbar: tqdm
-    lff_result: LargeFileFilterResult
+    lff_result: LargeFileFilterResult | None
     respect_ignore: bool = True
 
-    def __init__(self, message: str, total: int, lff_result: LargeFileFilterResult):
+    def __init__(
+        self, message: str, total: int, lff_result: LargeFileFilterResult | None
+    ):
         """
         multithreaded file copying class that gives a copy2-like function
         for use with shutil.copytree()
@@ -93,7 +96,7 @@ class CopyHighway:
     def copy2(self, source: Path | str, dest: Path | str) -> None:
         """shutil.copy2()-like function for use with shutil.copytree()"""
 
-        if self.respect_ignore:
+        if self.respect_ignore and (self.lff_result is not None):
             # ignore check 1: dir
             for ign_dir in self.lff_result.ignore_directories:
                 if str(ign_dir) in str(source):
@@ -434,6 +437,7 @@ def main() -> None:
         print("1 pre | finding large files", end="", flush=True)
         files, sim = iter_files(REPO_DIR)
 
+        flf_filter_result: LargeFileFilterResult | None = None
         if "--skipsotaignoregen" not in argv:
             flf_filter_result = find_large_files(files, sim)
             large_files = flf_filter_result.files
