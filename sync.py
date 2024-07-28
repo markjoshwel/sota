@@ -56,6 +56,10 @@ class CopyHighway:
     multithreaded file copying class that gives a copy2-like function
     for use with shutil.copytree(); also displays a progress bar
     """
+    pool: ThreadPool
+    pbar: tqdm
+    lff_result: LargeFileFilterResult
+    respect_ignore: bool = True
 
     def __init__(self, message: str, total: int, lff_result: LargeFileFilterResult):
         """
@@ -80,6 +84,7 @@ class CopyHighway:
             leave=False,
         )
         self.lff_result = lff_result
+        self.respect_ignore = False if "--dupethelongway" in argv else True
 
     def callback(self, a: R):
         self.pbar.update()
@@ -88,17 +93,18 @@ class CopyHighway:
     def copy2(self, source: Path | str, dest: Path | str) -> None:
         """shutil.copy2()-like function for use with shutil.copytree()"""
 
-        # ignore check 1: dir
-        for ign_dir in self.lff_result.ignore_directories:
-            if str(ign_dir) in str(source):
-                return None
+        if self.respect_ignore:
+            # ignore check 1: dir
+            for ign_dir in self.lff_result.ignore_directories:
+                if str(ign_dir) in str(source):
+                    return None
 
-        # ignore check 2: file
-        # ... we don't need to use the trytrytry method
-        # ... because we already did that as part of the large file filter,
-        # ... and as such we checked for it with the first check above
-        if self.lff_result.matcher.match(source):
-            return None
+            # ignore check 2: file
+            # ... we don't need to use the trytrytry method
+            # ... because we already did that as part of the large file filter,
+            # ... and as such we checked for it with the first check above
+            if self.lff_result.matcher.match(source):
+                return None
 
         self.pool.apply_async(copy2, args=(source, dest), callback=self.callback)
 
