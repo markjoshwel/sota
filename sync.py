@@ -215,7 +215,7 @@ def post_filter_repo_check(cp: CompletedProcess) -> CompletedProcess:
     # install git-filter-repo
     pip_invocation: list[str] = ["pipx"] if use_pipx else [executable, "-m", "pip"]
     print(
-        f"running '{' '.join([*pip_invocation, "install", "git-filter-repo"])}'... ",
+        f"running '{' '.join([*pip_invocation, 'install', 'git-filter-repo'])}'... ",
         end="",
         flush=True,
     )
@@ -571,7 +571,7 @@ def main() -> None:
         )
 
         def add_and_commit() -> CompletedProcess:
-            cp = cmd("git add *")()
+            cp = cmd("git add -A")()
             if cp.returncode != 0:
                 return cp
             return cmd(

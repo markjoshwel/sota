@@ -92,7 +92,7 @@ def run(
     try:
         cp = _run(
             command,
-            shell=True if isinstance(command, list) else False,
+            shell=False if isinstance(command, list) else True,
             cwd=cwd,
             capture_output=capture_output,
             input=give_input.encode() if give_input else None,
