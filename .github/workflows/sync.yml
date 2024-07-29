@@ -23,6 +23,8 @@ jobs:
           git clone https://forge.joshwel.co/mark/sota ${{ runner.temp }}/sota
 
       - name: restep
+        env:
+          SS_RESTEPPER_TOKEN: ${{ secrets.PAT }}
         run: |
           cd ${{ runner.temp }}/sota
           nix develop --command python sync.py

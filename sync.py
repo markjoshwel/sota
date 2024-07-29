@@ -2,6 +2,7 @@
 # forge -> github one-way repo sync script
 # licence: 0BSD
 from multiprocessing.pool import ThreadPool
+from os import getenv
 from pathlib import Path
 from pprint import pformat
 from shutil import copy2, copytree
@@ -44,6 +45,14 @@ COMMIT_AUTHOR: Final[str] = "sota staircase ReStepper <ssrestepper@joshwel.co>"
 NEUTERED_GITATTRIBUTES: Final[str] = (
     """# auto detect text files and perform lf normalization\n* text=auto\n"""
 )
+GH_ACT: Final[bool] = getenv("GITHUB_ACTIONS", "").lower() == "true"
+GH_TOKEN: Final[str] = getenv("SS_RESTEPPER_TOKEN", "")
+if GH_ACT and GH_TOKEN == "":
+    print(
+        "critical error: no personal access token found in SS_RESTEP_TOKEN, "
+        "may not have permission to push to github"
+    )
+    exit(1)
 
 # dictionary to share state across steps
 r: dict[str, str] = {}
@@ -100,6 +109,7 @@ class CopyHighway:
             # ignore check 1: dir
             for ign_dir in self.lff_result.ignore_directories:
                 if str(ign_dir) in str(source):
+                    self.pbar.update()
                     return None
 
             # ignore check 2: file
@@ -107,6 +117,7 @@ class CopyHighway:
             # ... because we already did that as part of the large file filter,
             # ... and as such we checked for it with the first check above
             if self.lff_result.matcher.match(source):
+                self.pbar.update()
                 return None
 
         self.pool.apply_async(copy2, args=(source, dest), callback=self.callback)
@@ -405,7 +416,9 @@ def main() -> None:
             "\n"
             "directories\n"
             f"   real repo : {REPO_DIR}\n"
-            f"   temp repo : {dir_temp}\n"
+            f"   temp repo : {dir_temp}\n",
+            f"   is gh act : {GH_ACT}\n" if GH_ACT else "",
+            sep="",
         )
 
         # helper partial function for command
@@ -571,9 +584,21 @@ def main() -> None:
         )
 
         def add_and_commit() -> CompletedProcess:
+            if GH_ACT:
+                cp = cmd("git config user.name 'github-actions[bot]'")()
+                if cp.returncode != 0:
+                    return cp
+
+                cp = cmd(
+                    "git config user.email 'github-actions[bot]@users.noreply.github.com'"
+                )()
+                if cp.returncode != 0:
+                    return cp
+
             cp = cmd("git add -A")()
             if cp.returncode != 0:
                 return cp
+
             return cmd(
                 "git commit --allow-empty "
                 f'-am "{COMMIT_MESSAGE}" --author="{COMMIT_AUTHOR}"',
@@ -592,13 +617,15 @@ def main() -> None:
                 err("critical error (whuh?): couldn't add github remote")
             r["remote/github"] = "github"
 
+        push_invocation = (
+            f"git push {r['remote/github']} {branch} --force"
+            if not GH_ACT
+            else f"git push https://markjoshwel:{GH_TOKEN}@{REPO_URL_GITHUB}.git {branch} --force"
+        )
+
         step(
             desc=f"X fin | pushing to {r['remote/github']}/{branch}",
-            func=cmd(
-                f"git push {r['remote/github']} {branch} --force"
-                if ("--test" not in argv)
-                else "git --version"
-            ),
+            func=cmd(push_invocation if ("--test" not in argv) else "git --version"),
         )
 
     cumulative_end_time = time()
