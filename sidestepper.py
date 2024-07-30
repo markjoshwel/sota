@@ -601,7 +601,7 @@ def main() -> None:
     )
 
     for file in large_files:
-        print(file.relative_to(REPO_DIR))
+        print(file.relative_to(REPO_DIR).as_posix())
 
     cumulative_end_time = time()
     print(
