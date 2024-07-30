@@ -7,86 +7,138 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
-
 using Random = System.Random;
 
 public class AI : MonoBehaviour
 {
+    /// <summary>
+    ///     the types of ai that this game object can be
+    /// </summary>
     public enum EntityType
     {
         Human,
         Car
-    };
+    }
 
-    public EntityType entityType;
-    public LayerMask walkableLayers;
-    private NavMeshAgent _agent;
-    private Animator _animator;
-    private string _currentState;
-    private string _nextState;
+    /// <summary>
+    ///     to save resources when referring to the speed of this ai if its a human
+    /// </summary>
     private static readonly int AnimatorSpeed = Animator.StringToHash("Speed");
-    private bool _walkPointSet;
-    public Vector3 walkPoint;
-    public int strollRange;
 
+    /// <summary>
+    ///     to show the entity types in the inspector as a dropdown
+    /// </summary>
+    public EntityType entityType;
 
+    /// <summary>
+    ///     set the layers the AI can be on
+    /// </summary>
+    public LayerMask walkableLayers;
+
+    /// <summary>
+    ///     the destination coordinate of the AI
+    /// </summary>
+    public Vector3 destinationCoord;
+
+    /// <summary>
+    ///     the range that the AI can set as their destination
+    /// </summary>
+    public int movingRange;
+
+    /// <summary>
+    ///     the nav mash agent that is on this AI
+    /// </summary>
+    private NavMeshAgent _agent;
+
+    /// <summary>
+    ///     the animator that is attached to this AI if applicable
+    /// </summary>
+    private Animator _animator;
+
+    /// <summary>
+    ///     the current state that the AI is at this point in time
+    /// </summary>
+    private string _currentState;
+
+    /// <summary>
+    ///     a bool to check if the destination point is set
+    /// </summary>
+    private bool _destinationPointSet;
+
+    /// <summary>
+    ///     the state that the AI will be on the next update
+    /// </summary>
+    private string _nextState;
+
+    /// <summary>
+    ///     to set initial values
+    /// </summary>
     public void Awake()
     {
         _agent = GetComponent<NavMeshAgent>();
         if (entityType == EntityType.Human)
         {
-            _animator = GetComponent<Animator>(); 
+            _animator = GetComponent<Animator>();
             _currentState = "Strolling";
-            StartCoroutine(Strolling());
         }
+
+        _nextState = _currentState;
+        ChangeState();
     }
 
+    /// <summary>
+    ///     to update the speed of the AI to the animator each frame and to update any state changes to the ai
+    /// </summary>
     public void Update()
     {
-        if (entityType == EntityType.Human)
-        {
-            _animator.SetFloat(AnimatorSpeed, _agent.velocity.magnitude);
-        }
+        if (entityType == EntityType.Human) _animator.SetFloat(AnimatorSpeed, _agent.velocity.magnitude);
+        _currentState = _nextState;
     }
 
+    /// <summary>
+    ///     to change the scene when needed
+    /// </summary>
+    public void ChangeState()
+    {
+        StartCoroutine(_currentState);
+    }
+
+    /// <summary>
+    ///     to set a random x and y coordinate for the AI to go to
+    /// </summary>
     private void SearchWalkPoint()
     {
         var rand = new Random();
-        float randomX = rand.Next(-strollRange * 100, strollRange * 100);
-        float randomZ = rand.Next(-strollRange * 100, strollRange * 100);
-        walkPoint = new Vector3(
-            transform.position.x + (randomX / 100),
+        float randomX = rand.Next(-movingRange * 100, movingRange * 100);
+        float randomZ = rand.Next(-movingRange * 100, movingRange * 100);
+        destinationCoord = new Vector3(
+            transform.position.x + randomX / 100,
             transform.position.y,
-            transform.position.z + (randomZ / 100)
+            transform.position.z + randomZ / 100
         );
-        if (Physics.Raycast(walkPoint, -transform.up, 2f, walkableLayers))
-        {
-            _walkPointSet = true;
-        }
+        if (Physics.Raycast(destinationCoord, -transform.up, 2f, walkableLayers)) _destinationPointSet = true;
     }
 
-    IEnumerator Strolling()
+    /// <summary>
+    ///     a state that the AI wonders around using the SearchWalkPoint function to find a location for the AI to go to
+    /// </summary>
+    private IEnumerator Strolling()
     {
         SearchWalkPoint();
-        
+
         while (_currentState == "Strolling")
         {
             Debug.Log("strolling");
-            if (!_walkPointSet)
-            {
+            if (!_destinationPointSet)
                 SearchWalkPoint();
-            }
             else
-            {
-                _agent.SetDestination((walkPoint));
-            }
+                _agent.SetDestination(destinationCoord);
 
-            if ((transform.position - walkPoint).magnitude < 1f)
-            {
-                _walkPointSet = false;
-            }
+            if ((transform.position - destinationCoord).magnitude < 1f) _destinationPointSet = false;
 
-            yield return new WaitForSeconds(1F);
+            yield return new WaitForSeconds(1f);
         }
+
+        ChangeState();
     }
 }
