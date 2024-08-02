@@ -1,6 +1,6 @@
 //Maya ASCII 2024 scene
 //Name: ModularAssets.ma
-//Last modified: Thu, Aug 01, 2024 10:16:18 PM
+//Last modified: Thu, Aug 01, 2024 10:17:12 PM
 //Codeset: 1252
 requires maya "2024";
 requires -nodeType "aiOptions" -nodeType "aiAOVDriver" -nodeType "aiAOVFilter" "mtoa" "5.3.4.1";
@@ -11,12 +11,12 @@ fileInfo "product" "Maya 2024";
 fileInfo "version" "2024";
 fileInfo "cutIdentifier" "202310181224-69282f2959";
 fileInfo "osv" "Windows 11 Home v2009 (Build: 22631)";
-fileInfo "UUID" "61AF7AE6-40CC-8DFE-8146-F48DAD9C237C";
+fileInfo "UUID" "A79356D8-4E40-0248-8DB3-3D9B0FFBB607";
 createNode transform -s -n "persp";
 	rename -uid "58C5AC86-446A-1AE8-3147-4DA094E4EA28";
 	setAttr ".v" no;
-	setAttr ".t" -type "double3" 612.91024646964399 1504.7217918644471 -168.32352288303639 ;
-	setAttr ".r" -type "double3" 652.46164764577168 -3854.6000000010104 0 ;
+	setAttr ".t" -type "double3" 1152.9303041544229 854.71813432706472 780.47202364609041 ;
+	setAttr ".r" -type "double3" 688.4616476459197 -3904.6000000009158 0 ;
 createNode camera -s -n "perspShape" -p "persp";
 	rename -uid "BA3A3108-4D36-505F-5FC9-B199F5C0DEC5";
 	setAttr -k off ".v" no;
@@ -18464,7 +18464,7 @@ createNode polyTweakUV -n "polyTweakUV95";
 		 0.018412471 -0.0019672364 0.017535299 -0.0045750588 0.015726924 -0.0066486895 0.013262719
 		 -0.0078724474 0.010517716 -0.0080600232 0.007909894 -0.0071828514 0.0058362484 -0.0053744763;
 createNode mayaUsdLayerManager -n "mayaUsdLayerManager1";
-	rename -uid "2CEC54E6-47BB-3DE3-DC97-1FBB5AE1B9C6";
+	rename -uid "F8D720E5-4C91-2F3A-4B50-C18C0C4BAE99";
 	setAttr ".sst" -type "string" "";
 select -ne :time1;
 	setAttr ".o" 0;
