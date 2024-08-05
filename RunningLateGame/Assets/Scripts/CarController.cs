@@ -13,11 +13,11 @@ public class CarController : MonoBehaviour
     public float acceleration;
     public float turnAngle;
     public List<Wheel> wheels;
-    public float brakeForce = 50.0f;
+
+    public float brakeForce;
+    public bool braking;
     private float _currentAcceleration;
     private float _currentTurn;
-    public bool braking;
-
 
 
     private void FixedUpdate()
@@ -27,11 +27,13 @@ public class CarController : MonoBehaviour
         Brake();
     }
 
-    public void SetInputs(float forwardAmount,float turnAmount)
+    public void SetInputs(float forwardAmount, float turnAmount)
     {
-        _currentAcceleration = forwardAmount*acceleration;
-        _currentTurn = turnAmount*turnAngle;
+        _currentAcceleration = forwardAmount * acceleration;
+        _currentTurn = turnAmount * turnAngle;
     }
+
+
     public void Move()
     {
         foreach (var wheel in wheels) wheel.wheelCollider.motorTorque = _currentAcceleration;
