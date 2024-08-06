@@ -1,7 +1,7 @@
 /*
  * author: lin hengrui ryan
  * date: 30/7/2024
- * description: ai code for the different ai in the game
+ * description: AI code for the different AI in the game
  */
 
 using System.Collections;
@@ -12,23 +12,10 @@ using Random = System.Random;
 public class AI : MonoBehaviour
 {
     /// <summary>
-    ///     the types of ai that this game object can be
-    /// </summary>
-    public enum EntityType
-    {
-        Human,
-        Car
-    }
-
-    /// <summary>
-    ///     to save resources when referring to the speed of this ai if its a human
+    ///     to save resources when referring to the speed of this AI if its human
     /// </summary>
     private static readonly int AnimatorSpeed = Animator.StringToHash("Speed");
 
-    /// <summary>
-    ///     to show the entity types in the inspector as a dropdown
-    /// </summary>
-    public EntityType entityType;
 
     /// <summary>
     ///     set the layers the AI can be on
@@ -75,30 +62,32 @@ public class AI : MonoBehaviour
     /// </summary>
     public void Awake()
     {
+        _animator = GetComponent<Animator>();
+        _currentState = "Strolling";
+
+
         _agent = GetComponent<NavMeshAgent>();
-        if (entityType == EntityType.Human)
-        {
-            _animator = GetComponent<Animator>();
-            _currentState = "Strolling";
-        }
+        _animator = GetComponent<Animator>();
+        _currentState = "Strolling";
+
 
         _nextState = _currentState;
         ChangeState();
     }
 
     /// <summary>
-    ///     to update the speed of the AI to the animator each frame and to update any state changes to the ai
+    ///     to update the speed of the AI to the animator each frame and to update any state changes to the AI
     /// </summary>
     public void Update()
     {
-        if (entityType == EntityType.Human) _animator.SetFloat(AnimatorSpeed, _agent.velocity.magnitude);
+        _animator.SetFloat(AnimatorSpeed, _agent.velocity.magnitude);
         _currentState = _nextState;
     }
 
     /// <summary>
     ///     to change the scene when needed
     /// </summary>
-    public void ChangeState()
+    private void ChangeState()
     {
         StartCoroutine(_currentState);
     }
@@ -128,7 +117,6 @@ public class AI : MonoBehaviour
 
         while (_currentState == "Strolling")
         {
-            Debug.Log("strolling");
             if (!_destinationPointSet)
                 SearchWalkPoint();
             else
