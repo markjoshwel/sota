@@ -809,7 +809,7 @@ GameObject:
   - component: {fileID: 3313027092289172340}
   - component: {fileID: 4317789146800536370}
   m_Layer: 0
-  m_Name: AI person
+  m_Name: AIPerson
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -865,12 +865,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6822f90b5efff04997e5b884d402be8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  entityType: 0
   walkableLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  walkPoint: {x: 0, y: 0, z: 0}
-  strollRange: 30
+  destinationCoord: {x: 0, y: 0, z: 0}
+  movingRange: 149
 --- !u!195 &4317789146800536370
 NavMeshAgent:
   m_ObjectHideFlags: 0
