@@ -658,6 +658,11 @@ PrefabInstance:
       propertyPath: m_ObstacleAvoidanceType
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 4317789146800536370, guid: aebcdae242e01f94b8df85895a81a0ff,
+        type: 3}
+      propertyPath: m_AutoTraverseOffMeshLink
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4366289886226962748, guid: aebcdae242e01f94b8df85895a81a0ff,
         type: 3}
       propertyPath: m_DynamicOccludee
@@ -861,7 +866,7 @@ PrefabInstance:
     - target: {fileID: 8179579322411983252, guid: aebcdae242e01f94b8df85895a81a0ff,
         type: 3}
       propertyPath: m_ApplyRootMotion
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8299562521504900798, guid: aebcdae242e01f94b8df85895a81a0ff,
         type: 3}
@@ -907,6 +912,10 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3099361323485180504, guid: aebcdae242e01f94b8df85895a81a0ff,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2134698039}
     - targetCorrespondingSourceObject: {fileID: 3597841629992087818, guid: aebcdae242e01f94b8df85895a81a0ff,
         type: 3}
       insertIndex: -1
@@ -993,6 +1002,39 @@ MonoBehaviour:
   aiPrefab: {fileID: 3099361323485180504, guid: aebcdae242e01f94b8df85895a81a0ff,
     type: 3}
   maxAI: 0
+--- !u!1 &2134698033 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3099361323485180504, guid: aebcdae242e01f94b8df85895a81a0ff,
+    type: 3}
+  m_PrefabInstance: {fileID: 1703341036}
+  m_PrefabAsset: {fileID: 0}
+--- !u!54 &2134698039
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2134698033}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1001 &2243028174331468478
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1129,7 +1171,7 @@ PrefabInstance:
     - target: {fileID: 8347088070876745341, guid: a270ba76a3b8cc0458007401cf8f08bf,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9161522608157501703, guid: a270ba76a3b8cc0458007401cf8f08bf,
         type: 3}

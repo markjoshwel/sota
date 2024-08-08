@@ -20,6 +20,7 @@ public class AiManager : MonoBehaviour
         Gizmos.DrawWireSphere(player.position, cullingDistance);
     }
 
+    // ReSharper disable Unity.PerformanceAnalysis
     private IEnumerator Manager()
     {
         while (true)
@@ -37,6 +38,6 @@ public class AiManager : MonoBehaviour
             }
 
             yield return new WaitForSeconds(1);
-        }
+        } 
     }
 }

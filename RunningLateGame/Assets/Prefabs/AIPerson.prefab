@@ -808,6 +808,8 @@ GameObject:
   - component: {fileID: 8179579322411983252}
   - component: {fileID: 3313027092289172340}
   - component: {fileID: 4317789146800536370}
+  - component: {fileID: 1961297049292790103}
+  - component: {fileID: 7011060576185056730}
   m_Layer: 8
   m_Name: AIPerson
   m_TagString: AIs
@@ -892,6 +894,56 @@ NavMeshAgent:
   m_BaseOffset: -0.08
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 3
+--- !u!136 &1961297049292790103
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3099361323485180504}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.3
+  m_Height: 1.94
+  m_Direction: 1
+  m_Center: {x: -0.000000059604645, y: 0.88895607, z: 0.010348976}
+--- !u!54 &7011060576185056730
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3099361323485180504}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &3344627563321929878
 GameObject:
   m_ObjectHideFlags: 0
@@ -1000,7 +1052,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3787934284119550692}
   - component: {fileID: 4366289886226962748}
-  - component: {fileID: 878280137332734117}
   m_Layer: 8
   m_Name: Armature_Mesh
   m_TagString: Untagged
@@ -1146,29 +1197,6 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.000000059604645, y: -0.09214255, z: 0.026248634}
     m_Extent: {x: 0.52818453, y: 0.88092995, z: 0.22050177}
   m_DirtyAABB: 0
---- !u!136 &878280137332734117
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3597841629992087818}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.3
-  m_Height: 1.94
-  m_Direction: 1
-  m_Center: {x: -0.000000059604645, y: 0.88895607, z: 0.010348976}
 --- !u!1 &3609670818274640614
 GameObject:
   m_ObjectHideFlags: 0
