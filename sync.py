@@ -578,11 +578,6 @@ def main() -> None:
             # also copy to the temp repo; step 5 (lfs migrate) wipes uncommitted changes
             copy2(REPO_SOTAIGNORE, Path(dir_temp).joinpath(".sotaignore"))
 
-        step(
-            desc="8 fin | neuter .gitattributes",
-            func=lambda: rewrite_gitattributes(Path(dir_temp)),
-        )
-
         def add_and_commit() -> CompletedProcess:
             if GH_ACT:
                 cp = cmd("git config user.name 'github-actions[bot]'")()
@@ -604,9 +599,13 @@ def main() -> None:
                 f'-am "{COMMIT_MESSAGE}" --author="{COMMIT_AUTHOR}"',
             )()
 
+        def neuter_and_commit():
+            rewrite_gitattributes(Path(dir_temp))
+            add_and_commit()
+
         step(
-            desc="9 fin | commit",
-            func=add_and_commit,
+            desc="8 fin | neuter .gitattributes and commit",
+            func=neuter_and_commit,
         )
 
         if r.get("remote/github") is None:
@@ -616,6 +615,11 @@ def main() -> None:
             if r.get("errored", "yes"):
                 err("critical error (whuh?): couldn't add github remote")
             r["remote/github"] = "github"
+
+        step(
+            desc=f"9 fin | fetch {r['remote/github']}",
+            func=cmd(f"git fetch {r['remote/github']}"),
+        )
 
         push_invocation = (
             f"git push {r['remote/github']} {branch} --force"
