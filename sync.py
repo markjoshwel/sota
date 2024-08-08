@@ -404,30 +404,6 @@ def err(message: str, exc: Exception | None = None) -> None:
     exit(1)
 
 
-def add_and_commit(
-    cmd: Callable[[str], Callable[[], CompletedProcess]],
-) -> CompletedProcess:
-    if GH_ACT:
-        cp = cmd("git config user.name 'github-actions[bot]'")()
-        if cp.returncode != 0:
-            return cp
-
-        cp = cmd(
-            "git config user.email 'github-actions[bot]@users.noreply.github.com'"
-        )()
-        if cp.returncode != 0:
-            return cp
-
-    cp = cmd("git add -A")()
-    if cp.returncode != 0:
-        return cp
-
-    return cmd(
-        "git commit --allow-empty "
-        f'-am "{COMMIT_MESSAGE}" --author="{COMMIT_AUTHOR}"',
-    )()
-
-
 def main() -> None:
     """
     command line entry point
@@ -607,9 +583,30 @@ def main() -> None:
             func=lambda: rewrite_gitattributes(Path(dir_temp)),
         )
 
+        def add_and_commit() -> CompletedProcess:
+            if GH_ACT:
+                cp = cmd("git config user.name 'github-actions[bot]'")()
+                if cp.returncode != 0:
+                    return cp
+
+                cp = cmd(
+                    "git config user.email 'github-actions[bot]@users.noreply.github.com'"
+                )()
+                if cp.returncode != 0:
+                    return cp
+
+            cp = cmd("git add -A")()
+            if cp.returncode != 0:
+                return cp
+
+            return cmd(
+                "git commit --allow-empty "
+                f'-am "{COMMIT_MESSAGE}" --author="{COMMIT_AUTHOR}"',
+            )()
+
         step(
             desc="9 fin | commit",
-            func=lambda: add_and_commit(cmd),
+            func=add_and_commit,
         )
 
         if r.get("remote/github") is None:
@@ -640,13 +637,4 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    if "--postmanual" in argv:
-        from time import sleep
-
-        _dir = Path.cwd()
-        print(f"rewriting and commiting in '{_dir}' (3 second confirmation delay)")
-        sleep(3.0)
-        rewrite_gitattributes(_dir)
-        add_and_commit(lambda x: lambda: run(x, cwd=_dir))
-
     main()
