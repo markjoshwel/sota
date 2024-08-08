@@ -47,7 +47,6 @@ public class AICar : MonoBehaviour
     private void Update()
     {
         _currentState = _nextState;
-        Debug.Log(_currentState);
     }
 
     private void ChangeState()
