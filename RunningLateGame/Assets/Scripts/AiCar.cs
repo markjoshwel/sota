@@ -95,10 +95,9 @@ public class AICar : MonoBehaviour
     {
         var hasChild = false;
         var i = 0;
-        GameObject test;
         while (!hasChild)
         {
-            test = gameObject.transform.GetChild(i).gameObject;
+            var test = gameObject.transform.GetChild(i).gameObject;
             if (test.name == "Target")
             {
                 _driveTarget = test.transform;
