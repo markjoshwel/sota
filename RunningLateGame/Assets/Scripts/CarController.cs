@@ -6,6 +6,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 /// <summary>
@@ -102,9 +103,8 @@ public class CarController : MonoBehaviour
     /// </summary>
     public void Steering()
     {
-        foreach (var wheel in wheels)
-            if (wheel.axel == Axel.Front)
-                wheel.wheelCollider.steerAngle = _currentTurn;
+        foreach (var wheel in wheels.Where(wheel => wheel.axel == Axel.Front))
+            wheel.wheelCollider.steerAngle = _currentTurn;
     }
 
     /// <summary>
