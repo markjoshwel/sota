@@ -1,7 +1,7 @@
 /*
- * author: lin hengrui ryan
+ * author: ryan lin
  * date: 30/7/2024
- * description: AI code for the different AI in the game
+ * description: 'standard' npc ai behaviour
  */
 
 using System.Collections;
@@ -9,13 +9,15 @@ using UnityEngine;
 using UnityEngine.AI;
 using Random = System.Random;
 
+/// <summary>
+///     TODO
+/// </summary>
 public class AI : MonoBehaviour
 {
     /// <summary>
     ///     to save resources when referring to the speed of this AI if its human
     /// </summary>
     private static readonly int AnimatorSpeed = Animator.StringToHash("Speed");
-
 
     /// <summary>
     ///     set the layers the AI can be on
