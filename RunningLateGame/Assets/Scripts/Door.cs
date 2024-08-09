@@ -96,10 +96,7 @@ public class Door : CommonInteractable
             {
                 currentDuration = 0;
                 _opening = false;
-                if (_isOpen)
-                    _isOpen = false;
-                else
-                    _isOpen = true;
+                _isOpen = !_isOpen;
             }
 
             yield return new WaitForEndOfFrame();
