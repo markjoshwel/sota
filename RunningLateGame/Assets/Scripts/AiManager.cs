@@ -67,7 +67,7 @@ public class AIManager : MonoBehaviour
             _ais = GameObject.FindGameObjectsWithTag("AIs");
             if (_ais.Length < maxAI)
             {
-                var instance = Instantiate(aiPrefab, gameObject.transform);
+                // var instance = Instantiate(aiPrefab, gameObject.transform);
             }
 
             foreach (var i in _ais)
