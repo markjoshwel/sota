@@ -9,7 +9,7 @@ using UnityEngine;
 /// <summary>
 ///     detection behaviour class
 /// </summary>
-public class AerialFaithJumpTrigger : MonoBehaviour
+public class AerialFaithLeapTrigger : MonoBehaviour
 {
     /// <summary>
     ///     bool to check if player is airborne
@@ -22,7 +22,8 @@ public class AerialFaithJumpTrigger : MonoBehaviour
     /// <param name="other">colliding game object</param>
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Player")) isPlayerInAir = true;
-        Debug.Log("AerialFaithJumpTrigger: player is airborne");
+        if (!other.CompareTag("Player")) return;
+        isPlayerInAir = true;
+        Debug.Log("AerialFaithLeapTrigger: player is airborne");
     }
 }
