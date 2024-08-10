@@ -7,6 +7,7 @@ TagManager:
   - CinemachineTarget
   - Interactable
   - AIs
+  - FaithLeapTrigger
   layers:
   - Default
   - TransparentFX
