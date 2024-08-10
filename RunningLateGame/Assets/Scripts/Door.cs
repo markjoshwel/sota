@@ -32,17 +32,17 @@ public class Door : CommonInteractable
     ///     TODO
     /// </summary>
     public float duration;
-    
+
     /// <summary>
     ///     TODO
     /// </summary>
     public AnimationCurve curve;
-    
+
     /// <summary>
     ///     TODO
     /// </summary>
     private bool _isOpen;
-    
+
     /// <summary>
     ///     TODO
     /// </summary>

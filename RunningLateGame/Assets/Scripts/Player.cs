@@ -15,32 +15,32 @@ public class Player : MonoBehaviour
     ///     TODO
     /// </summary>
     [SerializeField] private Transform playerPosition;
-    
+
     /// <summary>
     ///     TODO
     /// </summary>
     [SerializeField] private float seeDistance;
-    
+
     /// <summary>
     ///     TODO
     /// </summary>
     public LayerMask raycastLayers;
-    
+
     /// <summary>
     ///     TODO
     /// </summary>
     private bool _active;
-    
+
     /// <summary>
     ///     TODO
     /// </summary>
     private CommonInteractable _currentInteractable;
-    
+
     /// <summary>
     ///     TODO
     /// </summary>
     private bool _raycast;
-    
+
     /// <summary>
     ///     TODO
     /// </summary>
