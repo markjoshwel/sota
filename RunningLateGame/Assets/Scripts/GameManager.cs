@@ -1,6 +1,6 @@
 /*
  * author: mark joshwel
- * date: 29/5/2024
+ * date: 11/8/2024
  * description: game manager singleton for a single source of truth state management
  */
 
@@ -20,10 +20,9 @@ public class GameManager : MonoBehaviour
         Game,
         ScreenMainMenu,
         ScreenOptionsMenu,
-        ScreenCreditsMenu,
-        ScreenPauseMenu,
-        ScreenCaughtMenu,
-        ScreenEscapedMenu,
+        OverlayPauseMenu,
+        OverlayCompleteUnderTimeMenu,
+        OverlayFailedOverTimeMenu,
         UnassociatedState
     }
 
@@ -214,9 +213,6 @@ public class GameManager : MonoBehaviour
         else
         {
             Debug.Log($"GameManager.SetDisplayState({displayState}): pre-pause helper");
-            // if we're transitioning to the main menu, load the main menu scene
-            if (transitioning && displayState == DisplayState.ScreenMainMenu)
-                SceneManager.LoadScene("S2 World");
             PauseGameHelper(displayState);
         }
 
