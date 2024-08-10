@@ -13,18 +13,28 @@ using UnityEngine;
 public class AerialFaithDeathTrigger : MonoBehaviour
 {
     /// <summary>
-    ///     the trigger that detects if the player has jumped out of the play area
+    ///     the first trigger that detects if the player has jumped out of the play area
     /// </summary>
-    [SerializeField] private AerialFaithLeapTrigger linkedLeapTrigger;
+    [SerializeField] private AerialFaithLeapTrigger linkedLeapTrigger1;
 
     /// <summary>
-    ///     check if linkedLeapTrigger is set
+    ///     the second trigger that detects if the player has jumped out of the play area
+    /// </summary>
+    [SerializeField] private AerialFaithLeapTrigger linkedLeapTrigger2;
+
+    /// <summary>
+    ///     the third trigger that detects if the player has jumped out of the play area
+    /// </summary>
+    [SerializeField] private AerialFaithLeapTrigger linkedLeapTrigger3;
+
+    /// <summary>
+    ///     check if linkedLeapTrigger1 is set
     /// </summary>
     /// <exception cref="NullReferenceException">consequential exception</exception>
     private void Awake()
     {
-        if (linkedLeapTrigger == null)
-            throw new NullReferenceException("AerialFaithLandingTrigger: linkedLeapTrigger is not set");
+        if (linkedLeapTrigger1 == null)
+            throw new NullReferenceException("AerialFaithLandingTrigger: linkedLeapTrigger1 is not set");
     }
 
     /// <summary>
@@ -35,22 +45,19 @@ public class AerialFaithDeathTrigger : MonoBehaviour
     {
         // Debug.Log($"AerialFaithDeathTrigger: was hit by object with tag {other.tag}");
 
-        if (!other.CompareTag("Player") || !linkedLeapTrigger.isPlayerInAir) return;
-
-        // if (!other.CompareTag("Player"))
-        // {
-        //     Debug.Log("AerialFaithDeathTrigger: player missed");
-        //     return;
-        // }
-        //
-        // if (!linkedLeapTrigger.isPlayerInAir)
-        // {
-        //     Debug.Log("AerialFaithDeathTrigger: player is in an invalid state");
-        //     return;
-        // }
+        // proceed if:
+        //  - the colliding object is the player
+        //  - any of the linked leap triggers are active, the 1st is always not null
+        if (!other.CompareTag("Player")) return;
+        if (!(linkedLeapTrigger1.isPlayerInAir ||
+              (linkedLeapTrigger2 != null && linkedLeapTrigger2.isPlayerInAir) ||
+              (linkedLeapTrigger3 != null && linkedLeapTrigger3.isPlayerInAir)))
+            return;
 
         Debug.Log("AerialFaithDeathTrigger: player missed, and will be baked");
-        linkedLeapTrigger.isPlayerInAir = false;
+        linkedLeapTrigger1.isPlayerInAir = false;
+        if (linkedLeapTrigger2 != null) linkedLeapTrigger2.isPlayerInAir = false;
+        if (linkedLeapTrigger3 != null) linkedLeapTrigger3.isPlayerInAir = false;
         // TODO: kill player
     }
 }
