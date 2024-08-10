@@ -1,0 +1,22 @@
+#Root {
+    -unity-font: url("project://database/Assets/UI%20Toolkit/RLFonts/Fervojo/Fervojo-Medium.otf?fileID=12800000&guid=9439a6fdc5392c6479cda7dd72a8f3f7&type=3#Fervojo-Medium");
+    -unity-font-definition: url("project://database/Assets/UI%20Toolkit/RLFonts/Fervojo/Fervojo-Medium%20SDF.asset?fileID=11400000&guid=45943718062c86e448361bd7f6506932&type=2#Fervojo-Medium SDF");
+}
+
+Button {
+    background-color: rgb(193, 39, 45);
+    width: 40%;
+    height: 25%;
+    color: rgb(255, 255, 255);
+    font-size: 24px;
+    -unity-font: url("project://database/Assets/UI%20Toolkit/RLFonts/Fervojo/Fervojo-Bold.otf?fileID=12800000&guid=505dfbc18d2d4604db47ff55755f9dc8&type=3#Fervojo-Bold");
+    -unity-font-definition: url("project://database/Assets/UI%20Toolkit/RLFonts/Fervojo/Fervojo-Bold%20SDF.asset?fileID=11400000&guid=1abb65c0bf74b1649863fc75b2b83ac1&type=2#Fervojo-Bold SDF");
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+    border-bottom-left-radius: 8px;
+    border-left-color: rgba(0, 0, 0, 0);
+    border-right-color: rgba(0, 0, 0, 0);
+    border-top-color: rgba(0, 0, 0, 0);
+    border-bottom-color: rgba(0, 0, 0, 0);
+}
