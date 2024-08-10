@@ -7,7 +7,6 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
-using Random = System.Random;
 
 /// <summary>
 ///     TODO
@@ -99,7 +98,7 @@ public class AI : MonoBehaviour
     /// </summary>
     private void SearchWalkPoint()
     {
-        var rand = new Random();
+        var rand = new System.Random();
         float randomX = rand.Next(-movingRange * 100, movingRange * 100);
         float randomZ = rand.Next(-movingRange * 100, movingRange * 100);
         destinationCoord = new Vector3(
