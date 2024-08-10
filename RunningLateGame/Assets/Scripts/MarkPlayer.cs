@@ -30,6 +30,6 @@ public class MarkPlayer : MonoBehaviour
     public void OnPause()
     {
         Debug.Log("escape pressed");
-        _game.SetDisplayState(_game.Paused ? GameManager.DisplayState.Game : GameManager.DisplayState.ScreenPauseMenu);
+        _game.SetDisplayState(_game.Paused ? GameManager.DisplayState.Game : GameManager.DisplayState.OverlayPauseMenu);
     }
 }
