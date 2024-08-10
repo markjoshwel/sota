@@ -22,11 +22,6 @@ public class CommonMenu : MonoBehaviour
     public GameManager.DisplayState associatedState = GameManager.DisplayState.UnassociatedState;
 
     /// <summary>
-    ///     manager for audio
-    /// </summary>
-    protected AudioManager Audio;
-
-    /// <summary>
     ///     manager for the game state
     /// </summary>
     protected GameManager Game;
@@ -47,9 +42,6 @@ public class CommonMenu : MonoBehaviour
 
         if (Game == null)
             throw new Exception("CommonMenu: Game not set (was base.OnEnable() or PostEnable() called?)");
-
-        if (Audio == null)
-            throw new Exception("CommonMenu: Audio not set (was base.OnEnable() or PostEnable() called?)");
     }
 
     /// <summary>
@@ -68,10 +60,10 @@ public class CommonMenu : MonoBehaviour
     {
         // get audio manager singleton instance from the world
         UI = GetComponent<UIDocument>().rootVisualElement;
-        Audio = AudioManager.Instance;
+        // Audio = AudioManager.Instance;
         Game = GameManager.Instance;
 
-        // subscribe to hover events
+        // // subscribe to hover events
         UI.RegisterCallback<PointerOverEvent>(HoverListener);
     }
 
@@ -104,8 +96,8 @@ public class CommonMenu : MonoBehaviour
     /// </summary>
     public virtual void PlayClick()
     {
-        // play click sound
-        Audio.PlayOnSFXChannel(Audio.menuButtonClick);
+        // TODO: play click sound
+        // Game.PlayOnSFXChannel(Audio.menuButtonClick);
     }
 
     /// <summary>
@@ -113,7 +105,7 @@ public class CommonMenu : MonoBehaviour
     /// </summary>
     public virtual void PlayHover()
     {
-        // play hover sound
-        Audio.PlayOnSFXChannel(Audio.menuButtonHover);
+        // TODO: play hover sound
+        // Game.PlayOnSFXChannel(Audio.menuButtonHover);
     }
 }

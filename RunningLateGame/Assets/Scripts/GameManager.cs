@@ -5,7 +5,6 @@
  */
 
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 /// <summary>
 ///     singleton class for managing the game state as a single source of truth
@@ -18,11 +17,11 @@ public class GameManager : MonoBehaviour
     public enum DisplayState
     {
         Game,
-        ScreenMainMenu,
-        ScreenOptionsMenu,
-        OverlayPauseMenu,
-        OverlayCompleteUnderTimeMenu,
-        OverlayFailedOverTimeMenu,
+        ScreenMainMenu,  // done
+        ScreenOptionsMenu,  // done
+        OverlayPauseMenu,  // TODO
+        OverlayCompleteUnderTimeMenu,  // TODO
+        OverlayFailedOverTimeMenu,  // TODO
         UnassociatedState
     }
 
@@ -39,18 +38,7 @@ public class GameManager : MonoBehaviour
     /// <summary>
     ///     property to check if the game is paused based on the current <c>DisplayState</c>
     /// </summary>
-    // TODO: remove this if not needed
     public bool Paused => _state != DisplayState.Game;
-
-    // /// <summary>
-    // ///     the current scene of the game, used for scene switching and state transitions
-    // /// </summary>
-    // private Scene _currentScene;
-    //
-    // /// <summary>
-    // ///     the previous scene of the game, used for scene switching and state transitions
-    // /// </summary>
-    // private Scene _previousScene;
 
     /// <summary>
     ///     function to set doesn't destroy on load and checks for multiple instances
@@ -84,13 +72,6 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         SetDisplayState(DisplayState.ScreenMainMenu);
-
-        // _currentScene = SceneManager.GetSceneByName("S2 World");
-        // _previousScene = _currentScene;
-        // if (_currentScene == null)
-        // {
-        //     throw new Exception("GameManager.Start: current scene is null");
-        // }
     }
 
     /// <summary>
@@ -99,7 +80,7 @@ public class GameManager : MonoBehaviour
     private void HideMenuHelper()
     {
         // get all child menus in the "Menus" parent object
-        foreach (var menu in GameObject.FindGameObjectsWithTag("Menus"))
+        foreach (var menu in GameObject.FindGameObjectsWithTag("Interfaces"))
         foreach (Transform menuChild in menu.transform)
         {
             // disable the menu if it's currently active
@@ -146,7 +127,7 @@ public class GameManager : MonoBehaviour
         HideMenuHelper();
 
         // get all child menus in the "Menus" parent object
-        foreach (var menuParent in GameObject.FindGameObjectsWithTag("Menus"))
+        foreach (var menuParent in GameObject.FindGameObjectsWithTag("Interfaces"))
         foreach (Transform menu in menuParent.transform)
         {
             // show the menu based on the incoming state
@@ -201,9 +182,6 @@ public class GameManager : MonoBehaviour
     /// <param name="displayState">the game menu to show</param>
     public void SetDisplayState(DisplayState displayState)
     {
-        // boolean check if we're transitioning to the same state
-        var transitioning = _state == displayState;
-
         // check if the game is paused or not
         if (displayState is DisplayState.Game or DisplayState.UnassociatedState)
         {

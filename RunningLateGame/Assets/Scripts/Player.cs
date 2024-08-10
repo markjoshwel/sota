@@ -71,15 +71,12 @@ public class Player : MonoBehaviour
             playerPosition.TransformDirection(Vector3.forward) * interactableDistance,
             Color.green
         );
-        
+
         if (!_raycast) return;
 
         // show an interaction prompt if we're looking at an interactable object
         var prompt = Hit.collider.GetComponent<CommonInteractable>()?.interactionPrompt;
-        if (prompt != "")
-        {
-            Debug.Log(prompt);
-        }
+        if (prompt != "") Debug.Log(prompt);
     }
 
     /// <summary>
