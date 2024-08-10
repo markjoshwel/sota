@@ -1,0 +1,8 @@
+# generic autosave files
+*autosave*
+_*autosave
+*.autosave
+
+# substance painter baking artifacts
+*.assbin
+
