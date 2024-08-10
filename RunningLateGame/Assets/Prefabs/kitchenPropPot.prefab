@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &5938153582025466929
+--- !u!1 &4139435161056901994
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,47 +8,46 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 5523059949006027635}
-  - component: {fileID: 5420010350129196297}
-  - component: {fileID: 931544522815216451}
-  - component: {fileID: 2371265069631340661}
+  - component: {fileID: 3521416079857604432}
+  - component: {fileID: 6542186246884652578}
+  - component: {fileID: 50013843575603266}
   m_Layer: 0
-  m_Name: kitchenCounterCorner
+  m_Name: kitchenPropPot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &5523059949006027635
+--- !u!4 &3521416079857604432
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5938153582025466929}
+  m_GameObject: {fileID: 4139435161056901994}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 484.92096, y: 0, z: 504.43475}
+  m_LocalPosition: {x: 485.931, y: 1.0388901, z: 504.948}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &5420010350129196297
+--- !u!33 &6542186246884652578
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5938153582025466929}
-  m_Mesh: {fileID: -6765202169397676362, guid: 8034823dcc31a514fb51e4d01cb208f6, type: 3}
---- !u!23 &931544522815216451
+  m_GameObject: {fileID: 4139435161056901994}
+  m_Mesh: {fileID: -7016030322194801813, guid: 95317423b0087e74cb7285d643515536, type: 3}
+--- !u!23 &50013843575603266
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5938153582025466929}
+  m_GameObject: {fileID: 4139435161056901994}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -84,24 +83,3 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &2371265069631340661
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5938153582025466929}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.9108607, y: 0.996, z: 0.9108607}
-  m_Center: {x: -0.45543036, y: 0.498, z: 0.45543036}

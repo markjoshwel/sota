@@ -1,29 +1,30 @@
 //Maya ASCII 2025 scene
 //Name: AlexDrawer.ma
-//Last modified: Sun, Aug 11, 2024 12:35:40 AM
+//Last modified: Sun, Aug 11, 2024 12:52:16 AM
 //Codeset: 1252
 requires maya "2025";
 requires "stereoCamera" "10.0";
 requires -nodeType "aiOptions" -nodeType "aiAOVDriver" -nodeType "aiAOVFilter" -nodeType "aiStandardSurface"
 		 -nodeType "aiImagerDenoiserOidn" "mtoa" "5.4.1.2";
 requires -nodeType "mayaUsdLayerManager" -dataType "pxrUsdStageData" "mayaUsdPlugin" "0.28.0";
+requires "stereoCamera" "10.0";
 currentUnit -l centimeter -a degree -t film;
 fileInfo "application" "maya";
 fileInfo "product" "Maya 2025";
 fileInfo "version" "2025";
 fileInfo "cutIdentifier" "202404240506-c155a58772";
 fileInfo "osv" "Windows 11 IoT Enterprise LTSC 2024 v2009 (Build: 26100)";
-fileInfo "UUID" "DA8F7DD1-41A7-0351-5AE4-C6929D3DCB2A";
+fileInfo "UUID" "9F82A2E0-4FE2-B5E1-3774-0D83B7172F87";
 createNode transform -s -n "persp";
 	rename -uid "BF8FA209-40E7-5840-54E5-338694C51036";
 	setAttr ".v" no;
-	setAttr ".t" -type "double3" 63.806730203033489 167.98908858524774 301.27472316556361 ;
-	setAttr ".r" -type "double3" -26.138352744695435 -4323.7999999995518 3.9844532987434634e-16 ;
+	setAttr ".t" -type "double3" 62.620637014763133 344.40829274431803 228.82853922309735 ;
+	setAttr ".r" -type "double3" -57.338352744688883 -4324.5999999997357 0 ;
 createNode camera -s -n "perspShape" -p "persp";
 	rename -uid "2317E53C-4C6B-3E80-6985-C585E6ED8C0B";
 	setAttr -k off ".v" no;
 	setAttr ".fl" 34.999999999999993;
-	setAttr ".coi" 348.52342949695264;
+	setAttr ".coi" 419.60773336350462;
 	setAttr ".imn" -type "string" "persp";
 	setAttr ".den" -type "string" "persp_depth";
 	setAttr ".man" -type "string" "persp_mask";
@@ -85,11 +86,11 @@ createNode transform -n "AlexDrawer1" -p "AlexDesk";
 	rename -uid "198DCF61-4014-6D4B-7F8E-8BA07FAEBDA3";
 	setAttr ".rp" -type "double3" 182.15325927734375 0 -30.025264739990238 ;
 	setAttr ".sp" -type "double3" 182.15325927734375 0 -30.025264739990238 ;
-createNode transform -n "Case" -p "AlexDrawer1";
+createNode transform -n "rightCase" -p "AlexDrawer1";
 	rename -uid "03E9426B-4C12-3F4D-3467-D18F2EE96458";
 	setAttr ".rp" -type "double3" 164.13809204101562 0 0 ;
 	setAttr ".sp" -type "double3" 164.13809204101562 0 0 ;
-createNode mesh -n "CaseShape" -p "|AlexDesk|AlexDrawer1|Case";
+createNode mesh -n "rightCaseShape" -p "rightCase";
 	rename -uid "F6795429-4676-7955-A8E2-A3885D7AE6B0";
 	setAttr -k off ".v";
 	setAttr ".vir" yes;
@@ -668,11 +669,11 @@ createNode mesh -n "CaseShape" -p "|AlexDesk|AlexDrawer1|Case";
 		103 0 ;
 	setAttr ".hfd" -type "dataPolyComponent" Index_Data Face 0 ;
 	setAttr ".dr" 1;
-createNode transform -n "Drawer1" -p "AlexDrawer1";
+createNode transform -n "rightDrawer1" -p "AlexDrawer1";
 	rename -uid "66C51790-4683-B26C-4BCB-0E9CD72F656E";
 	setAttr ".rp" -type "double3" 164.13809204101562 1.8265342712402415 -27.022735207468696 ;
 	setAttr ".sp" -type "double3" 164.13809204101562 1.8265342712402415 -27.022735207468696 ;
-createNode mesh -n "DrawerShape1" -p "|AlexDesk|AlexDrawer1|Drawer1";
+createNode mesh -n "rightDrawerShape1" -p "rightDrawer1";
 	rename -uid "FA5B0493-45E8-9A5E-62B1-DB8A4159684E";
 	setAttr -k off ".v";
 	setAttr ".iog[0].og[0].gcl" -type "componentList" 1 "f[0:129]";
@@ -1147,7 +1148,7 @@ createNode mesh -n "DrawerShape1" -p "|AlexDesk|AlexDrawer1|Drawer1";
 	setAttr ".hfd" -type "dataPolyComponent" Index_Data Face 0 ;
 	setAttr ".dfgi" 112;
 	setAttr ".dr" 1;
-createNode mesh -n "polySurfaceShape1" -p "|AlexDesk|AlexDrawer1|Drawer1";
+createNode mesh -n "polySurfaceShape1" -p "rightDrawer1";
 	rename -uid "A9157A9C-4D14-C3C0-8B51-A28EA409A7E3";
 	setAttr -k off ".v";
 	setAttr ".io" yes;
@@ -1225,7 +1226,7 @@ createNode mesh -n "polySurfaceShape1" -p "|AlexDesk|AlexDrawer1|Drawer1";
 	setAttr ".pd[0]" -type "dataPolyComponent" Index_Data UV 0 ;
 	setAttr ".hfd" -type "dataPolyComponent" Index_Data Face 0 ;
 	setAttr ".dr" 1;
-createNode mesh -n "polySurfaceShape2" -p "|AlexDesk|AlexDrawer1|Drawer1";
+createNode mesh -n "polySurfaceShape2" -p "rightDrawer1";
 	rename -uid "366949E9-4564-7C15-EE27-C5B3CA306D00";
 	setAttr -k off ".v";
 	setAttr ".io" yes;
@@ -1306,7 +1307,7 @@ createNode mesh -n "polySurfaceShape2" -p "|AlexDesk|AlexDrawer1|Drawer1";
 	setAttr ".dcc" -type "string" "Ambient+Diffuse";
 	setAttr ".covm[0]"  0 1 1;
 	setAttr ".cdvm[0]"  0 1 1;
-	setAttr -s 32 ".pt";
+	setAttr -s 31 ".pt";
 	setAttr ".pt[1]" -type "float3" 0 0.91250968 0 ;
 	setAttr ".pt[2]" -type "float3" 0 0.91250968 0 ;
 	setAttr ".pt[4]" -type "float3" 0 0.91250968 0 ;
@@ -1675,11 +1676,11 @@ createNode mesh -n "polySurfaceShape2" -p "|AlexDesk|AlexDrawer1|Drawer1";
 		2 0 ;
 	setAttr ".hfd" -type "dataPolyComponent" Index_Data Face 0 ;
 	setAttr ".dr" 1;
-createNode transform -n "Drawer2" -p "AlexDrawer1";
+createNode transform -n "rightDrawer2" -p "AlexDrawer1";
 	rename -uid "56C35D2C-4EFC-D0D6-F1DF-CDAECF8948C0";
 	setAttr ".rp" -type "double3" 164.13809204101562 19.178651809692383 -27.022735207468696 ;
 	setAttr ".sp" -type "double3" 164.13809204101562 19.178651809692383 -27.022735207468696 ;
-createNode mesh -n "DrawerShape2" -p "|AlexDesk|AlexDrawer1|Drawer2";
+createNode mesh -n "rightDrawerShape2" -p "rightDrawer2";
 	rename -uid "7B3B3260-4DD8-AD5C-3C5F-579EEF017B8F";
 	setAttr -k off ".v";
 	setAttr ".iog[0].og[0].gcl" -type "componentList" 1 "f[0:129]";
@@ -2154,7 +2155,7 @@ createNode mesh -n "DrawerShape2" -p "|AlexDesk|AlexDrawer1|Drawer2";
 	setAttr ".hfd" -type "dataPolyComponent" Index_Data Face 0 ;
 	setAttr ".dfgi" 112;
 	setAttr ".dr" 1;
-createNode mesh -n "polySurfaceShape1" -p "|AlexDesk|AlexDrawer1|Drawer2";
+createNode mesh -n "polySurfaceShape1" -p "rightDrawer2";
 	rename -uid "1DFF256E-4065-6425-FF17-14B131C19029";
 	setAttr -k off ".v";
 	setAttr ".io" yes;
@@ -2232,7 +2233,7 @@ createNode mesh -n "polySurfaceShape1" -p "|AlexDesk|AlexDrawer1|Drawer2";
 	setAttr ".pd[0]" -type "dataPolyComponent" Index_Data UV 0 ;
 	setAttr ".hfd" -type "dataPolyComponent" Index_Data Face 0 ;
 	setAttr ".dr" 1;
-createNode mesh -n "polySurfaceShape2" -p "|AlexDesk|AlexDrawer1|Drawer2";
+createNode mesh -n "polySurfaceShape2" -p "rightDrawer2";
 	rename -uid "B9A0C7A5-419D-49D5-1DC1-2A8D7FD41BFF";
 	setAttr -k off ".v";
 	setAttr ".io" yes;
@@ -2313,7 +2314,7 @@ createNode mesh -n "polySurfaceShape2" -p "|AlexDesk|AlexDrawer1|Drawer2";
 	setAttr ".dcc" -type "string" "Ambient+Diffuse";
 	setAttr ".covm[0]"  0 1 1;
 	setAttr ".cdvm[0]"  0 1 1;
-	setAttr -s 32 ".pt";
+	setAttr -s 31 ".pt";
 	setAttr ".pt[1]" -type "float3" 0 0.91250968 0 ;
 	setAttr ".pt[2]" -type "float3" 0 0.91250968 0 ;
 	setAttr ".pt[4]" -type "float3" 0 0.91250968 0 ;
@@ -2682,11 +2683,11 @@ createNode mesh -n "polySurfaceShape2" -p "|AlexDesk|AlexDrawer1|Drawer2";
 		2 0 ;
 	setAttr ".hfd" -type "dataPolyComponent" Index_Data Face 0 ;
 	setAttr ".dr" 1;
-createNode transform -n "Drawer3" -p "AlexDrawer1";
+createNode transform -n "rightDrawer3" -p "AlexDrawer1";
 	rename -uid "42BB59C4-4F18-11AA-DC36-D4A7953F25E3";
 	setAttr ".rp" -type "double3" 164.13809204101562 36.530769348144524 -27.022735207468696 ;
 	setAttr ".sp" -type "double3" 164.13809204101562 36.530769348144524 -27.022735207468696 ;
-createNode mesh -n "DrawerShape3" -p "|AlexDesk|AlexDrawer1|Drawer3";
+createNode mesh -n "rightDrawerShape3" -p "rightDrawer3";
 	rename -uid "C07F34F3-4CBF-059C-D941-C282DB92877C";
 	setAttr -k off ".v";
 	setAttr ".iog[0].og[0].gcl" -type "componentList" 1 "f[0:129]";
@@ -2769,6 +2770,7 @@ createNode mesh -n "DrawerShape3" -p "|AlexDesk|AlexDrawer1|Drawer3";
 	setAttr ".dcc" -type "string" "Ambient+Diffuse";
 	setAttr ".covm[0]"  0 1 1;
 	setAttr ".cdvm[0]"  0 1 1;
+	setAttr ".lev" 1;
 	setAttr -s 132 ".pt[0:131]" -type "float3"  164.12445 18.280769 0.025263526 
 		164.12445 18.295368 0.025263526 164.15173 18.295368 0.025263526 164.15173 18.280769 
 		0.025263526 164.13809 18.295368 -0.022733025 164.15173 18.295368 -0.022733025 164.12445 
@@ -3160,7 +3162,7 @@ createNode mesh -n "DrawerShape3" -p "|AlexDesk|AlexDrawer1|Drawer3";
 	setAttr ".hfd" -type "dataPolyComponent" Index_Data Face 0 ;
 	setAttr ".dfgi" 112;
 	setAttr ".dr" 1;
-createNode mesh -n "polySurfaceShape1" -p "|AlexDesk|AlexDrawer1|Drawer3";
+createNode mesh -n "polySurfaceShape1" -p "rightDrawer3";
 	rename -uid "E3FE443D-4803-44C7-AFEA-16873830290D";
 	setAttr -k off ".v";
 	setAttr ".io" yes;
@@ -3238,7 +3240,7 @@ createNode mesh -n "polySurfaceShape1" -p "|AlexDesk|AlexDrawer1|Drawer3";
 	setAttr ".pd[0]" -type "dataPolyComponent" Index_Data UV 0 ;
 	setAttr ".hfd" -type "dataPolyComponent" Index_Data Face 0 ;
 	setAttr ".dr" 1;
-createNode mesh -n "polySurfaceShape2" -p "|AlexDesk|AlexDrawer1|Drawer3";
+createNode mesh -n "polySurfaceShape2" -p "rightDrawer3";
 	rename -uid "4643B90D-4AE8-8A48-7081-408D0AD68C34";
 	setAttr -k off ".v";
 	setAttr ".io" yes;
@@ -3319,7 +3321,7 @@ createNode mesh -n "polySurfaceShape2" -p "|AlexDesk|AlexDrawer1|Drawer3";
 	setAttr ".dcc" -type "string" "Ambient+Diffuse";
 	setAttr ".covm[0]"  0 1 1;
 	setAttr ".cdvm[0]"  0 1 1;
-	setAttr -s 32 ".pt";
+	setAttr -s 31 ".pt";
 	setAttr ".pt[1]" -type "float3" 0 0.91250968 0 ;
 	setAttr ".pt[2]" -type "float3" 0 0.91250968 0 ;
 	setAttr ".pt[4]" -type "float3" 0 0.91250968 0 ;
@@ -3688,11 +3690,11 @@ createNode mesh -n "polySurfaceShape2" -p "|AlexDesk|AlexDrawer1|Drawer3";
 		2 0 ;
 	setAttr ".hfd" -type "dataPolyComponent" Index_Data Face 0 ;
 	setAttr ".dr" 1;
-createNode transform -n "Drawer4" -p "AlexDrawer1";
+createNode transform -n "rightDrawer4" -p "AlexDrawer1";
 	rename -uid "CC692329-427C-435E-7844-27AA4D6427E1";
 	setAttr ".rp" -type "double3" 164.13809204101562 53.882888793945312 -27.022735207468696 ;
 	setAttr ".sp" -type "double3" 164.13809204101562 53.882888793945312 -27.022735207468696 ;
-createNode mesh -n "DrawerShape4" -p "|AlexDesk|AlexDrawer1|Drawer4";
+createNode mesh -n "rightDrawerShape4" -p "rightDrawer4";
 	rename -uid "261AC92C-4DD3-2AF8-29AD-9A996F028659";
 	setAttr -k off ".v";
 	setAttr ".iog[0].og[0].gcl" -type "componentList" 1 "f[0:129]";
@@ -4167,7 +4169,7 @@ createNode mesh -n "DrawerShape4" -p "|AlexDesk|AlexDrawer1|Drawer4";
 	setAttr ".hfd" -type "dataPolyComponent" Index_Data Face 0 ;
 	setAttr ".dfgi" 112;
 	setAttr ".dr" 1;
-createNode mesh -n "polySurfaceShape1" -p "|AlexDesk|AlexDrawer1|Drawer4";
+createNode mesh -n "polySurfaceShape1" -p "rightDrawer4";
 	rename -uid "C516F7FC-4C5F-F78A-AA5A-B188169DE8C7";
 	setAttr -k off ".v";
 	setAttr ".io" yes;
@@ -4245,7 +4247,7 @@ createNode mesh -n "polySurfaceShape1" -p "|AlexDesk|AlexDrawer1|Drawer4";
 	setAttr ".pd[0]" -type "dataPolyComponent" Index_Data UV 0 ;
 	setAttr ".hfd" -type "dataPolyComponent" Index_Data Face 0 ;
 	setAttr ".dr" 1;
-createNode mesh -n "polySurfaceShape2" -p "|AlexDesk|AlexDrawer1|Drawer4";
+createNode mesh -n "polySurfaceShape2" -p "rightDrawer4";
 	rename -uid "0D6057C5-444A-486B-21D1-5AA9F0DCE7CB";
 	setAttr -k off ".v";
 	setAttr ".io" yes;
@@ -4326,7 +4328,7 @@ createNode mesh -n "polySurfaceShape2" -p "|AlexDesk|AlexDrawer1|Drawer4";
 	setAttr ".dcc" -type "string" "Ambient+Diffuse";
 	setAttr ".covm[0]"  0 1 1;
 	setAttr ".cdvm[0]"  0 1 1;
-	setAttr -s 32 ".pt";
+	setAttr -s 31 ".pt";
 	setAttr ".pt[1]" -type "float3" 0 0.91250968 0 ;
 	setAttr ".pt[2]" -type "float3" 0 0.91250968 0 ;
 	setAttr ".pt[4]" -type "float3" 0 0.91250968 0 ;
@@ -4697,9 +4699,9 @@ createNode mesh -n "polySurfaceShape2" -p "|AlexDesk|AlexDrawer1|Drawer4";
 	setAttr ".dr" 1;
 createNode transform -n "AlexDrawer" -p "AlexDesk";
 	rename -uid "429F8C83-4BD7-3987-4816-CB8E4A9925F6";
-createNode transform -n "Case" -p "AlexDrawer";
+createNode transform -n "leftCase" -p "AlexDrawer";
 	rename -uid "136ADBAA-4549-1391-5C04-23890ADD9C32";
-createNode mesh -n "CaseShape" -p "|AlexDesk|AlexDrawer|Case";
+createNode mesh -n "leftCaseShape" -p "leftCase";
 	rename -uid "8BB6B36C-4614-7F0D-53E6-A1AAAE66E54C";
 	setAttr -k off ".v";
 	setAttr ".vir" yes;
@@ -5280,11 +5282,11 @@ createNode mesh -n "CaseShape" -p "|AlexDesk|AlexDrawer|Case";
 		103 0 ;
 	setAttr ".hfd" -type "dataPolyComponent" Index_Data Face 0 ;
 	setAttr ".dr" 1;
-createNode transform -n "Drawer1" -p "AlexDrawer";
+createNode transform -n "leftDrawer1" -p "AlexDrawer";
 	rename -uid "2C0C97BF-4C16-1EBA-531D-69928958C144";
 	setAttr ".rp" -type "double3" 0 1.8265342712402415 -27.022735207468696 ;
 	setAttr ".sp" -type "double3" 0 1.8265342712402415 -27.022735207468696 ;
-createNode mesh -n "DrawerShape1" -p "|AlexDesk|AlexDrawer|Drawer1";
+createNode mesh -n "leftDrawerShape1" -p "leftDrawer1";
 	rename -uid "BE32E016-4DFE-0451-3D36-CBA925231419";
 	setAttr -k off ".v";
 	setAttr ".iog[0].og[0].gcl" -type "componentList" 1 "f[0:129]";
@@ -5763,7 +5765,7 @@ createNode mesh -n "DrawerShape1" -p "|AlexDesk|AlexDrawer|Drawer1";
 	setAttr ".hfd" -type "dataPolyComponent" Index_Data Face 0 ;
 	setAttr ".dfgi" 112;
 	setAttr ".dr" 1;
-createNode mesh -n "polySurfaceShape1" -p "|AlexDesk|AlexDrawer|Drawer1";
+createNode mesh -n "polySurfaceShape1" -p "leftDrawer1";
 	rename -uid "6661330B-48E5-150F-BD0B-BB9C1B4B47B1";
 	setAttr -k off ".v";
 	setAttr ".io" yes;
@@ -5841,11 +5843,11 @@ createNode mesh -n "polySurfaceShape1" -p "|AlexDesk|AlexDrawer|Drawer1";
 	setAttr ".pd[0]" -type "dataPolyComponent" Index_Data UV 0 ;
 	setAttr ".hfd" -type "dataPolyComponent" Index_Data Face 0 ;
 	setAttr ".dr" 1;
-createNode transform -n "Drawer2" -p "AlexDrawer";
+createNode transform -n "leftDrawer2" -p "AlexDrawer";
 	rename -uid "A7B8912C-45F3-2CA7-6D4C-87B1330212E9";
 	setAttr ".rp" -type "double3" 0 19.178651809692383 -27.022735207468696 ;
 	setAttr ".sp" -type "double3" 0 19.178651809692383 -27.022735207468696 ;
-createNode mesh -n "DrawerShape2" -p "|AlexDesk|AlexDrawer|Drawer2";
+createNode mesh -n "leftDrawerShape2" -p "leftDrawer2";
 	rename -uid "3CCA57A6-478C-ACA9-949C-108DAD822E38";
 	setAttr -k off ".v";
 	setAttr ".iog[0].og[0].gcl" -type "componentList" 1 "f[0:129]";
@@ -6324,7 +6326,7 @@ createNode mesh -n "DrawerShape2" -p "|AlexDesk|AlexDrawer|Drawer2";
 	setAttr ".hfd" -type "dataPolyComponent" Index_Data Face 0 ;
 	setAttr ".dfgi" 112;
 	setAttr ".dr" 1;
-createNode mesh -n "polySurfaceShape1" -p "|AlexDesk|AlexDrawer|Drawer2";
+createNode mesh -n "polySurfaceShape1" -p "leftDrawer2";
 	rename -uid "7336EE2C-4985-5D5E-8F6C-E5A0621BBBD1";
 	setAttr -k off ".v";
 	setAttr ".io" yes;
@@ -6402,7 +6404,7 @@ createNode mesh -n "polySurfaceShape1" -p "|AlexDesk|AlexDrawer|Drawer2";
 	setAttr ".pd[0]" -type "dataPolyComponent" Index_Data UV 0 ;
 	setAttr ".hfd" -type "dataPolyComponent" Index_Data Face 0 ;
 	setAttr ".dr" 1;
-createNode mesh -n "polySurfaceShape2" -p "|AlexDesk|AlexDrawer|Drawer2";
+createNode mesh -n "polySurfaceShape2" -p "leftDrawer2";
 	rename -uid "2E69F143-4D0D-599C-1A2A-E09108DACB08";
 	setAttr -k off ".v";
 	setAttr ".io" yes;
@@ -6483,7 +6485,7 @@ createNode mesh -n "polySurfaceShape2" -p "|AlexDesk|AlexDrawer|Drawer2";
 	setAttr ".dcc" -type "string" "Ambient+Diffuse";
 	setAttr ".covm[0]"  0 1 1;
 	setAttr ".cdvm[0]"  0 1 1;
-	setAttr -s 32 ".pt";
+	setAttr -s 31 ".pt";
 	setAttr ".pt[1]" -type "float3" 0 0.91250968 0 ;
 	setAttr ".pt[2]" -type "float3" 0 0.91250968 0 ;
 	setAttr ".pt[4]" -type "float3" 0 0.91250968 0 ;
@@ -6852,11 +6854,11 @@ createNode mesh -n "polySurfaceShape2" -p "|AlexDesk|AlexDrawer|Drawer2";
 		2 0 ;
 	setAttr ".hfd" -type "dataPolyComponent" Index_Data Face 0 ;
 	setAttr ".dr" 1;
-createNode transform -n "Drawer3" -p "AlexDrawer";
+createNode transform -n "leftDrawer3" -p "AlexDrawer";
 	rename -uid "C23ABAE2-4439-3623-062B-DFA679D34F8D";
 	setAttr ".rp" -type "double3" 0 36.530769348144524 -27.022735207468696 ;
 	setAttr ".sp" -type "double3" 0 36.530769348144524 -27.022735207468696 ;
-createNode mesh -n "DrawerShape3" -p "|AlexDesk|AlexDrawer|Drawer3";
+createNode mesh -n "leftDrawerShape3" -p "leftDrawer3";
 	rename -uid "BB045643-477E-0794-0483-FC837A511626";
 	setAttr -k off ".v";
 	setAttr ".iog[0].og[0].gcl" -type "componentList" 1 "f[0:129]";
@@ -7333,7 +7335,7 @@ createNode mesh -n "DrawerShape3" -p "|AlexDesk|AlexDrawer|Drawer3";
 	setAttr ".hfd" -type "dataPolyComponent" Index_Data Face 0 ;
 	setAttr ".dfgi" 112;
 	setAttr ".dr" 1;
-createNode mesh -n "polySurfaceShape1" -p "|AlexDesk|AlexDrawer|Drawer3";
+createNode mesh -n "polySurfaceShape1" -p "leftDrawer3";
 	rename -uid "1B436945-4E12-9321-A4D4-D6AC78B9F4BE";
 	setAttr -k off ".v";
 	setAttr ".io" yes;
@@ -7411,7 +7413,7 @@ createNode mesh -n "polySurfaceShape1" -p "|AlexDesk|AlexDrawer|Drawer3";
 	setAttr ".pd[0]" -type "dataPolyComponent" Index_Data UV 0 ;
 	setAttr ".hfd" -type "dataPolyComponent" Index_Data Face 0 ;
 	setAttr ".dr" 1;
-createNode mesh -n "polySurfaceShape2" -p "|AlexDesk|AlexDrawer|Drawer3";
+createNode mesh -n "polySurfaceShape2" -p "leftDrawer3";
 	rename -uid "8AD17498-443E-0688-E969-FAB05362C94C";
 	setAttr -k off ".v";
 	setAttr ".io" yes;
@@ -7492,7 +7494,7 @@ createNode mesh -n "polySurfaceShape2" -p "|AlexDesk|AlexDrawer|Drawer3";
 	setAttr ".dcc" -type "string" "Ambient+Diffuse";
 	setAttr ".covm[0]"  0 1 1;
 	setAttr ".cdvm[0]"  0 1 1;
-	setAttr -s 32 ".pt";
+	setAttr -s 31 ".pt";
 	setAttr ".pt[1]" -type "float3" 0 0.91250968 0 ;
 	setAttr ".pt[2]" -type "float3" 0 0.91250968 0 ;
 	setAttr ".pt[4]" -type "float3" 0 0.91250968 0 ;
@@ -7861,11 +7863,11 @@ createNode mesh -n "polySurfaceShape2" -p "|AlexDesk|AlexDrawer|Drawer3";
 		2 0 ;
 	setAttr ".hfd" -type "dataPolyComponent" Index_Data Face 0 ;
 	setAttr ".dr" 1;
-createNode transform -n "Drawer4" -p "AlexDrawer";
+createNode transform -n "leftDrawer4" -p "AlexDrawer";
 	rename -uid "668D84AF-4667-206F-8030-29B866D2D0F0";
 	setAttr ".rp" -type "double3" 0 53.882888793945312 -27.022735207468696 ;
 	setAttr ".sp" -type "double3" 0 53.882888793945312 -27.022735207468696 ;
-createNode mesh -n "DrawerShape4" -p "|AlexDesk|AlexDrawer|Drawer4";
+createNode mesh -n "leftDrawerShape4" -p "leftDrawer4";
 	rename -uid "BC619C69-44C0-32CD-3F4D-16AD77D2D760";
 	setAttr -k off ".v";
 	setAttr ".iog[0].og[0].gcl" -type "componentList" 1 "f[0:129]";
@@ -8343,7 +8345,7 @@ createNode mesh -n "DrawerShape4" -p "|AlexDesk|AlexDrawer|Drawer4";
 	setAttr ".hfd" -type "dataPolyComponent" Index_Data Face 0 ;
 	setAttr ".dfgi" 112;
 	setAttr ".dr" 1;
-createNode mesh -n "polySurfaceShape1" -p "|AlexDesk|AlexDrawer|Drawer4";
+createNode mesh -n "polySurfaceShape1" -p "leftDrawer4";
 	rename -uid "7BBEB9DC-42CF-DCDB-1426-349CD929FF20";
 	setAttr -k off ".v";
 	setAttr ".io" yes;
@@ -8421,7 +8423,7 @@ createNode mesh -n "polySurfaceShape1" -p "|AlexDesk|AlexDrawer|Drawer4";
 	setAttr ".pd[0]" -type "dataPolyComponent" Index_Data UV 0 ;
 	setAttr ".hfd" -type "dataPolyComponent" Index_Data Face 0 ;
 	setAttr ".dr" 1;
-createNode mesh -n "polySurfaceShape2" -p "|AlexDesk|AlexDrawer|Drawer4";
+createNode mesh -n "polySurfaceShape2" -p "leftDrawer4";
 	rename -uid "139C6296-4F57-B86D-A7B0-C3835FA88A0D";
 	setAttr -k off ".v";
 	setAttr ".io" yes;
@@ -8502,7 +8504,7 @@ createNode mesh -n "polySurfaceShape2" -p "|AlexDesk|AlexDrawer|Drawer4";
 	setAttr ".dcc" -type "string" "Ambient+Diffuse";
 	setAttr ".covm[0]"  0 1 1;
 	setAttr ".cdvm[0]"  0 1 1;
-	setAttr -s 32 ".pt";
+	setAttr -s 31 ".pt";
 	setAttr ".pt[1]" -type "float3" 0 0.91250968 0 ;
 	setAttr ".pt[2]" -type "float3" 0 0.91250968 0 ;
 	setAttr ".pt[4]" -type "float3" 0 0.91250968 0 ;
@@ -9145,20 +9147,20 @@ createNode mesh -n "SupportShape" -p "Support";
 	setAttr ".hfd" -type "dataPolyComponent" Index_Data Face 0 ;
 	setAttr ".dr" 1;
 createNode lightLinker -s -n "lightLinker1";
-	rename -uid "160A00EC-4F2D-1455-8224-3EBBCB6E9152";
+	rename -uid "612F95C8-4E56-CFA0-693C-568882F3EBF1";
 	setAttr -s 4 ".lnk";
 	setAttr -s 4 ".slnk";
 createNode shapeEditorManager -n "shapeEditorManager";
-	rename -uid "9275D2E5-4F4B-F43F-D21C-F49836A34E27";
+	rename -uid "8E638082-4DF0-D2D0-7A49-9DA3C5C86D1F";
 createNode poseInterpolatorManager -n "poseInterpolatorManager";
-	rename -uid "91CF8C15-4CE5-5411-FD95-608719F7277A";
+	rename -uid "357C33BC-4EDA-7C77-18CD-16B37D7E1756";
 createNode displayLayerManager -n "layerManager";
-	rename -uid "2A2C2A9C-4C8C-82BB-D03B-0BA2D8400C64";
+	rename -uid "4806888D-480E-E12B-5678-759D966A7C07";
 createNode displayLayer -n "defaultLayer";
 	rename -uid "3229439B-4947-6656-40E5-8BAED9D152F5";
 	setAttr ".ufem" -type "stringArray" 0  ;
 createNode renderLayerManager -n "renderLayerManager";
-	rename -uid "91A45B01-427B-E3A9-83E0-209F9D7D31EE";
+	rename -uid "84A169F5-4A7B-01AE-04EE-38BE96F95955";
 createNode renderLayer -n "defaultRenderLayer";
 	rename -uid "4A25E35F-425B-B080-9984-7DA1305342E1";
 	setAttr ".g" yes;
@@ -9178,7 +9180,7 @@ createNode script -n "uiConfigurationScriptNode";
 		+ "            -locators 1\n            -manipulators 1\n            -pluginShapes 1\n            -dimensions 1\n            -handles 1\n            -pivots 1\n            -textures 1\n            -strokes 1\n            -motionTrails 1\n            -clipGhosts 1\n            -bluePencil 1\n            -greasePencils 0\n            -excludeObjectPreset \"All\" \n            -shadows 0\n            -captureSequenceNumber -1\n            -width 1\n            -height 1\n            -sceneRenderFilter 0\n            $editorName;\n        modelEditor -e -viewSelected 0 $editorName;\n        modelEditor -e \n            -pluginObjects \"gpuCacheDisplayFilter\" 1 \n            $editorName;\n\t\tif (!$useSceneConfig) {\n\t\t\tpanel -e -l $label $panelName;\n\t\t}\n\t}\n\n\n\t$panelName = `sceneUIReplacement -getNextPanel \"modelPanel\" (localizedPanelLabel(\"Persp View\")) `;\n\tif (\"\" != $panelName) {\n\t\t$label = `panel -q -label $panelName`;\n\t\tmodelPanel -edit -l (localizedPanelLabel(\"Persp View\")) -mbv $menusOkayInPanels  $panelName;\n\t\t$editorName = $panelName;\n        modelEditor -e \n"
 		+ "            -camera \"|persp\" \n            -useInteractiveMode 0\n            -displayLights \"default\" \n            -displayAppearance \"smoothShaded\" \n            -activeOnly 0\n            -ignorePanZoom 0\n            -wireframeOnShaded 0\n            -headsUpDisplay 1\n            -holdOuts 1\n            -selectionHiliteDisplay 1\n            -useDefaultMaterial 0\n            -bufferMode \"double\" \n            -twoSidedLighting 0\n            -backfaceCulling 0\n            -xray 0\n            -jointXray 0\n            -activeComponentsXray 0\n            -displayTextures 1\n            -smoothWireframe 0\n            -lineWidth 1\n            -textureAnisotropic 0\n            -textureHilight 1\n            -textureSampling 2\n            -textureDisplay \"modulate\" \n            -textureMaxSize 32768\n            -fogging 0\n            -fogSource \"fragment\" \n            -fogMode \"linear\" \n            -fogStart 0\n            -fogEnd 100\n            -fogDensity 0.1\n            -fogColor 0.5 0.5 0.5 1 \n            -depthOfFieldPreview 1\n"
 		+ "            -maxConstantTransparency 1\n            -rendererName \"vp2Renderer\" \n            -objectFilterShowInHUD 1\n            -isFiltered 0\n            -colorResolution 256 256 \n            -bumpResolution 512 512 \n            -textureCompression 0\n            -transparencyAlgorithm \"frontAndBackCull\" \n            -transpInShadows 0\n            -cullingOverride \"none\" \n            -lowQualityLighting 0\n            -maximumNumHardwareLights 1\n            -occlusionCulling 0\n            -shadingModel 0\n            -useBaseRenderer 0\n            -useReducedRenderer 0\n            -smallObjectCulling 0\n            -smallObjectThreshold -1 \n            -interactiveDisableShadows 0\n            -interactiveBackFaceCull 0\n            -sortTransparent 1\n            -controllers 1\n            -nurbsCurves 1\n            -nurbsSurfaces 1\n            -polymeshes 1\n            -subdivSurfaces 1\n            -planes 1\n            -lights 1\n            -cameras 1\n            -controlVertices 1\n            -hulls 1\n            -grid 1\n"
-		+ "            -imagePlane 1\n            -joints 1\n            -ikHandles 1\n            -deformers 1\n            -dynamics 1\n            -particleInstancers 1\n            -fluids 1\n            -hairSystems 1\n            -follicles 1\n            -nCloths 1\n            -nParticles 1\n            -nRigids 1\n            -dynamicConstraints 1\n            -locators 1\n            -manipulators 1\n            -pluginShapes 1\n            -dimensions 1\n            -handles 1\n            -pivots 1\n            -textures 1\n            -strokes 1\n            -motionTrails 1\n            -clipGhosts 1\n            -bluePencil 1\n            -greasePencils 0\n            -excludeObjectPreset \"All\" \n            -shadows 0\n            -captureSequenceNumber -1\n            -width 1294\n            -height 864\n            -sceneRenderFilter 0\n            $editorName;\n        modelEditor -e -viewSelected 0 $editorName;\n        modelEditor -e \n            -pluginObjects \"gpuCacheDisplayFilter\" 1 \n            $editorName;\n\t\tif (!$useSceneConfig) {\n"
+		+ "            -imagePlane 1\n            -joints 1\n            -ikHandles 1\n            -deformers 1\n            -dynamics 1\n            -particleInstancers 1\n            -fluids 1\n            -hairSystems 1\n            -follicles 1\n            -nCloths 1\n            -nParticles 1\n            -nRigids 1\n            -dynamicConstraints 1\n            -locators 1\n            -manipulators 1\n            -pluginShapes 1\n            -dimensions 1\n            -handles 1\n            -pivots 1\n            -textures 1\n            -strokes 1\n            -motionTrails 1\n            -clipGhosts 1\n            -bluePencil 1\n            -greasePencils 0\n            -excludeObjectPreset \"All\" \n            -shadows 0\n            -captureSequenceNumber -1\n            -width 1293\n            -height 864\n            -sceneRenderFilter 0\n            $editorName;\n        modelEditor -e -viewSelected 0 $editorName;\n        modelEditor -e \n            -pluginObjects \"gpuCacheDisplayFilter\" 1 \n            $editorName;\n\t\tif (!$useSceneConfig) {\n"
 		+ "\t\t\tpanel -e -l $label $panelName;\n\t\t}\n\t}\n\n\n\t$panelName = `sceneUIReplacement -getNextPanel \"outlinerPanel\" (localizedPanelLabel(\"ToggledOutliner\")) `;\n\tif (\"\" != $panelName) {\n\t\t$label = `panel -q -label $panelName`;\n\t\toutlinerPanel -edit -l (localizedPanelLabel(\"ToggledOutliner\")) -mbv $menusOkayInPanels  $panelName;\n\t\t$editorName = $panelName;\n        outlinerEditor -e \n            -docTag \"isolOutln_fromSeln\" \n            -showShapes 0\n            -showAssignedMaterials 0\n            -showTimeEditor 1\n            -showReferenceNodes 1\n            -showReferenceMembers 1\n            -showAttributes 0\n            -showConnected 0\n            -showAnimCurvesOnly 0\n            -showMuteInfo 0\n            -organizeByLayer 1\n            -organizeByClip 1\n            -showAnimLayerWeight 1\n            -autoExpandLayers 1\n            -autoExpand 0\n            -showDagOnly 1\n            -showAssets 1\n            -showContainedOnly 1\n            -showPublishedAsConnected 0\n            -showParentContainers 0\n            -showContainerContents 1\n"
 		+ "            -ignoreDagHierarchy 0\n            -expandConnections 0\n            -showUpstreamCurves 1\n            -showUnitlessCurves 1\n            -showCompounds 1\n            -showLeafs 1\n            -showNumericAttrsOnly 0\n            -highlightActive 1\n            -autoSelectNewObjects 0\n            -doNotSelectNewObjects 0\n            -dropIsParent 1\n            -transmitFilters 0\n            -setFilter \"defaultSetFilter\" \n            -showSetMembers 1\n            -allowMultiSelection 1\n            -alwaysToggleSelect 0\n            -directSelect 0\n            -isSet 0\n            -isSetMember 0\n            -showUfeItems 1\n            -displayMode \"DAG\" \n            -expandObjects 0\n            -setsIgnoreFilters 1\n            -containersIgnoreFilters 0\n            -editAttrName 0\n            -showAttrValues 0\n            -highlightSecondary 0\n            -showUVAttrsOnly 0\n            -showTextureNodesOnly 0\n            -attrAlphaOrder \"default\" \n            -animLayerFilterOptions \"allAffecting\" \n            -sortOrder \"none\" \n"
 		+ "            -longNames 0\n            -niceNames 1\n            -showNamespace 1\n            -showPinIcons 0\n            -mapMotionTrails 0\n            -ignoreHiddenAttribute 0\n            -ignoreOutlinerColor 0\n            -renderFilterVisible 0\n            -renderFilterIndex 0\n            -selectionOrder \"chronological\" \n            -expandAttribute 0\n            $editorName;\n\t\tif (!$useSceneConfig) {\n\t\t\tpanel -e -l $label $panelName;\n\t\t}\n\t}\n\n\n\t$panelName = `sceneUIReplacement -getNextPanel \"outlinerPanel\" (localizedPanelLabel(\"Outliner\")) `;\n\tif (\"\" != $panelName) {\n\t\t$label = `panel -q -label $panelName`;\n\t\toutlinerPanel -edit -l (localizedPanelLabel(\"Outliner\")) -mbv $menusOkayInPanels  $panelName;\n\t\t$editorName = $panelName;\n        outlinerEditor -e \n            -showShapes 0\n            -showAssignedMaterials 0\n            -showTimeEditor 1\n            -showReferenceNodes 0\n            -showReferenceMembers 0\n            -showAttributes 0\n            -showConnected 0\n            -showAnimCurvesOnly 0\n            -showMuteInfo 0\n"
@@ -9205,8 +9207,8 @@ createNode script -n "uiConfigurationScriptNode";
 		+ "                -lowQualityLighting 0\n                -maximumNumHardwareLights 0\n                -occlusionCulling 0\n                -shadingModel 0\n                -useBaseRenderer 0\n                -useReducedRenderer 0\n                -smallObjectCulling 0\n                -smallObjectThreshold -1 \n                -interactiveDisableShadows 0\n                -interactiveBackFaceCull 0\n                -sortTransparent 1\n                -controllers 1\n                -nurbsCurves 1\n                -nurbsSurfaces 1\n                -polymeshes 1\n                -subdivSurfaces 1\n                -planes 1\n                -lights 1\n                -cameras 1\n                -controlVertices 1\n                -hulls 1\n                -grid 1\n                -imagePlane 1\n                -joints 1\n                -ikHandles 1\n                -deformers 1\n                -dynamics 1\n                -particleInstancers 1\n                -fluids 1\n                -hairSystems 1\n                -follicles 1\n                -nCloths 1\n"
 		+ "                -nParticles 1\n                -nRigids 1\n                -dynamicConstraints 1\n                -locators 1\n                -manipulators 1\n                -pluginShapes 1\n                -dimensions 1\n                -handles 1\n                -pivots 1\n                -textures 1\n                -strokes 1\n                -motionTrails 1\n                -clipGhosts 1\n                -bluePencil 1\n                -greasePencils 0\n                -shadows 0\n                -captureSequenceNumber -1\n                -width 0\n                -height 0\n                -sceneRenderFilter 0\n                -displayMode \"centerEye\" \n                -viewColor 0 0 0 1 \n                -useCustomBackground 1\n                $editorName;\n            stereoCameraView -e -viewSelected 0 $editorName;\n            stereoCameraView -e \n                -pluginObjects \"gpuCacheDisplayFilter\" 1 \n                $editorName; };\n\t\tif (!$useSceneConfig) {\n\t\t\tpanel -e -l $label $panelName;\n\t\t}\n\t}\n\n\n\tif ($useSceneConfig) {\n"
 		+ "        string $configName = `getPanel -cwl (localizedPanelLabel(\"Current Layout\"))`;\n        if (\"\" != $configName) {\n\t\t\tpanelConfiguration -edit -label (localizedPanelLabel(\"Current Layout\")) \n\t\t\t\t-userCreated false\n\t\t\t\t-defaultImage \"vacantCell.xP:/\"\n\t\t\t\t-image \"\"\n\t\t\t\t-sc false\n\t\t\t\t-configString \"global string $gMainPane; paneLayout -e -cn \\\"single\\\" -ps 1 100 100 $gMainPane;\"\n\t\t\t\t-removeAllPanels\n\t\t\t\t-ap false\n\t\t\t\t\t(localizedPanelLabel(\"Persp View\")) \n\t\t\t\t\t\"modelPanel\"\n"
-		+ "\t\t\t\t\t\"$panelName = `modelPanel -unParent -l (localizedPanelLabel(\\\"Persp View\\\")) -mbv $menusOkayInPanels `;\\n$editorName = $panelName;\\nmodelEditor -e \\n    -cam `findStartUpCamera persp` \\n    -useInteractiveMode 0\\n    -displayLights \\\"default\\\" \\n    -displayAppearance \\\"smoothShaded\\\" \\n    -activeOnly 0\\n    -ignorePanZoom 0\\n    -wireframeOnShaded 0\\n    -headsUpDisplay 1\\n    -holdOuts 1\\n    -selectionHiliteDisplay 1\\n    -useDefaultMaterial 0\\n    -bufferMode \\\"double\\\" \\n    -twoSidedLighting 0\\n    -backfaceCulling 0\\n    -xray 0\\n    -jointXray 0\\n    -activeComponentsXray 0\\n    -displayTextures 1\\n    -smoothWireframe 0\\n    -lineWidth 1\\n    -textureAnisotropic 0\\n    -textureHilight 1\\n    -textureSampling 2\\n    -textureDisplay \\\"modulate\\\" \\n    -textureMaxSize 32768\\n    -fogging 0\\n    -fogSource \\\"fragment\\\" \\n    -fogMode \\\"linear\\\" \\n    -fogStart 0\\n    -fogEnd 100\\n    -fogDensity 0.1\\n    -fogColor 0.5 0.5 0.5 1 \\n    -depthOfFieldPreview 1\\n    -maxConstantTransparency 1\\n    -rendererName \\\"vp2Renderer\\\" \\n    -objectFilterShowInHUD 1\\n    -isFiltered 0\\n    -colorResolution 256 256 \\n    -bumpResolution 512 512 \\n    -textureCompression 0\\n    -transparencyAlgorithm \\\"frontAndBackCull\\\" \\n    -transpInShadows 0\\n    -cullingOverride \\\"none\\\" \\n    -lowQualityLighting 0\\n    -maximumNumHardwareLights 1\\n    -occlusionCulling 0\\n    -shadingModel 0\\n    -useBaseRenderer 0\\n    -useReducedRenderer 0\\n    -smallObjectCulling 0\\n    -smallObjectThreshold -1 \\n    -interactiveDisableShadows 0\\n    -interactiveBackFaceCull 0\\n    -sortTransparent 1\\n    -controllers 1\\n    -nurbsCurves 1\\n    -nurbsSurfaces 1\\n    -polymeshes 1\\n    -subdivSurfaces 1\\n    -planes 1\\n    -lights 1\\n    -cameras 1\\n    -controlVertices 1\\n    -hulls 1\\n    -grid 1\\n    -imagePlane 1\\n    -joints 1\\n    -ikHandles 1\\n    -deformers 1\\n    -dynamics 1\\n    -particleInstancers 1\\n    -fluids 1\\n    -hairSystems 1\\n    -follicles 1\\n    -nCloths 1\\n    -nParticles 1\\n    -nRigids 1\\n    -dynamicConstraints 1\\n    -locators 1\\n    -manipulators 1\\n    -pluginShapes 1\\n    -dimensions 1\\n    -handles 1\\n    -pivots 1\\n    -textures 1\\n    -strokes 1\\n    -motionTrails 1\\n    -clipGhosts 1\\n    -bluePencil 1\\n    -greasePencils 0\\n    -excludeObjectPreset \\\"All\\\" \\n    -shadows 0\\n    -captureSequenceNumber -1\\n    -width 1294\\n    -height 864\\n    -sceneRenderFilter 0\\n    $editorName;\\nmodelEditor -e -viewSelected 0 $editorName;\\nmodelEditor -e \\n    -pluginObjects \\\"gpuCacheDisplayFilter\\\" 1 \\n    $editorName\"\n"
-		+ "\t\t\t\t\t\"modelPanel -edit -l (localizedPanelLabel(\\\"Persp View\\\")) -mbv $menusOkayInPanels  $panelName;\\n$editorName = $panelName;\\nmodelEditor -e \\n    -cam `findStartUpCamera persp` \\n    -useInteractiveMode 0\\n    -displayLights \\\"default\\\" \\n    -displayAppearance \\\"smoothShaded\\\" \\n    -activeOnly 0\\n    -ignorePanZoom 0\\n    -wireframeOnShaded 0\\n    -headsUpDisplay 1\\n    -holdOuts 1\\n    -selectionHiliteDisplay 1\\n    -useDefaultMaterial 0\\n    -bufferMode \\\"double\\\" \\n    -twoSidedLighting 0\\n    -backfaceCulling 0\\n    -xray 0\\n    -jointXray 0\\n    -activeComponentsXray 0\\n    -displayTextures 1\\n    -smoothWireframe 0\\n    -lineWidth 1\\n    -textureAnisotropic 0\\n    -textureHilight 1\\n    -textureSampling 2\\n    -textureDisplay \\\"modulate\\\" \\n    -textureMaxSize 32768\\n    -fogging 0\\n    -fogSource \\\"fragment\\\" \\n    -fogMode \\\"linear\\\" \\n    -fogStart 0\\n    -fogEnd 100\\n    -fogDensity 0.1\\n    -fogColor 0.5 0.5 0.5 1 \\n    -depthOfFieldPreview 1\\n    -maxConstantTransparency 1\\n    -rendererName \\\"vp2Renderer\\\" \\n    -objectFilterShowInHUD 1\\n    -isFiltered 0\\n    -colorResolution 256 256 \\n    -bumpResolution 512 512 \\n    -textureCompression 0\\n    -transparencyAlgorithm \\\"frontAndBackCull\\\" \\n    -transpInShadows 0\\n    -cullingOverride \\\"none\\\" \\n    -lowQualityLighting 0\\n    -maximumNumHardwareLights 1\\n    -occlusionCulling 0\\n    -shadingModel 0\\n    -useBaseRenderer 0\\n    -useReducedRenderer 0\\n    -smallObjectCulling 0\\n    -smallObjectThreshold -1 \\n    -interactiveDisableShadows 0\\n    -interactiveBackFaceCull 0\\n    -sortTransparent 1\\n    -controllers 1\\n    -nurbsCurves 1\\n    -nurbsSurfaces 1\\n    -polymeshes 1\\n    -subdivSurfaces 1\\n    -planes 1\\n    -lights 1\\n    -cameras 1\\n    -controlVertices 1\\n    -hulls 1\\n    -grid 1\\n    -imagePlane 1\\n    -joints 1\\n    -ikHandles 1\\n    -deformers 1\\n    -dynamics 1\\n    -particleInstancers 1\\n    -fluids 1\\n    -hairSystems 1\\n    -follicles 1\\n    -nCloths 1\\n    -nParticles 1\\n    -nRigids 1\\n    -dynamicConstraints 1\\n    -locators 1\\n    -manipulators 1\\n    -pluginShapes 1\\n    -dimensions 1\\n    -handles 1\\n    -pivots 1\\n    -textures 1\\n    -strokes 1\\n    -motionTrails 1\\n    -clipGhosts 1\\n    -bluePencil 1\\n    -greasePencils 0\\n    -excludeObjectPreset \\\"All\\\" \\n    -shadows 0\\n    -captureSequenceNumber -1\\n    -width 1294\\n    -height 864\\n    -sceneRenderFilter 0\\n    $editorName;\\nmodelEditor -e -viewSelected 0 $editorName;\\nmodelEditor -e \\n    -pluginObjects \\\"gpuCacheDisplayFilter\\\" 1 \\n    $editorName\"\n"
+		+ "\t\t\t\t\t\"$panelName = `modelPanel -unParent -l (localizedPanelLabel(\\\"Persp View\\\")) -mbv $menusOkayInPanels `;\\n$editorName = $panelName;\\nmodelEditor -e \\n    -cam `findStartUpCamera persp` \\n    -useInteractiveMode 0\\n    -displayLights \\\"default\\\" \\n    -displayAppearance \\\"smoothShaded\\\" \\n    -activeOnly 0\\n    -ignorePanZoom 0\\n    -wireframeOnShaded 0\\n    -headsUpDisplay 1\\n    -holdOuts 1\\n    -selectionHiliteDisplay 1\\n    -useDefaultMaterial 0\\n    -bufferMode \\\"double\\\" \\n    -twoSidedLighting 0\\n    -backfaceCulling 0\\n    -xray 0\\n    -jointXray 0\\n    -activeComponentsXray 0\\n    -displayTextures 1\\n    -smoothWireframe 0\\n    -lineWidth 1\\n    -textureAnisotropic 0\\n    -textureHilight 1\\n    -textureSampling 2\\n    -textureDisplay \\\"modulate\\\" \\n    -textureMaxSize 32768\\n    -fogging 0\\n    -fogSource \\\"fragment\\\" \\n    -fogMode \\\"linear\\\" \\n    -fogStart 0\\n    -fogEnd 100\\n    -fogDensity 0.1\\n    -fogColor 0.5 0.5 0.5 1 \\n    -depthOfFieldPreview 1\\n    -maxConstantTransparency 1\\n    -rendererName \\\"vp2Renderer\\\" \\n    -objectFilterShowInHUD 1\\n    -isFiltered 0\\n    -colorResolution 256 256 \\n    -bumpResolution 512 512 \\n    -textureCompression 0\\n    -transparencyAlgorithm \\\"frontAndBackCull\\\" \\n    -transpInShadows 0\\n    -cullingOverride \\\"none\\\" \\n    -lowQualityLighting 0\\n    -maximumNumHardwareLights 1\\n    -occlusionCulling 0\\n    -shadingModel 0\\n    -useBaseRenderer 0\\n    -useReducedRenderer 0\\n    -smallObjectCulling 0\\n    -smallObjectThreshold -1 \\n    -interactiveDisableShadows 0\\n    -interactiveBackFaceCull 0\\n    -sortTransparent 1\\n    -controllers 1\\n    -nurbsCurves 1\\n    -nurbsSurfaces 1\\n    -polymeshes 1\\n    -subdivSurfaces 1\\n    -planes 1\\n    -lights 1\\n    -cameras 1\\n    -controlVertices 1\\n    -hulls 1\\n    -grid 1\\n    -imagePlane 1\\n    -joints 1\\n    -ikHandles 1\\n    -deformers 1\\n    -dynamics 1\\n    -particleInstancers 1\\n    -fluids 1\\n    -hairSystems 1\\n    -follicles 1\\n    -nCloths 1\\n    -nParticles 1\\n    -nRigids 1\\n    -dynamicConstraints 1\\n    -locators 1\\n    -manipulators 1\\n    -pluginShapes 1\\n    -dimensions 1\\n    -handles 1\\n    -pivots 1\\n    -textures 1\\n    -strokes 1\\n    -motionTrails 1\\n    -clipGhosts 1\\n    -bluePencil 1\\n    -greasePencils 0\\n    -excludeObjectPreset \\\"All\\\" \\n    -shadows 0\\n    -captureSequenceNumber -1\\n    -width 1293\\n    -height 864\\n    -sceneRenderFilter 0\\n    $editorName;\\nmodelEditor -e -viewSelected 0 $editorName;\\nmodelEditor -e \\n    -pluginObjects \\\"gpuCacheDisplayFilter\\\" 1 \\n    $editorName\"\n"
+		+ "\t\t\t\t\t\"modelPanel -edit -l (localizedPanelLabel(\\\"Persp View\\\")) -mbv $menusOkayInPanels  $panelName;\\n$editorName = $panelName;\\nmodelEditor -e \\n    -cam `findStartUpCamera persp` \\n    -useInteractiveMode 0\\n    -displayLights \\\"default\\\" \\n    -displayAppearance \\\"smoothShaded\\\" \\n    -activeOnly 0\\n    -ignorePanZoom 0\\n    -wireframeOnShaded 0\\n    -headsUpDisplay 1\\n    -holdOuts 1\\n    -selectionHiliteDisplay 1\\n    -useDefaultMaterial 0\\n    -bufferMode \\\"double\\\" \\n    -twoSidedLighting 0\\n    -backfaceCulling 0\\n    -xray 0\\n    -jointXray 0\\n    -activeComponentsXray 0\\n    -displayTextures 1\\n    -smoothWireframe 0\\n    -lineWidth 1\\n    -textureAnisotropic 0\\n    -textureHilight 1\\n    -textureSampling 2\\n    -textureDisplay \\\"modulate\\\" \\n    -textureMaxSize 32768\\n    -fogging 0\\n    -fogSource \\\"fragment\\\" \\n    -fogMode \\\"linear\\\" \\n    -fogStart 0\\n    -fogEnd 100\\n    -fogDensity 0.1\\n    -fogColor 0.5 0.5 0.5 1 \\n    -depthOfFieldPreview 1\\n    -maxConstantTransparency 1\\n    -rendererName \\\"vp2Renderer\\\" \\n    -objectFilterShowInHUD 1\\n    -isFiltered 0\\n    -colorResolution 256 256 \\n    -bumpResolution 512 512 \\n    -textureCompression 0\\n    -transparencyAlgorithm \\\"frontAndBackCull\\\" \\n    -transpInShadows 0\\n    -cullingOverride \\\"none\\\" \\n    -lowQualityLighting 0\\n    -maximumNumHardwareLights 1\\n    -occlusionCulling 0\\n    -shadingModel 0\\n    -useBaseRenderer 0\\n    -useReducedRenderer 0\\n    -smallObjectCulling 0\\n    -smallObjectThreshold -1 \\n    -interactiveDisableShadows 0\\n    -interactiveBackFaceCull 0\\n    -sortTransparent 1\\n    -controllers 1\\n    -nurbsCurves 1\\n    -nurbsSurfaces 1\\n    -polymeshes 1\\n    -subdivSurfaces 1\\n    -planes 1\\n    -lights 1\\n    -cameras 1\\n    -controlVertices 1\\n    -hulls 1\\n    -grid 1\\n    -imagePlane 1\\n    -joints 1\\n    -ikHandles 1\\n    -deformers 1\\n    -dynamics 1\\n    -particleInstancers 1\\n    -fluids 1\\n    -hairSystems 1\\n    -follicles 1\\n    -nCloths 1\\n    -nParticles 1\\n    -nRigids 1\\n    -dynamicConstraints 1\\n    -locators 1\\n    -manipulators 1\\n    -pluginShapes 1\\n    -dimensions 1\\n    -handles 1\\n    -pivots 1\\n    -textures 1\\n    -strokes 1\\n    -motionTrails 1\\n    -clipGhosts 1\\n    -bluePencil 1\\n    -greasePencils 0\\n    -excludeObjectPreset \\\"All\\\" \\n    -shadows 0\\n    -captureSequenceNumber -1\\n    -width 1293\\n    -height 864\\n    -sceneRenderFilter 0\\n    $editorName;\\nmodelEditor -e -viewSelected 0 $editorName;\\nmodelEditor -e \\n    -pluginObjects \\\"gpuCacheDisplayFilter\\\" 1 \\n    $editorName\"\n"
 		+ "\t\t\t\t$configName;\n\n            setNamedPanelLayout (localizedPanelLabel(\"Current Layout\"));\n        }\n\n        panelHistory -e -clear mainPanelHistory;\n        sceneUIReplacement -clear;\n\t}\n\n\ngrid -spacing 5 -size 25 -divisions 5 -displayAxes yes -displayGridLines yes -displayDivisionLines yes -displayPerspectiveLabels no -displayOrthographicLabels no -displayAxesBold yes -perspectiveLabelPosition axis -orthographicLabelPosition edge;\nviewManip -drawCompass 0 -compassAngle 0 -frontParameters \"\" -homeParameters \"\" -selectionLockParameters \"\";\n}\n");
 	setAttr ".st" 3;
 createNode script -n "sceneConfigurationScriptNode";
@@ -9325,7 +9327,7 @@ createNode groupId -n "groupId9";
 	rename -uid "4ED04AD5-4BAB-7F2D-D25A-E1A90E12F05F";
 	setAttr ".ihi" 0;
 createNode mayaUsdLayerManager -n "mayaUsdLayerManager1";
-	rename -uid "930D57F0-4AA4-6453-5BCA-72839CEA19AD";
+	rename -uid "695CA97D-46B0-A73A-F29B-BBB051E8857F";
 select -ne :time1;
 	setAttr ".o" 1;
 	setAttr ".unw" 1;
@@ -9375,37 +9377,29 @@ select -ne :defaultColorMgtGlobals;
 select -ne :hardwareRenderGlobals;
 	setAttr ".ctrs" 256;
 	setAttr ".btrs" 512;
-connectAttr "groupId5.id" "|AlexDesk|AlexDrawer1|Drawer1|DrawerShape1.iog.og[0].gid"
+connectAttr "groupId5.id" "rightDrawerShape1.iog.og[0].gid";
+connectAttr "textureEditorIsolateSelectSet.mwc" "rightDrawerShape1.iog.og[0].gco"
 		;
-connectAttr "textureEditorIsolateSelectSet.mwc" "|AlexDesk|AlexDrawer1|Drawer1|DrawerShape1.iog.og[0].gco"
+connectAttr "groupId6.id" "rightDrawerShape2.iog.og[0].gid";
+connectAttr "textureEditorIsolateSelectSet.mwc" "rightDrawerShape2.iog.og[0].gco"
 		;
-connectAttr "groupId6.id" "|AlexDesk|AlexDrawer1|Drawer2|DrawerShape2.iog.og[0].gid"
+connectAttr "groupId7.id" "rightDrawerShape3.iog.og[0].gid";
+connectAttr "textureEditorIsolateSelectSet.mwc" "rightDrawerShape3.iog.og[0].gco"
 		;
-connectAttr "textureEditorIsolateSelectSet.mwc" "|AlexDesk|AlexDrawer1|Drawer2|DrawerShape2.iog.og[0].gco"
+connectAttr "groupId8.id" "rightDrawerShape4.iog.og[0].gid";
+connectAttr "textureEditorIsolateSelectSet.mwc" "rightDrawerShape4.iog.og[0].gco"
 		;
-connectAttr "groupId7.id" "|AlexDesk|AlexDrawer1|Drawer3|DrawerShape3.iog.og[0].gid"
+connectAttr "groupId9.id" "leftDrawerShape1.iog.og[0].gid";
+connectAttr "textureEditorIsolateSelectSet.mwc" "leftDrawerShape1.iog.og[0].gco"
 		;
-connectAttr "textureEditorIsolateSelectSet.mwc" "|AlexDesk|AlexDrawer1|Drawer3|DrawerShape3.iog.og[0].gco"
+connectAttr "groupId2.id" "leftDrawerShape2.iog.og[0].gid";
+connectAttr "textureEditorIsolateSelectSet.mwc" "leftDrawerShape2.iog.og[0].gco"
 		;
-connectAttr "groupId8.id" "|AlexDesk|AlexDrawer1|Drawer4|DrawerShape4.iog.og[0].gid"
+connectAttr "groupId3.id" "leftDrawerShape3.iog.og[0].gid";
+connectAttr "textureEditorIsolateSelectSet.mwc" "leftDrawerShape3.iog.og[0].gco"
 		;
-connectAttr "textureEditorIsolateSelectSet.mwc" "|AlexDesk|AlexDrawer1|Drawer4|DrawerShape4.iog.og[0].gco"
-		;
-connectAttr "groupId9.id" "|AlexDesk|AlexDrawer|Drawer1|DrawerShape1.iog.og[0].gid"
-		;
-connectAttr "textureEditorIsolateSelectSet.mwc" "|AlexDesk|AlexDrawer|Drawer1|DrawerShape1.iog.og[0].gco"
-		;
-connectAttr "groupId2.id" "|AlexDesk|AlexDrawer|Drawer2|DrawerShape2.iog.og[0].gid"
-		;
-connectAttr "textureEditorIsolateSelectSet.mwc" "|AlexDesk|AlexDrawer|Drawer2|DrawerShape2.iog.og[0].gco"
-		;
-connectAttr "groupId3.id" "|AlexDesk|AlexDrawer|Drawer3|DrawerShape3.iog.og[0].gid"
-		;
-connectAttr "textureEditorIsolateSelectSet.mwc" "|AlexDesk|AlexDrawer|Drawer3|DrawerShape3.iog.og[0].gco"
-		;
-connectAttr "groupId4.id" "|AlexDesk|AlexDrawer|Drawer4|DrawerShape4.iog.og[0].gid"
-		;
-connectAttr "textureEditorIsolateSelectSet.mwc" "|AlexDesk|AlexDrawer|Drawer4|DrawerShape4.iog.og[0].gco"
+connectAttr "groupId4.id" "leftDrawerShape4.iog.og[0].gid";
+connectAttr "textureEditorIsolateSelectSet.mwc" "leftDrawerShape4.iog.og[0].gco"
 		;
 relationship "link" ":lightLinker1" ":initialShadingGroup.message" ":defaultLightSet.message";
 relationship "link" ":lightLinker1" ":initialParticleSE.message" ":defaultLightSet.message";
@@ -9431,22 +9425,22 @@ connectAttr "groupId6.msg" "textureEditorIsolateSelectSet.gn" -na;
 connectAttr "groupId7.msg" "textureEditorIsolateSelectSet.gn" -na;
 connectAttr "groupId8.msg" "textureEditorIsolateSelectSet.gn" -na;
 connectAttr "groupId9.msg" "textureEditorIsolateSelectSet.gn" -na;
-connectAttr "|AlexDesk|AlexDrawer|Drawer2|DrawerShape2.iog.og[0]" "textureEditorIsolateSelectSet.dsm"
-		 -na;
-connectAttr "|AlexDesk|AlexDrawer|Drawer3|DrawerShape3.iog.og[0]" "textureEditorIsolateSelectSet.dsm"
-		 -na;
-connectAttr "|AlexDesk|AlexDrawer|Drawer4|DrawerShape4.iog.og[0]" "textureEditorIsolateSelectSet.dsm"
-		 -na;
-connectAttr "|AlexDesk|AlexDrawer1|Drawer1|DrawerShape1.iog.og[0]" "textureEditorIsolateSelectSet.dsm"
-		 -na;
-connectAttr "|AlexDesk|AlexDrawer1|Drawer2|DrawerShape2.iog.og[0]" "textureEditorIsolateSelectSet.dsm"
-		 -na;
-connectAttr "|AlexDesk|AlexDrawer1|Drawer3|DrawerShape3.iog.og[0]" "textureEditorIsolateSelectSet.dsm"
-		 -na;
-connectAttr "|AlexDesk|AlexDrawer1|Drawer4|DrawerShape4.iog.og[0]" "textureEditorIsolateSelectSet.dsm"
-		 -na;
-connectAttr "|AlexDesk|AlexDrawer|Drawer1|DrawerShape1.iog.og[0]" "textureEditorIsolateSelectSet.dsm"
-		 -na;
+connectAttr "leftDrawerShape2.iog.og[0]" "textureEditorIsolateSelectSet.dsm" -na
+		;
+connectAttr "leftDrawerShape3.iog.og[0]" "textureEditorIsolateSelectSet.dsm" -na
+		;
+connectAttr "leftDrawerShape4.iog.og[0]" "textureEditorIsolateSelectSet.dsm" -na
+		;
+connectAttr "rightDrawerShape1.iog.og[0]" "textureEditorIsolateSelectSet.dsm" -na
+		;
+connectAttr "rightDrawerShape2.iog.og[0]" "textureEditorIsolateSelectSet.dsm" -na
+		;
+connectAttr "rightDrawerShape3.iog.og[0]" "textureEditorIsolateSelectSet.dsm" -na
+		;
+connectAttr "rightDrawerShape4.iog.og[0]" "textureEditorIsolateSelectSet.dsm" -na
+		;
+connectAttr "leftDrawerShape1.iog.og[0]" "textureEditorIsolateSelectSet.dsm" -na
+		;
 connectAttr ":defaultColorMgtGlobals.cme" "file1.cme";
 connectAttr ":defaultColorMgtGlobals.cfe" "file1.cmcf";
 connectAttr ":defaultColorMgtGlobals.cfp" "file1.cmcp";
@@ -9518,18 +9512,18 @@ connectAttr "multiplyDivide1.o" "aiStandardSurface1.base_color";
 connectAttr "bump2d1.o" "aiStandardSurface1.n";
 connectAttr "file3.oa" "aiStandardSurface1.metalness";
 connectAttr "aiStandardSurface1.out" "set1.ss";
-connectAttr "|AlexDesk|AlexDrawer|Drawer1|DrawerShape1.iog" "set1.dsm" -na;
+connectAttr "leftDrawerShape1.iog" "set1.dsm" -na;
 connectAttr "SupportShape.iog" "set1.dsm" -na;
 connectAttr "TableTopShape.iog" "set1.dsm" -na;
-connectAttr "|AlexDesk|AlexDrawer|Case|CaseShape.iog" "set1.dsm" -na;
-connectAttr "|AlexDesk|AlexDrawer|Drawer2|DrawerShape2.iog" "set1.dsm" -na;
-connectAttr "|AlexDesk|AlexDrawer|Drawer3|DrawerShape3.iog" "set1.dsm" -na;
-connectAttr "|AlexDesk|AlexDrawer|Drawer4|DrawerShape4.iog" "set1.dsm" -na;
-connectAttr "|AlexDesk|AlexDrawer1|Case|CaseShape.iog" "set1.dsm" -na;
-connectAttr "|AlexDesk|AlexDrawer1|Drawer1|DrawerShape1.iog" "set1.dsm" -na;
-connectAttr "|AlexDesk|AlexDrawer1|Drawer2|DrawerShape2.iog" "set1.dsm" -na;
-connectAttr "|AlexDesk|AlexDrawer1|Drawer3|DrawerShape3.iog" "set1.dsm" -na;
-connectAttr "|AlexDesk|AlexDrawer1|Drawer4|DrawerShape4.iog" "set1.dsm" -na;
+connectAttr "leftCaseShape.iog" "set1.dsm" -na;
+connectAttr "leftDrawerShape2.iog" "set1.dsm" -na;
+connectAttr "leftDrawerShape3.iog" "set1.dsm" -na;
+connectAttr "leftDrawerShape4.iog" "set1.dsm" -na;
+connectAttr "rightCaseShape.iog" "set1.dsm" -na;
+connectAttr "rightDrawerShape1.iog" "set1.dsm" -na;
+connectAttr "rightDrawerShape2.iog" "set1.dsm" -na;
+connectAttr "rightDrawerShape3.iog" "set1.dsm" -na;
+connectAttr "rightDrawerShape4.iog" "set1.dsm" -na;
 connectAttr "set1.msg" "materialInfo1.sg";
 connectAttr "aiStandardSurface1.msg" "materialInfo1.m";
 connectAttr "file1.msg" "materialInfo1.t" -na;
