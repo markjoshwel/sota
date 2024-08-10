@@ -10,7 +10,7 @@ using UnityEngine.AI;
 using Random = System.Random;
 
 /// <summary>
-///     TODO
+/// 'standard' npc ai behaviour
 /// </summary>
 public class AI : MonoBehaviour
 {

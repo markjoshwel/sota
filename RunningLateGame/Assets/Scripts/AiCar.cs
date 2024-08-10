@@ -1,95 +1,86 @@
 ﻿/*
  * author: ryan lin
  * date: 30/7/2024
- * description: vehicular ai behaviour
+ * description: making the car go to a game object's position
  */
 
 using System.Collections;
 using UnityEngine;
 
 /// <summary>
-///     TODO
+///     making the car go to a game object's position
 /// </summary>
 public class AICar : MonoBehaviour
 {
     /// <summary>
-    ///     TODO
+    ///     reference to the car model
     /// </summary>
     [SerializeField] private Transform carPosition;
 
     /// <summary>
-    ///     TODO
+    ///     the radius of which the car can stop in
     /// </summary>
     [SerializeField] private float stoppingDistance;
 
     /// <summary>
-    ///     TODO
+    ///     the speed of which the car needs to be at/under to when it is in the slowed state
     /// </summary>
     [SerializeField] private float slowingSpeed;
 
     /// <summary>
-    ///     TODO
+    ///     the radius that the car switches to the slowed state
     /// </summary>
     [SerializeField] private float slowingDistance;
 
     /// <summary>
-    ///     TODO
+    ///     the distance that the car is allowed to reverse
     /// </summary>
     [SerializeField] private float reverseDist;
 
     /// <summary>
-    ///     TODO
+    ///     the acceleration input for the car script
     /// </summary>
     private float _accelerationInput;
 
     /// <summary>
-    ///     TODO
+    ///     the angular input for the car script
     /// </summary>
     private float _angularDirection;
 
     /// <summary>
-    ///     TODO
+    ///     reference to the car script
     /// </summary>
     private CarController _car;
 
     /// <summary>
-    ///     TODO
+    ///     the current state the car is in for fsm
     /// </summary>
     private string _currentState;
 
     /// <summary>
-    ///     TODO
-    /// </summary>
-    private Vector3 _dirToMove;
-
-    /// <summary>
-    ///     TODO
+    ///     the distance that the car is from the target
     /// </summary>
     private float _distanceToTarget;
 
     /// <summary>
-    ///     TODO
+    ///     the transform of the target
     /// </summary>
     private Transform _driveTarget;
 
-    /// <summary>
-    ///     TODO
-    /// </summary>
-    // FIXME: use an enum or something
-    private string _nextState;
+    private NextState _nextState;
 
     /// <summary>
-    ///     TODO
+    ///     the turn input for the car script
     /// </summary>
     private float _turnInput;
 
     /// <summary>
-    ///     TODO
+    ///     the car is in front or behind the target, a positive will be returned if the car is in front
     /// </summary>
     private float _verticalDirection;
 
     /// <summary>
-    ///     TODO
+    ///     initialise values
     /// </summary>
     private void Awake()
     {
@@ -110,21 +101,26 @@ public class AICar : MonoBehaviour
         }
 
         _car = GetComponent<CarController>();
-        _currentState = "Stopped";
-        _nextState = _currentState;
+        _nextState = NextState.Stopped;
+
         ChangeState();
     }
 
     /// <summary>
-    ///     TODO
+    ///     to update the next state value when it changes
     /// </summary>
     private void Update()
     {
-        _currentState = _nextState;
+        if (_nextState == NextState.Stopped)
+            _currentState = "Stopped";
+        else if (_nextState == NextState.Slowed)
+            _currentState = "Slowed";
+        else
+            _currentState = "Driving";
     }
 
     /// <summary>
-    ///     TODO
+    ///     is called at the end of states to call the next state
     /// </summary>
     private void ChangeState()
     {
@@ -132,7 +128,7 @@ public class AICar : MonoBehaviour
     }
 
     /// <summary>
-    ///     TODO
+    ///     a function that allows the car to steer
     /// </summary>
     private void Steering()
     {
@@ -145,17 +141,17 @@ public class AICar : MonoBehaviour
     }
 
     /// <summary>
-    ///     TODO
+    ///     to put the car in a stopped state
     /// </summary>
     private IEnumerator Stopped()
     {
-        while (_currentState == "Stopped")
+        while (_nextState != NextState.Stopped)
         {
             _distanceToTarget = Vector3.Distance(carPosition.position, _driveTarget.position);
             _car.braking = true;
             _accelerationInput = 0f;
             _turnInput = 0f;
-            if (_distanceToTarget > stoppingDistance) _nextState = "Slowed";
+            if (_distanceToTarget > stoppingDistance) _nextState = NextState.Slowed;
             yield return new WaitForSeconds(1);
         }
 
@@ -163,12 +159,12 @@ public class AICar : MonoBehaviour
     }
 
     /// <summary>
-    ///     TODO
+    ///     to put the car in a slowed state
     /// </summary>
     private IEnumerator Slowed()
     {
         _car.braking = false;
-        while (_currentState == "Slowed")
+        while (_nextState != NextState.Slowed)
         {
             _verticalDirection = Vector3.Dot(carPosition.transform.forward,
                 (_driveTarget.position - carPosition.transform.position).normalized);
@@ -198,12 +194,12 @@ public class AICar : MonoBehaviour
     }
 
     /// <summary>
-    ///     TODO
+    ///     to put the car in a driving state
     /// </summary>
     private IEnumerator Driving()
     {
         _car.braking = false;
-        while (_currentState == "Driving")
+        while (_nextState != NextState.Driving)
         {
             _verticalDirection = Vector3.Dot(carPosition.transform.forward,
                 (_driveTarget.position - carPosition.transform.position).normalized);
@@ -212,7 +208,7 @@ public class AICar : MonoBehaviour
 
 
             Steering();
-            if (_distanceToTarget < slowingDistance) _nextState = "Slowed";
+            if (_distanceToTarget < slowingDistance) _nextState = NextState.Slowed;
             _car.SetInputs(_accelerationInput, _turnInput);
             yield return new WaitForEndOfFrame();
         }
@@ -221,12 +217,22 @@ public class AICar : MonoBehaviour
     }
 
     /// <summary>
-    ///     TODO
+    ///     a function to check if the car should be a slowed state
     /// </summary>
     private void SlowedCheck()
     {
-        if (_distanceToTarget < stoppingDistance) _nextState = "Stopped";
+        if (_distanceToTarget < stoppingDistance) _nextState = NextState.Stopped;
 
-        if (_distanceToTarget > slowingDistance) _nextState = "Driving";
+        if (_distanceToTarget > slowingDistance)_nextState = NextState.Driving;
+    }
+
+    /// <summary>
+    ///     enum of states that the car can be in
+    /// </summary>
+    private enum NextState
+    {
+        Slowed,
+        Stopped,
+        Driving
     }
 }

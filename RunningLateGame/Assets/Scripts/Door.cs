@@ -10,12 +10,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-///     TODO
+///     door interaction and animation
 /// </summary>
 public class Door : CommonInteractable
 {
     /// <summary>
-    ///     TODO
+    ///     the type of door that is being used
     /// </summary>
     public enum DoorType
     {
@@ -24,32 +24,32 @@ public class Door : CommonInteractable
     }
 
     /// <summary>
-    ///     TODO
+    ///     the list of doors that are being used
     /// </summary>
     public List<DoorInput> doors;
 
     /// <summary>
-    ///     TODO
+    ///     the duration of the door opening
     /// </summary>
     public float duration;
 
     /// <summary>
-    ///     TODO
+    ///     the animation curve of the door opening
     /// </summary>
     public AnimationCurve curve;
 
     /// <summary>
-    ///     TODO
+    ///     a bool to check if the door is open
     /// </summary>
     private bool _isOpen;
 
     /// <summary>
-    ///     TODO
+    ///     a bool to check if the door is opening
     /// </summary>
     private bool _opening;
 
     /// <summary>
-    ///     TODO
+    ///     to interact with the door
     /// </summary>
     public override void Interact()
     {
@@ -57,7 +57,7 @@ public class Door : CommonInteractable
     }
 
     /// <summary>
-    ///     TODO
+    ///     to open the door
     /// </summary>
     private IEnumerator OpenDoor()
     {
@@ -104,9 +104,8 @@ public class Door : CommonInteractable
     }
 
     /// <summary>
-    ///     TODO
+    ///     a struct to hold the door input
     /// </summary>
-    // NOTE: why is this at the bottom lol
     [Serializable]
     public struct DoorInput
     {

@@ -1,46 +1,48 @@
 /*
  * author: ryan lin
- * date: TODO
- * description: TODO
+ * date: 08/08/2024
+ * description: to cull and spawn AI people 
  */
 
 using System.Collections;
 using UnityEngine;
-
+/// <summary>
+/// to cull and spawn AI people
+/// </summary>
 public class AIManager : MonoBehaviour
 {
     /// <summary>
-    ///     TODO
+    ///     a reference to the player
     /// </summary>
     public Transform player;
 
     /// <summary>
-    ///     TODO
+    ///     the distance of which the AI would be "killed"
     /// </summary>
     public float cullingDistance;
 
     /// <summary>
-    ///     TODO
+    ///     the prefab to spawn 
     /// </summary>
     public GameObject aiPrefab;
 
     /// <summary>
-    ///     TODO
+    ///     the maximum number of AI that can be spawned at any time
     /// </summary>
     public int maxAI;
 
     /// <summary>
-    ///     TODO
+    ///     An array that contains the game objects of the AI objects
     /// </summary>
     private GameObject[] _ais;
 
     /// <summary>
-    ///     TODO
+    ///     a temporary float to find the distance between the player and the AI
     /// </summary>
     private float _distance;
 
     /// <summary>
-    ///     TODO
+    ///     to start the 
     /// </summary>
     private void Start()
     {
@@ -48,16 +50,16 @@ public class AIManager : MonoBehaviour
     }
 
     /// <summary>
-    ///     TODO
+    ///     to show the range in the inspector
     /// </summary>
-    private void OnDrawGizmos()
+    private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(player.position, cullingDistance);
     }
 
     /// <summary>
-    ///     TODO
+    ///     to allow the IEnumerator to destroy or instantiate AI
     /// </summary>
     private IEnumerator Manager()
     {
@@ -78,6 +80,7 @@ public class AIManager : MonoBehaviour
 
             yield return new WaitForSeconds(1);
         }
-        // TODO: iterator never returns? is this intended?
+        
     }
+    
 }

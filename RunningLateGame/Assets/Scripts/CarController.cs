@@ -1,21 +1,22 @@
 /*
  * author: ryan lin
- * date: TODO
- * description: TODO
+ * date: 06/08/2024
+ * description: a controller for the car
  */
 
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 /// <summary>
-///     TODO
+///     a controller for the car
 /// </summary>
 public class CarController : MonoBehaviour
 {
     /// <summary>
-    ///     TODO
+    ///     enum for if the wheel is the front or back wheel
     /// </summary>
     public enum Axel
     {
@@ -24,42 +25,42 @@ public class CarController : MonoBehaviour
     }
 
     /// <summary>
-    ///     TODO
+    ///     a value for the motor torque that the wheels have when speeding up
     /// </summary>
-    public float acceleration;
+    public float motorTorque;
 
     /// <summary>
-    ///     TODO
+    ///     the angle that the wheels turn when the car turns 
     /// </summary>
     public float turnAngle;
 
     /// <summary>
-    ///     TODO
+    ///     a list to input the different wheels
     /// </summary>
     public List<Wheel> wheels;
 
     /// <summary>
-    ///     TODO
+    ///     the force the wheel exerts when it brakes
     /// </summary>
     public float brakeForce;
 
     /// <summary>
-    ///     TODO
+    ///     a bool to brake the car
     /// </summary>
     public bool braking;
 
     /// <summary>
-    ///     TODO
+    ///     inputs for acceleration
     /// </summary>
     private float _currentAcceleration;
 
     /// <summary>
-    ///     TODO
+    ///     inputs for turning
     /// </summary>
     private float _currentTurn;
 
     /// <summary>
-    ///     TODO
+    ///     to move the car
     /// </summary>
     private void FixedUpdate()
     {
@@ -69,16 +70,16 @@ public class CarController : MonoBehaviour
     }
 
     /// <summary>
-    ///     TODO
+    ///     for other scripts to set the inputs
     /// </summary>
     public void SetInputs(float forwardAmount, float turnAmount)
     {
-        _currentAcceleration = forwardAmount * acceleration;
+        _currentAcceleration = forwardAmount * motorTorque;
         _currentTurn = turnAmount * turnAngle;
     }
 
     /// <summary>
-    ///     TODO
+    ///     to move the car forwards or backwards
     /// </summary>
     public void Move()
     {
@@ -86,7 +87,7 @@ public class CarController : MonoBehaviour
     }
 
     /// <summary>
-    ///     TODO
+    ///     to stop the car
     /// </summary>
     public void Brake()
     {
@@ -99,7 +100,7 @@ public class CarController : MonoBehaviour
     }
 
     /// <summary>
-    ///     TODO
+    ///     to turn the car
     /// </summary>
     public void Steering()
     {
@@ -108,9 +109,8 @@ public class CarController : MonoBehaviour
     }
 
     /// <summary>
-    ///     TODO
+    ///     a struct to display the wheels in the inspector
     /// </summary>
-    // NOTE: once again, why is this at the bottom lol
     [Serializable]
     public struct Wheel
     {
