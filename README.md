@@ -310,14 +310,19 @@ comma-separate multiple licences, and use code blocks if you need to list multip
   - Vehicle - Rubber (Wheels): "used rubber" by Jabarri Mitchell  
     https://substance3d.adobe.com/community-assets/assets/c68b4bc648fc56b8275ff1d19adb3d630ce57020
 
-- [RL Madena](https://roughlinestype.gumroad.com/l/cmadnk) by [Roughline Types](https://www.instagram.com/roughlines.id/) \[sota staircase Logo Font]: OFL-1.1  
+- [RL Madena](https://roughlinestype.gumroad.com/l/cmadnk) by [Roughline Types](https://www.instagram.com/roughlines.id/)
+  \[sota staircase Logo Font]: OFL-1.1  
   _not shipped with the repo directly, but they're cool people!_
 
-- [GO Darkslide](https://fontesk.com/go-darkside-font/) by [griptype](https://www.instagram.com/griptypebymuchogusto/) (from [studio ¡muchogusto!](https://www.instagram.com/studiomuchogusto/)) \[Running Late Logo Font, 'Running' Portion]: OFL-1.1  
+- [GO Darkslide](https://fontesk.com/go-darkside-font/) by [griptype](https://www.instagram.com/griptypebymuchogusto/)
+  (from [studio ¡muchogusto!](https://www.instagram.com/studiomuchogusto/)) \[Running Late Logo Font, 'Running Portion'']: OFL-1.1  
   `RunningLateGame/Assets/UI Toolkit/RLFonts/GODarkslide`
 
-- [GO Freakout](https://fontesk.com/go-freakout-font/) by [griptype](https://www.instagram.com/griptypebymuchogusto/) (from [studio ¡muchogusto!](https://www.instagram.com/studiomuchogusto/)) \[Running Late Logo Font, 'Running' Portion]: OFL-1.1  
+- [GO Freakout](https://fontesk.com/go-freakout-font/) by [griptype](https://www.instagram.com/griptypebymuchogusto/)
+  (from [studio ¡muchogusto!](https://www.instagram.com/studiomuchogusto/)) \[Running Late Logo Font,
+  'Late' Portion]: OFL-1.1  
   _not shipped with the repo directly, but they're cool people!_
 
-- [Fervojo](https://www.behance.net/gallery/167977473/Fervojo-Free-Font) by [Reiya Watanabe (kohakuno)](https://www.behance.net/kohakuno) \[General Body Font in Game and Figma Prototype]: OFL-1.1  
+- [Fervojo](https://www.behance.net/gallery/167977473/Fervojo-Free-Font) by [Reiya Watanabe (kohakuno)](https://www.behance.net/kohakuno)
+  \[General Body Font in Game and Figma Prototype]: OFL-1.1  
   `RunningLateGame/Assets/UI Toolkit/RLFonts/Fervojo`
