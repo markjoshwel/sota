@@ -294,7 +294,30 @@ comma-separate multiple licences, and use code blocks if you need to list multip
     - Train Station: https://en.wikipedia.org/wiki/Caldecott_MRT_station#/media/File:CC17_TE9_Caldecott_MRT_Exit_1_20210826_191019.jpg
     - HDB Void Deck: https://www.99.co/singapore/insider/3-ways-can-revive-dying-void-deck-culture/
     - Bus: https://allabout.city/singapore/public-buses-in-singapore/
-      `Modelling/3RT_RunningLate_Textures`
-     - square-pattern: https://thepatterncollective.com/products/grid-small-thin-line-white-background-black
-     - hexagon-pattern: https://www.freepik.com/free-vector/white-hexagonal-patterned-background_13313378.htm#query=hexagon%20pattern&position=1&from_view=keyword&track=ais_hybrid&uuid=376b80b6-1f7e-4737-94c7-d2504c0fb094
-      
+
+- Substance 3D Community Assets: All Rights Reserved  
+  `Modelling/Sources/Substance`
+  - Tiles (Outside Flooring, a la 2020 Toa Payoh Central): "Stone ground tiles stylized" by Joppe Monnens  
+    https://substance3d.adobe.com/community-assets/assets/96395b29a3b8db6eca34efaa1ca37bfa379eb4b4
+  - Interior HDB - Wood: "sand stylized" by BlenderGames 3D  
+    https://substance3d.adobe.com/community-assets/assets/c39ed6d6cf150c54eeb1944ae90470ab6ac4405d
+  - General HDB - Concrete (Walls): "Concrete 085" by Baptiste Manteau  
+    https://substance3d.adobe.com/community-assets/assets/be8c895f6ebcefeb7a8af0fb37ce3c8cce2134d7
+  - Structural/Bus Stop - Metal: "Steel Painted" by Marion Marchive  
+    https://substance3d.adobe.com/community-assets/assets/6a37fff956f47d7726983f4cba2292dd933347e5
+  - Vehicle - Metal (Body): "Iron Shiny" by Marion Marchive  
+    https://substance3d.adobe.com/community-assets/assets/ea94640430c84e7217dc55702922a6998cb9eea9
+  - Vehicle - Rubber (Wheels): "used rubber" by Jabarri Mitchell  
+    https://substance3d.adobe.com/community-assets/assets/c68b4bc648fc56b8275ff1d19adb3d630ce57020
+
+- [RL Madena](https://roughlinestype.gumroad.com/l/cmadnk) by [Roughline Types](https://www.instagram.com/roughlines.id/) \[sota staircase Logo Font]: OFL-1.1  
+  _not shipped with the repo directly, but they're cool people!_
+
+- [GO Darkslide](https://fontesk.com/go-darkside-font/) by [griptype](https://www.instagram.com/griptypebymuchogusto/) (from [studio ¡muchogusto!](https://www.instagram.com/studiomuchogusto/)) \[Running Late Logo Font, 'Running' Portion]: OFL-1.1  
+  `RunningLateGame/Assets/UI Toolkit/RLFonts/GODarkslide`
+
+- [GO Freakout](https://fontesk.com/go-freakout-font/) by [griptype](https://www.instagram.com/griptypebymuchogusto/) (from [studio ¡muchogusto!](https://www.instagram.com/studiomuchogusto/)) \[Running Late Logo Font, 'Running' Portion]: OFL-1.1  
+  _not shipped with the repo directly, but they're cool people!_
+
+- [Fervojo](https://www.behance.net/gallery/167977473/Fervojo-Free-Font) by [Reiya Watanabe (kohakuno)](https://www.behance.net/kohakuno) \[General Body Font in Game and Figma Prototype]: OFL-1.1  
+  `RunningLateGame/Assets/UI Toolkit/RLFonts/Fervojo`
