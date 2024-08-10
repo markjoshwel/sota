@@ -1,53 +1,61 @@
 /*
- * author: ryan lin
- * date: 8/8/2024
- * description: TODO
+ * author: ryan lin, mark joshwel
+ * date: 11/8/2024
+ * description: player interaction behaviour
  */
 
 using UnityEngine;
 
 /// <summary>
-///     TODO
+///     player interaction behaviour
 /// </summary>
 public class Player : MonoBehaviour
 {
     /// <summary>
-    ///     TODO
+    ///     the position of the player
     /// </summary>
     [SerializeField] private Transform playerPosition;
 
     /// <summary>
-    ///     TODO
+    ///     the maximum distance the player can interact with objects
     /// </summary>
-    [SerializeField] private float seeDistance;
+    [SerializeField] private float interactableDistance;
 
     /// <summary>
-    ///     TODO
+    ///     the layers the raycast should interact with
     /// </summary>
     public LayerMask raycastLayers;
 
-    /// <summary>
-    ///     TODO
-    /// </summary>
-    private bool _active;
+    // /// <summary>
+    // ///     the current interactable object the player is looking at
+    // /// </summary>
+    // private CommonInteractable _currentInteractable;
 
     /// <summary>
-    ///     TODO
+    ///     game manager instance
     /// </summary>
-    private CommonInteractable _currentInteractable;
+    private GameManager _game;
 
     /// <summary>
-    ///     TODO
+    ///     whether the player is looking at an interactable object
     /// </summary>
     private bool _raycast;
 
     /// <summary>
-    ///     TODO
+    ///     the raycast hit information
     /// </summary>
     public RaycastHit Hit;
 
     /// <summary>
-    ///     TODO
+    ///     initialisation function
+    /// </summary>
+    private void Start()
+    {
+        _game = GameManager.Instance;
+    }
+
+    /// <summary>
+    ///     raycast performer for interactable objects
     /// </summary>
     private void Update()
     {
@@ -55,24 +63,41 @@ public class Player : MonoBehaviour
             playerPosition.position,
             playerPosition.TransformDirection(Vector3.forward),
             out Hit,
-            seeDistance,
+            interactableDistance,
             raycastLayers
         );
         Debug.DrawRay(
             playerPosition.position,
-            playerPosition.TransformDirection(Vector3.forward) * seeDistance,
+            playerPosition.TransformDirection(Vector3.forward) * interactableDistance,
             Color.green
         );
+        
+        if (!_raycast) return;
+
+        // show an interaction prompt if we're looking at an interactable object
+        var prompt = Hit.collider.GetComponent<CommonInteractable>()?.interactionPrompt;
+        if (prompt != "")
+        {
+            Debug.Log(prompt);
+        }
     }
 
     /// <summary>
-    ///     TODO
+    ///     handles the action when the player interacts with an object
     /// </summary>
     private void OnAction()
     {
-        Debug.Log("test");
-        if (_raycast)
-            if (Hit.transform.CompareTag("Interactable"))
-                Hit.transform.GetComponent<CommonInteractable>().Interact();
+        if (!_raycast) return;
+        Hit.collider.GetComponent<CommonInteractable>()?.Interact();
+        // _currentInteractable?.Interact();
+    }
+
+    /// <summary>
+    ///     function called by the input system when escape is paused
+    /// </summary>
+    public void OnPause()
+    {
+        Debug.Log("escape pressed");
+        _game.SetDisplayState(_game.Paused ? GameManager.DisplayState.Game : GameManager.DisplayState.OverlayPauseMenu);
     }
 }
