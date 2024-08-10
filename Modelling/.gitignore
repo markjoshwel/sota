@@ -6,3 +6,5 @@ _*autosave
 # substance painter baking artifacts
 *.assbin
 
+# substance painter lock
+*.painter_lock
