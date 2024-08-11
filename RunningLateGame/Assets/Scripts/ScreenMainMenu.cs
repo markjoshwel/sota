@@ -59,7 +59,7 @@ public class ScreenMainMenu : CommonMenu
     /// </summary>
     private void OptionStartGame()
     {
-        // start game
+        Debug.Log("ScreenMainMenu.OptionStartGame: clicked, starting game");
         Game.NewGame();
     }
 
@@ -69,7 +69,7 @@ public class ScreenMainMenu : CommonMenu
     /// </summary>
     private void OptionShowOptions()
     {
-        // show the option menu
+        Debug.Log("ScreenMainMenu.OptionShowOptions: clicked, showing options menu");
         Game.SetDisplayState(GameManager.DisplayState.ScreenOptionsMenu);
     }
 
@@ -79,8 +79,7 @@ public class ScreenMainMenu : CommonMenu
     /// </summary>
     private void OptionQuitGame()
     {
-        // quit game
-        Debug.Log("MainMenu.OptionQuitGame: exiting");
+        Debug.Log("ScreenMainMenu.OptionQuitGame: clicked, quitting game");
         Game.Quit();
     }
 }

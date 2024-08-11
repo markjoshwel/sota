@@ -4,7 +4,9 @@
  * description: game manager singleton for a single source of truth state management
  */
 
+using System;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 /// <summary>
 ///     singleton class for managing the game state as a single source of truth
@@ -17,11 +19,11 @@ public class GameManager : MonoBehaviour
     public enum DisplayState
     {
         Game,
-        ScreenMainMenu,  // done
-        ScreenOptionsMenu,  // done
-        OverlayPauseMenu,  // TODO
-        OverlayCompleteUnderTimeMenu,  // TODO
-        OverlayFailedOverTimeMenu,  // TODO
+        ScreenMainMenu,
+        ScreenOptionsMenu,
+        OverlayPauseMenu,
+        OverlayCompleteUnderTimeMenu,
+        OverlayFailedOverTimeMenu,
         UnassociatedState
     }
 
@@ -29,6 +31,11 @@ public class GameManager : MonoBehaviour
     ///     singleton pattern: define instance field for accessing the singleton elsewhere
     /// </summary>
     public static GameManager Instance;
+
+    /// <summary>
+    ///     property to store the heads-up display game object
+    /// </summary>
+    [SerializeField] private GameObject headsUpDisplay;
 
     /// <summary>
     ///     the current state of the game
@@ -40,9 +47,11 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public bool Paused => _state != DisplayState.Game;
 
+
     /// <summary>
     ///     function to set doesn't destroy on load and checks for multiple instances
     /// </summary>
+    /// <exception cref="NullReferenceException">thrown if a Heads-Up Display game object isn't set in the properties</exception>
     private void Awake()
     {
         // check if instance hasn't been set yet
@@ -63,6 +72,10 @@ public class GameManager : MonoBehaviour
             // destroy the new instance if it's not the singleton instance
             Destroy(gameObject);
         }
+
+        // check if the heads-up display is set
+        if (headsUpDisplay == null)
+            throw new NullReferenceException("GameManager: heads-up display is not set in game manager properties");
     }
 
     /// <summary>
@@ -71,7 +84,10 @@ public class GameManager : MonoBehaviour
     // /// <exception cref="Exception">generic exception it couldn't verify a safe state when starting the game</exception>
     private void Start()
     {
+        // set to the main menu state
         SetDisplayState(DisplayState.ScreenMainMenu);
+        // pause the game
+        PauseGameHelper(DisplayState.ScreenMainMenu);
     }
 
     /// <summary>
@@ -113,6 +129,15 @@ public class GameManager : MonoBehaviour
             Debug.Log("GameManager.PauseGameHelper: freeing cursor for main menu");
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
+
+            Debug.Log(GameObject.FindGameObjectWithTag("Player"));
+            var playerInput = GameObject.Find("PlayerArmature")?.GetComponent<PlayerInput>();
+            Debug.Log($"playerController={playerInput}");
+            if (playerInput != null)
+            {
+                Debug.Log("GameManager.PauseGameHelper: sentencing player input/control to a ball and chain boowomp");
+                playerInput.enabled = false;
+            }
         }
 
         // if the current and incoming states are the same, then we shouldn't do anything,
@@ -126,9 +151,9 @@ public class GameManager : MonoBehaviour
         // hide any menu that is currently showing
         HideMenuHelper();
 
-        // get all child menus in the "Menus" parent object
-        foreach (var menuParent in GameObject.FindGameObjectsWithTag("Interfaces"))
-        foreach (Transform menu in menuParent.transform)
+        // get all child interfaces in the "Interfaces" parent object
+        foreach (var interfaces in GameObject.FindGameObjectsWithTag("Interfaces"))
+        foreach (Transform menu in interfaces.transform)
         {
             // show the menu based on the incoming state
             // get the associated state of the menu
@@ -166,13 +191,19 @@ public class GameManager : MonoBehaviour
         }
 
         // else, we should resume the game
+        Debug.Log("GameManager.ResumeGameHelper: resuming game");
         Time.timeScale = 1f;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-        Debug.Log("GameManager.ResumeGameHelper: resuming game");
 
         // hide any menu that is currently showing
         HideMenuHelper();
+
+        // free the character controller
+        var playerInput = GameObject.Find("PlayerArmature")?.GetComponent<PlayerInput>();
+        if (playerInput == null) return;
+        Debug.Log("GameManager.ResumeGameHelper: enabling player input/control");
+        playerInput.enabled = true;
     }
 
     /// <summary>
@@ -203,11 +234,23 @@ public class GameManager : MonoBehaviour
         // if we're transitioning into gameplay or into the main menu,
         // we'll need a post-step to enable the correct camera
         if (displayState is not (DisplayState.Game or DisplayState.ScreenMainMenu))
+        {
+            Debug.Log($"GameManager.SetDisplayState({displayState}): skipping post-step");
             return;
+        }
 
-        // get all MainCamera-tagged objects and disable them
+        // disabling (1): disable the 'Menu Camera' camera
+        var menuCameraObject = GameObject.Find("Menu Camera")?.GetComponent<Camera>();
+        if (menuCameraObject != null)
+        {
+            Debug.Log("GameManager.SetDisplayState: disabling 'Menu Camera' camera");
+            menuCameraObject.enabled = false;
+        }
+
+        // disabling (2): get all MainCamera-tagged objects and disable them
         foreach (var mainCameraObject in GameObject.FindGameObjectsWithTag("MainCamera"))
         {
+            Debug.Log($"GameManager.SetDisplayState: disabling 'MainCamera' camera {mainCameraObject}");
             // find the camera component
             var potentialCamera = mainCameraObject.GetComponent<Camera>();
             // if the object doesn't have a camera component, skip it
@@ -224,7 +267,7 @@ public class GameManager : MonoBehaviour
         switch (displayState)
         {
             // if we're transitioning to the main menu state,
-            // change the camera to the main menu camera under the "Menus"-tagged parent object
+            // change the camera to the main menu camera named very specifically such
             case DisplayState.ScreenMainMenu:
                 Debug.Log("GameManager.SetDisplayState: targeting 'Menu Camera' camera");
                 targetCameraObject = GameObject.Find("Menu Camera");
@@ -237,14 +280,11 @@ public class GameManager : MonoBehaviour
                 break;
         }
 
-        // find the camera component
-        if (targetCameraObject == null) return;
-        var targetCamera = targetCameraObject.GetComponent<Camera>();
+        // find the camera component and enable it
+        var targetCamera = targetCameraObject?.GetComponent<Camera>();
         if (targetCamera == null) return;
-
-        // enable the target camera
-        Debug.Log("GameManager.SetDisplayState: enabling target camera");
         targetCamera.enabled = true;
+        Debug.Log("GameManager.SetDisplayState: enabled target camera");
     }
 
     /// <summary>
