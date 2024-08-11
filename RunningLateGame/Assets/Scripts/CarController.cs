@@ -8,7 +8,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 /// <summary>
 ///     a controller for the car
@@ -30,7 +29,7 @@ public class CarController : MonoBehaviour
     public float motorTorque;
 
     /// <summary>
-    ///     the angle that the wheels turn when the car turns 
+    ///     the angle that the wheels turn when the car turns
     /// </summary>
     public float turnAngle;
 

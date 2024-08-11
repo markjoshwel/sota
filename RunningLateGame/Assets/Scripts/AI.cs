@@ -1,7 +1,7 @@
 /*
  * author: ryan lin
  * date: 30/7/2024
- * description: 'standard' npc ai behaviour
+ * description: 'standard' npc AI behaviour
  */
 
 using System.Collections;
@@ -10,7 +10,7 @@ using UnityEngine.AI;
 using Random = System.Random;
 
 /// <summary>
-/// 'standard' npc ai behaviour
+///     'standard' npc AI behaviour
 /// </summary>
 public class AI : MonoBehaviour
 {

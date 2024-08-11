@@ -41,34 +41,34 @@ public class Door : CommonInteractable
     /// <summary>
     ///     a bool to check if the door is open
     /// </summary>
-    private bool _isOpen;
+    [HideInInspector] public bool isOpen;
 
     /// <summary>
     ///     a bool to check if the door is opening
     /// </summary>
-    private bool _opening;
+    [HideInInspector] public bool opening;
 
     /// <summary>
     ///     to interact with the door
     /// </summary>
     public override void Interact()
     {
-        if (!_opening) StartCoroutine(OpenDoor());
+        if (!opening) StartCoroutine(OpenDoor());
     }
 
     /// <summary>
     ///     to open the door
     /// </summary>
-    private IEnumerator OpenDoor()
+    public IEnumerator OpenDoor()
     {
-        _opening = true;
+        opening = true;
         float currentDuration = 0;
-        while (_opening)
+        while (opening)
         {
             currentDuration += Time.deltaTime;
             var t = currentDuration / duration;
             foreach (var variable in doors)
-                if (!_isOpen)
+                if (!isOpen)
                 {
                     if (variable.type == DoorType.Sliding)
                         variable.doorObject.transform.localPosition = Vector3.Lerp(variable.startPosition,
@@ -95,8 +95,8 @@ public class Door : CommonInteractable
             if (currentDuration >= duration)
             {
                 currentDuration = 0;
-                _opening = false;
-                _isOpen = !_isOpen;
+                opening = false;
+                isOpen = !isOpen;
             }
 
             yield return new WaitForEndOfFrame();
