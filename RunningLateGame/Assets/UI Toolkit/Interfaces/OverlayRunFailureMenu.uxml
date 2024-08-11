@@ -1,0 +1,16 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/Interfaces/Common.uss?fileID=7433441132597879392&amp;guid=7e22eeee55627cf478c5e125a8197039&amp;type=3#Common" />
+    <ui:VisualElement name="Root" style="flex-grow: 1; justify-content: space-around; align-items: stretch; align-self: stretch; width: auto;">
+        <ui:VisualElement name="HoriHolder" style="flex-grow: 1; flex-direction: column; max-height: 60%; margin-left: 10%; margin-right: 10%;">
+            <ui:VisualElement name="Logospace" style="flex-grow: 1; width: auto; flex-direction: row; padding-bottom: 6%; height: 50%; min-height: 50%;">
+                <ui:VisualElement name="Header" style="background-image: none; -unity-background-scale-mode: scale-to-fit; flex-grow: 1; flex-shrink: 0; align-items: center; justify-content: center; align-self: stretch;">
+                    <ui:Label tabindex="-1" text="DNF" parse-escape-sequences="true" display-tooltip-when-elided="true" name="HeaderLabel" style="-unity-font: url(&quot;project://database/Assets/UI%20Toolkit/RLFonts/GODarkslide/GODarkslide-distressed.ttf?fileID=12800000&amp;guid=1f2f7dc4dddb45a4e91b4b96053f09f6&amp;type=3#GODarkslide-distressed&quot;); -unity-font-definition: url(&quot;project://database/Assets/UI%20Toolkit/RLFonts/GODarkslide/GODarkslide-distressed%20SDF.asset?fileID=11400000&amp;guid=e706151e7fb3790409b13d29b812a8ff&amp;type=2#GODarkslide-distressed SDF&quot;); font-size: 80px; color: rgb(255, 255, 255); -unity-text-align: upper-center; white-space: normal; text-overflow: clip; rotate: -12.347deg;" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+            <ui:VisualElement name="Buttonspace" style="flex-grow: 1; width: 50%; min-width: 50%; height: 50%; min-height: 50%; align-items: center; justify-content: flex-end; align-self: center;">
+                <ui:Button text="Retry Run" parse-escape-sequences="true" display-tooltip-when-elided="true" name="ButtonRetry" />
+                <ui:Button text="Return to Main Menu" parse-escape-sequences="true" display-tooltip-when-elided="true" name="ButtonReturn" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
