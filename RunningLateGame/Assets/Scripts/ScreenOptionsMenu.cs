@@ -30,7 +30,7 @@ public class ScreenOptionsMenu : CommonMenu
     ///     slider for sfx volume
     /// </summary>
     public Slider SliderAudioSfx;
-    
+
     /// <summary>
     ///     function to associate a display state with the menu,
     ///     and subscribe button events to their respective functions
@@ -44,7 +44,7 @@ public class ScreenOptionsMenu : CommonMenu
         // get the start button from the ui root and subscribe appropriate functions
         ButtonReturn = UI.Q<Button>("ButtonReturn");
         ButtonReturn.clicked += PlayClick;
-        ButtonReturn.clicked += OptionReturnToMainMenu;
+        ButtonReturn.clicked += OverlayPauseMenu.OptionReturnToMainMenu;
 
         // get the music slider from the ui root
         SliderAudioMaster = UI.Q<Slider>("MasterSlider");
@@ -52,14 +52,14 @@ public class ScreenOptionsMenu : CommonMenu
         // SliderAudioMusic.value = Audio.GetMusicVolume() * 100;
         // and subscribe appropriate functions
         SliderAudioMaster.RegisterCallback<ChangeEvent<float>>(OptionSetMasterVolume);
-        
+
         // get the music slider from the ui root
         SliderAudioMusic = UI.Q<Slider>("MusicSlider");
         // TODO: and set the initial value to the current music volume
         // SliderAudioMusic.value = Audio.GetMusicVolume() * 100;
         // and subscribe appropriate functions
         SliderAudioMusic.RegisterCallback<ChangeEvent<float>>(OptionSetMusicVolume);
-        
+
         // get the sfx slider from the ui root
         SliderAudioSfx = UI.Q<Slider>("SFXSlider");
         // TODO: and set the initial value to the current sfx volume
@@ -68,16 +68,6 @@ public class ScreenOptionsMenu : CommonMenu
         SliderAudioSfx.RegisterCallback<ChangeEvent<float>>(OptionSetSfxVolume);
     }
 
-    /// <summary>
-    ///     handles return to the main menu button press,
-    ///     signals the game manager appropriately
-    /// </summary>
-    private void OptionReturnToMainMenu()
-    {
-        // return to the main menu
-        Game.SetDisplayState(GameManager.DisplayState.ScreenMainMenu);
-    }
-    
     /// <summary>
     ///     handle music volume slider change,
     ///     sets the music channel volume in the audio manager appropriately
@@ -88,7 +78,7 @@ public class ScreenOptionsMenu : CommonMenu
         // TODO: slider is from 0 to 100, convert to 0 to 1, and set
         // Audio.SetMusicVolume(evt.newValue / 100);
     }
-    
+
     /// <summary>
     ///     handle music volume slider change,
     ///     sets the music channel volume in the audio manager appropriately

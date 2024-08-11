@@ -365,6 +365,15 @@ public class GameManager : MonoBehaviour
     }
 
     /// <summary>
+    ///     function to restart the current run
+    /// </summary>
+    public void RestartRun()
+    {
+        // TODO: implement this
+        throw new NotImplementedException();
+    }
+
+    /// <summary>
     ///     function to set an interaction prompt/tooltip for the player
     /// </summary>
     /// <param name="prompt">string to show to the player</param>

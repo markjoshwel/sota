@@ -15,17 +15,17 @@ public class ScreenMainMenu : CommonMenu
     /// <summary>
     ///     button to quit game
     /// </summary>
-    public Button ButtonExit;
+    private Button _buttonExit;
 
     /// <summary>
     ///     button to show the options menu
     /// </summary>
-    public Button ButtonOptions;
+    private Button _buttonOptions;
 
     /// <summary>
     ///     button to play game
     /// </summary>
-    public Button ButtonPlay;
+    private Button _buttonPlay;
 
     /// <summary>
     ///     function to associate a display state with the menu,
@@ -38,19 +38,19 @@ public class ScreenMainMenu : CommonMenu
         base.OnEnable();
 
         // get the start button from the ui root and subscribe appropriate functions
-        ButtonPlay = UI.Q<Button>("ButtonPlay");
-        ButtonPlay.clicked += PlayClick;
-        ButtonPlay.clicked += OptionStartGame;
+        _buttonPlay = UI.Q<Button>("ButtonPlay");
+        _buttonPlay.clicked += PlayClick;
+        _buttonPlay.clicked += OptionStartGame;
 
         // get the options button from the ui root and subscribe appropriate functions
-        ButtonOptions = UI.Q<Button>("ButtonOptions");
-        ButtonOptions.clicked += PlayClick;
-        ButtonOptions.clicked += OptionShowOptions;
+        _buttonOptions = UI.Q<Button>("ButtonOptions");
+        _buttonOptions.clicked += PlayClick;
+        _buttonOptions.clicked += OptionShowOptions;
 
         // get the quit button from the ui root and subscribe appropriate functions
-        ButtonExit = UI.Q<Button>("ButtonExit");
-        ButtonExit.clicked += PlayClick;
-        ButtonExit.clicked += OptionQuitGame;
+        _buttonExit = UI.Q<Button>("ButtonExit");
+        _buttonExit.clicked += PlayClick;
+        _buttonExit.clicked += OptionQuitGame;
     }
 
     /// <summary>
