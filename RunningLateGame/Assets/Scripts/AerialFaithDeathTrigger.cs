@@ -58,6 +58,7 @@ public class AerialFaithDeathTrigger : MonoBehaviour
         linkedLeapTrigger1.isPlayerInAir = false;
         if (linkedLeapTrigger2 != null) linkedLeapTrigger2.isPlayerInAir = false;
         if (linkedLeapTrigger3 != null) linkedLeapTrigger3.isPlayerInAir = false;
-        // TODO: kill player
+
+        GameManager.Instance.SetDisplayState(GameManager.DisplayState.OverlayFailedOverTimeMenu);
     }
 }

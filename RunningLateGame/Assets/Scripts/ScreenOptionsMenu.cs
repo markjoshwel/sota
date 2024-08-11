@@ -7,7 +7,6 @@
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Audio;
-using UnityEngine.Serialization;
 using UnityEngine.UIElements;
 
 /// <summary>
@@ -20,22 +19,26 @@ public class ScreenOptionsMenu : CommonMenu
     /// <summary>
     ///     button to return to the main menu
     /// </summary>
-    public Button ButtonReturn;
+    private Button _buttonReturn;
 
     /// <summary>
     ///     slider for master (music + sfx) volume
     /// </summary>
-    public Slider SliderAudioMaster;
+    private Slider _sliderAudioMaster;
 
     /// <summary>
     ///     slider for music volume
     /// </summary>
-    public Slider SliderAudioMusic;
+    private Slider _sliderAudioMusic;
 
     /// <summary>
     ///     slider for sfx volume
     /// </summary>
-    public Slider SliderAudioSfx;
+    private Slider _sliderAudioSfx;
+
+    public void Start()
+    {
+    }
 
     /// <summary>
     ///     function to associate a display state with the menu,
@@ -48,35 +51,24 @@ public class ScreenOptionsMenu : CommonMenu
         base.OnEnable();
 
         // get the start button from the ui root and subscribe appropriate functions
-        ButtonReturn = UI.Q<Button>("ButtonReturn");
-        ButtonReturn.clicked += PlayClick;
-        ButtonReturn.clicked += OverlayPauseMenu.OptionReturnToMainMenu;
+        _buttonReturn = UI.Q<Button>("ButtonReturn");
+        _buttonReturn.clicked += PlayClick;
+        _buttonReturn.clicked += OverlayPauseMenu.OptionReturnToMainMenu;
 
-        // get the music slider from the ui root
-        SliderAudioMaster = UI.Q<Slider>("MasterSlider");
         // TODO: and set the initial value to the current music volume
-        // SliderAudioMusic.value = Audio.GetMusicVolume() * 100;
-        // and subscribe appropriate functions
-        SliderAudioMaster.RegisterCallback<ChangeEvent<float>>(OptionSetMasterVolume);
+        // get the music slider from the ui root and subscribe appropriate functions
+        _sliderAudioMaster = UI.Q<Slider>("MasterSlider");
+        _sliderAudioMaster.RegisterCallback<ChangeEvent<float>>(OptionSetMasterVolume);
 
-        // get the music slider from the ui root
-        SliderAudioMusic = UI.Q<Slider>("MusicSlider");
         // TODO: and set the initial value to the current music volume
+        // get the music slider from the ui root and subscribe appropriate functions
+        _sliderAudioMusic = UI.Q<Slider>("MusicSlider");
+        _sliderAudioMusic.RegisterCallback<ChangeEvent<float>>(OptionSetMusicVolume);
 
-        // and subscribe appropriate functions
-        SliderAudioMusic.RegisterCallback<ChangeEvent<float>>(OptionSetMusicVolume);
-
-        // get the sfx slider from the ui root
-        SliderAudioSfx = UI.Q<Slider>("SFXSlider");
         // TODO: and set the initial value to the current sfx volume
-        // SliderAudioSfx.value = Audio.GetSfxVolume() * 100;
-        // and subscribe appropriate functions
-        SliderAudioSfx.RegisterCallback<ChangeEvent<float>>(OptionSetSfxVolume);
-    }
-
-    public void Start()
-    {
-        
+        // get the sfx slider from the ui root and subscribe appropriate functions
+        _sliderAudioSfx = UI.Q<Slider>("SFXSlider");
+        _sliderAudioSfx.RegisterCallback<ChangeEvent<float>>(OptionSetSfxVolume);
     }
 
     private static float ConvertVolume(float linearVolume)

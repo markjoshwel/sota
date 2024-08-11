@@ -4,7 +4,6 @@
  * description: game run failure trigger collision
  */
 
-using System;
 using UnityEngine;
 
 /// <summary>

@@ -4,7 +4,6 @@
  * description: interaction prompt demo with a probuilder donut
  */
 
-using System;
 using UnityEngine;
 
 /// <summary>

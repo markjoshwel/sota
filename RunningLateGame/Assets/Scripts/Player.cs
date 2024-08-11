@@ -37,14 +37,14 @@ public class Player : MonoBehaviour
     private GameManager _game;
 
     /// <summary>
+    ///     the raycast hit information
+    /// </summary>
+    private RaycastHit _hit;
+
+    /// <summary>
     ///     whether the player is looking at an interactable object
     /// </summary>
     private bool _raycast;
-
-    /// <summary>
-    ///     the raycast hit information
-    /// </summary>
-    public RaycastHit Hit;
 
     /// <summary>
     ///     initialisation function
@@ -62,7 +62,7 @@ public class Player : MonoBehaviour
         _raycast = Physics.Raycast(
             playerPosition.position,
             playerPosition.TransformDirection(Vector3.forward),
-            out Hit,
+            out _hit,
             interactableDistance,
             raycastLayers
         );
@@ -75,7 +75,7 @@ public class Player : MonoBehaviour
         if (!_raycast) return;
 
         // show an interaction prompt if we're looking at an interactable object
-        var prompt = Hit.collider.GetComponent<CommonInteractable>()?.interactionPrompt;
+        var prompt = _hit.collider.GetComponent<CommonInteractable>()?.interactionPrompt;
         if (prompt != "") Debug.Log(prompt);
     }
 
@@ -85,7 +85,7 @@ public class Player : MonoBehaviour
     private void OnAction()
     {
         if (!_raycast) return;
-        Hit.collider.GetComponent<CommonInteractable>()?.Interact();
+        _hit.collider.GetComponent<CommonInteractable>()?.Interact();
         // _currentInteractable?.Interact();
     }
 

@@ -9,7 +9,7 @@
             </ui:VisualElement>
             <ui:VisualElement name="Buttonspace" style="flex-grow: 1; width: 50%; min-width: 50%; height: 50%; min-height: 50%; align-items: center; justify-content: flex-end; align-self: center;">
                 <ui:Button text="Resume Run" parse-escape-sequences="true" display-tooltip-when-elided="true" name="ButtonResume" />
-                <ui:Button text="Retry Run" parse-escape-sequences="true" display-tooltip-when-elided="true" name="ButtonRetry" />
+                <ui:Button text="Retry Run" parse-escape-sequences="true" display-tooltip-when-elided="true" name="ButtonRetry" style="display: none;" />
                 <ui:Button text="Return to Main Menu" parse-escape-sequences="true" display-tooltip-when-elided="true" name="ButtonReturn" />
             </ui:VisualElement>
         </ui:VisualElement>

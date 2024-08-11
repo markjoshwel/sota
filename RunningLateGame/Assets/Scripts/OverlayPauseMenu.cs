@@ -17,10 +17,10 @@ public class OverlayPauseMenu : CommonMenu
     /// </summary>
     private Button _buttonResume;
 
-    /// <summary>
-    ///     button to retry the run
-    /// </summary>
-    private Button _buttonRetry;
+    // /// <summary>
+    // ///     button to retry the run
+    // /// </summary>
+    // private Button _buttonRetry;
 
     /// <summary>
     ///     button to return to the main menu
@@ -42,10 +42,10 @@ public class OverlayPauseMenu : CommonMenu
         _buttonResume.clicked += PlayClick;
         _buttonResume.clicked += OptionResumeGame;
 
-        // get the retry button from the ui root and subscribe appropriate functions
-        _buttonRetry = UI.Q<Button>("ButtonRetry");
-        _buttonRetry.clicked += PlayClick;
-        _buttonRetry.clicked += OptionRetryGame;
+        // // get the retry button from the ui root and subscribe appropriate functions
+        // _buttonRetry = UI.Q<Button>("ButtonRetry");
+        // _buttonRetry.clicked += PlayClick;
+        // _buttonRetry.clicked += OptionRetryGame;z
 
         // get the return button from the ui root and subscribe appropriate functions
         _buttonReturn = UI.Q<Button>("ButtonReturn");
@@ -80,6 +80,6 @@ public class OverlayPauseMenu : CommonMenu
     public static void OptionReturnToMainMenu()
     {
         Debug.Log("OverlayPauseMenu.OptionReturnToMainMenu (static shared): clicked, returning to main menu");
-        GameManager.Instance.SetDisplayState(GameManager.DisplayState.ScreenMainMenu);
+        GameManager.Instance.RestartGame();
     }
 }

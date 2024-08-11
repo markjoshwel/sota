@@ -4,7 +4,6 @@
  * description: game run completion trigger collision
  */
 
-using System;
 using UnityEngine;
 
 /// <summary>
@@ -12,9 +11,8 @@ using UnityEngine;
 /// </summary>
 public class RunCompletionTrigger : MonoBehaviour
 {
-    
     private void OnTriggerEnter(Collider other)
-    {   
+    {
         GameManager.Instance.SetDisplayState(GameManager.DisplayState.OverlayCompleteUnderTimeMenu);
     }
 }

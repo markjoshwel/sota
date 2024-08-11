@@ -7,6 +7,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 using Cursor = UnityEngine.Cursor;
 
@@ -43,6 +44,16 @@ public class GameManager : MonoBehaviour
     ///     game object for the heads-up display
     /// </summary>
     [SerializeField] private GameObject guiHudObject;
+
+    /// <summary>
+    ///     float to keep track of the elapsed play/run/speeder time
+    /// </summary>
+    private float _elapsedRunTime;
+
+    /// <summary>
+    ///     checked when the scene is loaded to restart the game and skip the main menu
+    /// </summary>
+    private bool _restarting;
 
     /// <summary>
     ///     the current state of the game
@@ -98,12 +109,6 @@ public class GameManager : MonoBehaviour
             // destroy the new instance if it's not the singleton instance
             Destroy(gameObject);
         }
-
-        if (guiInteractionPromptObject == null)
-            throw new NullReferenceException("GameManager: guiInteractionPromptObject not set");
-
-        if (guiHudObject == null)
-            throw new NullReferenceException("GameManager: guiHudObject not set");
     }
 
     /// <summary>
@@ -112,25 +117,53 @@ public class GameManager : MonoBehaviour
     // /// <exception cref="Exception">generic exception it couldn't verify a safe state when starting the game</exception>
     private void Start()
     {
-        // set to the main menu state
-        SetDisplayState(DisplayState.ScreenMainMenu);
-        // pause the game
-        PauseGameHelper(DisplayState.ScreenMainMenu);
+        if (guiInteractionPromptObject == null)
+            throw new NullReferenceException("GameManager: guiInteractionPromptObject not set");
+
+        if (guiHudObject == null)
+            throw new NullReferenceException("GameManager: guiHudObject not set");
+
+        // if we're restarting, skip the main menu
+        if (_restarting)
+        {
+            Debug.Log("GameManager.Start: inherited _restarting, honouring it rn");
+            NewGame();
+        }
+        else
+        {
+            Debug.Log("GameManager.Start: setting to main menu and pausing");
+            SetDisplayState(DisplayState.ScreenMainMenu);
+            PauseGameHelper(DisplayState.ScreenMainMenu);
+        }
     }
 
     /// <summary>
     ///     game run speed run stopwatch logic
     /// </summary>
-    // TODO: implement this (speed-run stopwatch)
     private void Update()
     {
+        if (Paused) return;
+
+        _elapsedRunTime += Time.deltaTime;
+        var minutes = _elapsedRunTime / 60;
+        var seconds = _elapsedRunTime % 60;
+        var milliseconds = _elapsedRunTime * 1000 % 1000;
+        _uiLabelStopwatch.text = $"{minutes:00}:{seconds:00}.{milliseconds:000}";
+    }
+
+    /// <summary>
+    ///     called when the game object is enabled
+    /// </summary>
+    private void OnEnable()
+    {
+        InitialiseInterfaceElements();
     }
 
     /// <summary>
     ///     initialise ui elements used by the game[ manager]
     /// </summary>
     /// >
-    private void OnEnable()
+    private void InitialiseInterfaceElements()
     {
         _ui = guiInteractionPromptObject.GetComponent<UIDocument>()?.rootVisualElement;
         _uiLabelInteractionPrompt = _ui.Q<Label>("InteractionPromptLabel");
@@ -145,9 +178,9 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private void HideMenuHelper()
     {
-        // get all child menus in the "Menus" parent object
-        foreach (var menu in GameObject.FindGameObjectsWithTag("Interfaces"))
-        foreach (Transform menuChild in menu.transform)
+        // get all children in the "Menus" parent object
+        foreach (var child in GameObject.FindGameObjectsWithTag("Interfaces"))
+        foreach (Transform menuChild in child.transform)
         {
             // skip if it is 'GameInterface' object
             if (menuChild.gameObject.CompareTag("GameInterface")) continue;
@@ -158,6 +191,24 @@ public class GameManager : MonoBehaviour
             Debug.Log($"GameManager.HideMenuHelper: hiding menu '{menuChild}'");
             menuChild.gameObject.SetActive(false);
         }
+    }
+
+    /// <summary>
+    ///     helper function to hide any game interfaces that are currently showing
+    /// </summary>
+    private void SetInterfaceActive(bool active)
+    {
+        // foreach (var inter in GameObject.FindGameObjectsWithTag("GameInterface"))
+        foreach (var child in GameObject.FindGameObjectsWithTag("Interfaces"))
+        foreach (Transform inter in child.transform)
+        {
+            if (!inter.gameObject.CompareTag("GameInterface")) continue;
+            Debug.Log($"GameManager.SetInterfaceActive: setting interface '{inter}' {active}");
+            inter.gameObject.SetActive(active);
+        }
+
+        if (active)
+            InitialiseInterfaceElements();
     }
 
     /// <summary>
@@ -182,12 +233,14 @@ public class GameManager : MonoBehaviour
             Debug.Log("GameManager.PauseGameHelper: freeing cursor for main menu");
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
+
+            // only hide interfaces if we're transitioning to the main menu
+            SetInterfaceActive(false);
         }
 
         // freeze player input/control if we're not transitioning to a game state
         if (incomingState != DisplayState.Game)
         {
-            Debug.Log(GameObject.FindGameObjectWithTag("Player"));
             var playerInput = GameObject.Find("PlayerArmature")?.GetComponent<PlayerInput>();
             if (playerInput != null)
             {
@@ -254,6 +307,9 @@ public class GameManager : MonoBehaviour
 
         // hide any menu that is currently showing
         HideMenuHelper();
+
+        // show game interfaces
+        SetInterfaceActive(true);
 
         // free the character controller
         var playerInput = GameObject.Find("PlayerArmature")?.GetComponent<PlayerInput>();
@@ -369,8 +425,17 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void RestartRun()
     {
-        // TODO: implement this
-        throw new NotImplementedException();
+        _restarting = true;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    /// <summary>
+    ///     function to restart the game
+    /// </summary>
+    public void RestartGame()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        Destroy(this);
     }
 
     /// <summary>
