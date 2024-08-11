@@ -4,6 +4,10 @@
  * description: option menu script for handling credits menu button functions
  */
 
+using Unity.Mathematics;
+using UnityEngine;
+using UnityEngine.Audio;
+using UnityEngine.Serialization;
 using UnityEngine.UIElements;
 
 /// <summary>
@@ -11,6 +15,8 @@ using UnityEngine.UIElements;
 /// </summary>
 public class ScreenOptionsMenu : CommonMenu
 {
+    public AudioMixer mixer;
+
     /// <summary>
     ///     button to return to the main menu
     /// </summary>
@@ -56,7 +62,7 @@ public class ScreenOptionsMenu : CommonMenu
         // get the music slider from the ui root
         SliderAudioMusic = UI.Q<Slider>("MusicSlider");
         // TODO: and set the initial value to the current music volume
-        // SliderAudioMusic.value = Audio.GetMusicVolume() * 100;
+
         // and subscribe appropriate functions
         SliderAudioMusic.RegisterCallback<ChangeEvent<float>>(OptionSetMusicVolume);
 
@@ -68,6 +74,16 @@ public class ScreenOptionsMenu : CommonMenu
         SliderAudioSfx.RegisterCallback<ChangeEvent<float>>(OptionSetSfxVolume);
     }
 
+    public void Start()
+    {
+        
+    }
+
+    private static float ConvertVolume(float linearVolume)
+    {
+        return Mathf.Log10(math.max(0.0000001f, linearVolume / 100)) * 20;
+    }
+
     /// <summary>
     ///     handle music volume slider change,
     ///     sets the music channel volume in the audio manager appropriately
@@ -75,8 +91,7 @@ public class ScreenOptionsMenu : CommonMenu
     /// <param name="evt">change event</param>
     private void OptionSetMasterVolume(ChangeEvent<float> evt)
     {
-        // TODO: slider is from 0 to 100, convert to 0 to 1, and set
-        // Audio.SetMusicVolume(evt.newValue / 100);
+        mixer.SetFloat("MasterVolume", ConvertVolume(evt.newValue));
     }
 
     /// <summary>
@@ -86,8 +101,7 @@ public class ScreenOptionsMenu : CommonMenu
     /// <param name="evt">change event</param>
     private void OptionSetMusicVolume(ChangeEvent<float> evt)
     {
-        // TODO: slider is from 0 to 100, convert to 0 to 1, and set
-        // Audio.SetMusicVolume(evt.newValue / 100);
+        mixer.SetFloat("MusicVolume", ConvertVolume(evt.newValue));
     }
 
     /// <summary>
@@ -97,7 +111,6 @@ public class ScreenOptionsMenu : CommonMenu
     /// <param name="evt">change event</param>
     private void OptionSetSfxVolume(ChangeEvent<float> evt)
     {
-        // TODO: slider is from 0 to 100, convert to 0 to 1, and set
-        // Audio.SetSfxVolume(evt.newValue / 100);
+        mixer.SetFloat("SFXVolume", ConvertVolume(evt.newValue));
     }
 }
