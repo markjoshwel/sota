@@ -29,7 +29,7 @@ public class CommonMenu : MonoBehaviour
     /// <summary>
     ///     the visual element object for the menu
     /// </summary>
-    public VisualElement UI;
+    protected VisualElement UI;
 
     /// <summary>
     ///     checks if The Menu (2022) was set up correctly

@@ -1,5 +1,5 @@
 /*
- * author: mark joshwel
+ * author: mark joshwel, sai puay
  * date: 11/8/2024
  * description: game manager singleton for a single source of truth state management
  */
@@ -7,6 +7,8 @@
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UIElements;
+using Cursor = UnityEngine.Cursor;
 
 /// <summary>
 ///     singleton class for managing the game state as a single source of truth
@@ -33,9 +35,14 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
 
     /// <summary>
-    ///     property to store the heads-up display game object
+    ///     game object for the interaction prompt
     /// </summary>
-    [SerializeField] private GameObject headsUpDisplay;
+    [SerializeField] private GameObject guiInteractionPromptObject;
+
+    /// <summary>
+    ///     game object for the heads-up display
+    /// </summary>
+    [SerializeField] private GameObject guiHudObject;
 
     /// <summary>
     ///     the current state of the game
@@ -43,10 +50,29 @@ public class GameManager : MonoBehaviour
     private DisplayState _state = DisplayState.UnassociatedState;
 
     /// <summary>
+    ///     the visual element object for game ui (hud/prompts/tooltips)
+    /// </summary>
+    private VisualElement _ui;
+
+    /// <summary>
+    ///     hud ui label for an interaction prompt/tooltip
+    /// </summary>
+    private Label _uiLabelInteractionPrompt;
+
+    /// <summary>
+    ///     hud ui label for the player's score out of a thousand
+    /// </summary>
+    private Label _uiLabelScore;
+
+    /// <summary>
+    ///     hud ui label for the speed-run stopwatch
+    /// </summary>
+    private Label _uiLabelStopwatch;
+
+    /// <summary>
     ///     property to check if the game is paused based on the current <c>DisplayState</c>
     /// </summary>
     public bool Paused => _state != DisplayState.Game;
-
 
     /// <summary>
     ///     function to set doesn't destroy on load and checks for multiple instances
@@ -73,9 +99,11 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
         }
 
-        // check if the heads-up display is set
-        if (headsUpDisplay == null)
-            throw new NullReferenceException("GameManager: heads-up display is not set in game manager properties");
+        if (guiInteractionPromptObject == null)
+            throw new NullReferenceException("GameManager: guiInteractionPromptObject not set");
+
+        if (guiHudObject == null)
+            throw new NullReferenceException("GameManager: guiHudObject not set");
     }
 
     /// <summary>
@@ -91,6 +119,28 @@ public class GameManager : MonoBehaviour
     }
 
     /// <summary>
+    ///     game run speed run stopwatch logic
+    /// </summary>
+    // TODO: implement this (speed-run stopwatch)
+    private void Update()
+    {
+    }
+
+    /// <summary>
+    ///     initialise ui elements used by the game[ manager]
+    /// </summary>
+    /// >
+    private void OnEnable()
+    {
+        _ui = guiInteractionPromptObject.GetComponent<UIDocument>()?.rootVisualElement;
+        _uiLabelInteractionPrompt = _ui.Q<Label>("InteractionPromptLabel");
+
+        _ui = guiHudObject.GetComponent<UIDocument>()?.rootVisualElement;
+        _uiLabelStopwatch = _ui.Q<Label>("CurrentStopwatchLabel");
+        _uiLabelScore = _ui.Q<Label>("CurrentScoreLabel");
+    }
+
+    /// <summary>
     ///     helper function to hide any menu that is currently showing
     /// </summary>
     private void HideMenuHelper()
@@ -99,6 +149,9 @@ public class GameManager : MonoBehaviour
         foreach (var menu in GameObject.FindGameObjectsWithTag("Interfaces"))
         foreach (Transform menuChild in menu.transform)
         {
+            // skip if it is 'GameInterface' object
+            if (menuChild.gameObject.CompareTag("GameInterface")) continue;
+
             // disable the menu if it's currently active
             if (!menuChild.gameObject.activeSelf) continue;
 
@@ -122,7 +175,6 @@ public class GameManager : MonoBehaviour
             Time.timeScale = 0f;
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
-            
         }
         // or if the incoming state is the main menu, we should probably free the cursor
         else if (incomingState == DisplayState.ScreenMainMenu)
@@ -309,6 +361,24 @@ public class GameManager : MonoBehaviour
         // set to game state
         SetDisplayState(DisplayState.Game);
 
-        // TODO
+        // TODO: reset game state
+    }
+
+    /// <summary>
+    ///     function to set an interaction prompt/tooltip for the player
+    /// </summary>
+    /// <param name="prompt">string to show to the player</param>
+    public void SetInteractionPrompt(string prompt)
+    {
+        _uiLabelInteractionPrompt.text = prompt;
+        _uiLabelInteractionPrompt.visible = true;
+    }
+
+    /// <summary>
+    ///     function to stop showing an interaction prompt/tooltip for the player
+    /// </summary>
+    public void ClearInteractionPrompt()
+    {
+        _uiLabelInteractionPrompt.visible = false;
     }
 }
