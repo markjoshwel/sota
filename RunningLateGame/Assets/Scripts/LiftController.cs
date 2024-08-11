@@ -46,6 +46,7 @@ public class LiftController : MonoBehaviour
     ///     the target position of the lift
     /// </summary>
     private Vector3 _target;
+  
 
     /// <summary>
     ///     initialisation function
