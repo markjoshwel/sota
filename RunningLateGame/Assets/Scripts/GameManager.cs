@@ -122,6 +122,7 @@ public class GameManager : MonoBehaviour
             Time.timeScale = 0f;
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
+            
         }
         // or if the incoming state is the main menu, we should probably free the cursor
         else if (incomingState == DisplayState.ScreenMainMenu)
@@ -129,10 +130,13 @@ public class GameManager : MonoBehaviour
             Debug.Log("GameManager.PauseGameHelper: freeing cursor for main menu");
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
+        }
 
+        // freeze player input/control if we're not transitioning to a game state
+        if (incomingState != DisplayState.Game)
+        {
             Debug.Log(GameObject.FindGameObjectWithTag("Player"));
             var playerInput = GameObject.Find("PlayerArmature")?.GetComponent<PlayerInput>();
-            Debug.Log($"playerController={playerInput}");
             if (playerInput != null)
             {
                 Debug.Log("GameManager.PauseGameHelper: sentencing player input/control to a ball and chain boowomp");
