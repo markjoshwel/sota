@@ -5,7 +5,10 @@
  */
 
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using Random = System.Random;
+
 
 /// <summary>
 ///     to cull and spawn AI people
@@ -41,6 +44,10 @@ public class AIManager : MonoBehaviour
     ///     a temporary float to find the distance between the player and the AI
     /// </summary>
     private float _distance;
+    /// <summary>
+    ///     AI Spawn locations
+    /// </summary>
+    [SerializeField]private List<Transform> aiSpawn;
 
     /// <summary>
     ///     to start the manager loop
@@ -70,7 +77,10 @@ public class AIManager : MonoBehaviour
             _ais = GameObject.FindGameObjectsWithTag("AIs");
             if (_ais.Length < maxAI)
             {
-                // var instance = Instantiate(aiPrefab, gameObject.transform);
+                var rand = new Random();
+                var spawnNo=rand.Next(0, aiSpawn.Count);
+                
+                var instance = Instantiate(aiPrefab, aiSpawn[spawnNo]);
             }
 
             foreach (var i in _ais)
