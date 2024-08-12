@@ -474,8 +474,8 @@ public class GameManager : MonoBehaviour
         
         // scoring parameters
         const float maxScore = 1000f;
-        const float maxTimeForMaxScore = 150f; // 2.5 minutes
-        const float maxTimeForMinScore = 300f; // 5 minutes
+        const float maxTimeForMaxScore = 15f; // 2.5 minutes
+        const float maxTimeForMinScore = 180f; // 5 minutes
         
         var score = _elapsedRunTime switch
         {
