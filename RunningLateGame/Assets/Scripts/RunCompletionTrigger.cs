@@ -13,6 +13,6 @@ public class RunCompletionTrigger : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other)
     {
-        GameManager.Instance.SetDisplayState(GameManager.DisplayState.OverlayCompleteUnderTimeMenu);
+        GameManager.Instance.ProperlyEndRun();
     }
 }

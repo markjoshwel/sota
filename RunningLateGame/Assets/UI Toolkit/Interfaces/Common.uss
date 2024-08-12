@@ -1,6 +1,7 @@
 #Root {
     -unity-font: url("project://database/Assets/UI%20Toolkit/RLFonts/Fervojo/Fervojo-Medium.otf?fileID=12800000&guid=9439a6fdc5392c6479cda7dd72a8f3f7&type=3#Fervojo-Medium");
     -unity-font-definition: url("project://database/Assets/UI%20Toolkit/RLFonts/Fervojo/Fervojo-Medium%20SDF.asset?fileID=11400000&guid=45943718062c86e448361bd7f6506932&type=2#Fervojo-Medium SDF");
+    background-color: rgba(0, 0, 0, 0.35);
 }
 
 Button {

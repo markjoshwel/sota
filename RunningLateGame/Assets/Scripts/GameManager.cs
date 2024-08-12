@@ -46,6 +46,11 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject guiHudObject;
 
     /// <summary>
+    ///     game object for the completion menu
+    /// </summary>
+    [SerializeField] private GameObject guiCompletedMenuObject;
+
+    /// <summary>
     ///     float to keep track of the elapsed play/run/speeder time
     /// </summary>
     private float _elapsedRunTime;
@@ -69,11 +74,6 @@ public class GameManager : MonoBehaviour
     ///     hud ui label for an interaction prompt/tooltip
     /// </summary>
     private Label _uiLabelInteractionPrompt;
-
-    /// <summary>
-    ///     hud ui label for the player's score out of a thousand
-    /// </summary>
-    private Label _uiLabelScore;
 
     /// <summary>
     ///     hud ui label for the speed-run stopwatch
@@ -170,7 +170,7 @@ public class GameManager : MonoBehaviour
 
         _ui = guiHudObject.GetComponent<UIDocument>()?.rootVisualElement;
         _uiLabelStopwatch = _ui.Q<Label>("CurrentStopwatchLabel");
-        _uiLabelScore = _ui.Q<Label>("CurrentScoreLabel");
+        // _uiLabelScore = _ui.Q<Label>("CurrentScoreLabel");
     }
 
     /// <summary>
@@ -454,5 +454,45 @@ public class GameManager : MonoBehaviour
     public void ClearInteractionPrompt()
     {
         _uiLabelInteractionPrompt.visible = false;
+    }
+
+    /// <summary>
+    ///     function to end the run, calculate a score and grade, and show the appropriate menu
+    /// </summary>
+    public void ProperlyEndRun()
+    {
+        SetDisplayState(DisplayState.OverlayCompleteUnderTimeMenu);
+        
+        var ui = guiCompletedMenuObject.GetComponent<UIDocument>()?.rootVisualElement;
+        var timeLabel = ui.Q<Label>("FinalTimeLabel");
+        var timeScore = ui.Q<Label>("FinalScoreLabel");
+        var timeGrade = ui.Q<Label>("FinalGradeLabel");
+        
+        // calculate a score between 0-1000 and grade (S, A, B, C, D)
+        // if you finish the run in 2.5 minutes, you get a 1000
+        // from 2.5 to 5 minutes, the score goes down to 0
+        
+        // scoring parameters
+        const float maxScore = 1000f;
+        const float maxTimeForMaxScore = 150f; // 2.5 minutes
+        const float maxTimeForMinScore = 300f; // 5 minutes
+        
+        var score = _elapsedRunTime switch
+        {
+            <= maxTimeForMaxScore => maxScore,
+            >= maxTimeForMinScore => 0,
+            _ => maxScore * (1 - (_elapsedRunTime - maxTimeForMaxScore) / (maxTimeForMinScore - maxTimeForMaxScore))
+        };
+
+        timeLabel.text = $"Completed in {_uiLabelStopwatch.text}";
+        timeGrade.text = score switch
+        {
+            >= 900 => "S",
+            >= 800 => "A",
+            >= 700 => "B",
+            >= 600 => "C",
+            _ => "D"
+        };
+        timeScore.text = $"Score: {score}";
     }
 }
