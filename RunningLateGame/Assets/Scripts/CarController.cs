@@ -51,12 +51,12 @@ public class CarController : MonoBehaviour
     /// <summary>
     ///     inputs for acceleration
     /// </summary>
-    private float _currentAcceleration;
+    [SerializeField] private float _currentAcceleration;
 
     /// <summary>
     ///     inputs for turning
     /// </summary>
-    private float _currentTurn;
+    [SerializeField] private float _currentTurn;
 
     /// <summary>
     ///     to move the car
@@ -82,7 +82,8 @@ public class CarController : MonoBehaviour
     /// </summary>
     public void Move()
     {
-        foreach (var wheel in wheels) wheel.wheelCollider.motorTorque = _currentAcceleration;
+        foreach (var wheel in wheels)
+            wheel.wheelCollider.motorTorque = _currentAcceleration;
     }
 
     /// <summary>
@@ -103,8 +104,12 @@ public class CarController : MonoBehaviour
     /// </summary>
     public void Steering()
     {
-        foreach (var wheel in wheels.Where(wheel => wheel.axel == Axel.Front))
-            wheel.wheelCollider.steerAngle = _currentTurn;
+        foreach (var wheel in wheels)
+            if (wheel.axel == Axel.Front)
+            {
+                wheel.wheelCollider.steerAngle = _currentTurn;
+
+            }
     }
 
     /// <summary>
