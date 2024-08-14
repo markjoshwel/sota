@@ -62,7 +62,6 @@ public class LiftController : MonoBehaviour
     /// </summary>
     public void DoorCloser()
     {
-        Debug.Log("DoorCloser");
         if (_liftDoor.isOpen && !_liftDoor.opening)
             Invoke(nameof(CloseDoor), 2f);
         Invoke(nameof(DoorCloser), 2f);
