@@ -326,3 +326,6 @@ comma-separate multiple licences, and use code blocks if you need to list multip
 - [Fervojo](https://www.behance.net/gallery/167977473/Fervojo-Free-Font) by [Reiya Watanabe (kohakuno)](https://www.behance.net/kohakuno)
   \[General Body Font in Game and Figma Prototype]: OFL-1.1  
   `RunningLateGame/Assets/UI Toolkit/RLFonts/Fervojo`
+
+- [Conifers [BOTD]](https://assetstore.unity.com/packages/3d/vegetation/trees/conifers-botd-142076) by forst: Standard Unity Asset Store EULA (Extension Asset)  
+  `RunningLateGame/Assets/Forst`
