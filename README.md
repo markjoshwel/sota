@@ -327,5 +327,8 @@ comma-separate multiple licences, and use code blocks if you need to list multip
   \[General Body Font in Game and Figma Prototype]: OFL-1.1  
   `RunningLateGame/Assets/UI Toolkit/RLFonts/Fervojo`
 
-- [Conifers [BOTD]](https://assetstore.unity.com/packages/3d/vegetation/trees/conifers-botd-142076) by forst: Standard Unity Asset Store EULA (Extension Asset)  
-  `RunningLateGame/Assets/Forst`
+- [Conifers [BOTD]](https://assetstore.unity.com/packages/3d/vegetation/trees/conifers-botd-142076) by forst: Standard Unity Asset Store EULA (Extension Asset)
+
+- [Terrain Tools Sample Asset Pack](https://assetstore.unity.com/packages/3d/environments/landscapes/terrain-sample-asset-pack-145808) by Unity Technologies: Standard Unity Asset Store EULA (Extension Asset)
+
+- [Starter Assets: Character Controllers | URP](https://assetstore.unity.com/packages/essentials/starter-assets-character-controllers-urp-267961) by Unity Technologies: Standard Unity Asset Store EULA (Extension Asset)
