@@ -177,6 +177,8 @@ GameObject:
   - component: {fileID: 275997392809632536}
   - component: {fileID: 5230493620313765622}
   - component: {fileID: 1809865208115710985}
+  - component: {fileID: 5310480670608927571}
+  - component: {fileID: 7507030316772322686}
   m_Layer: 0
   m_Name: machine
   m_TagString: Untagged
@@ -250,6 +252,42 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &5310480670608927571
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7694395376745169482}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.7977695, y: 2.770942, z: 1.0836983}
+  m_Center: {x: 0, y: -0.06621176, z: 0}
+--- !u!114 &7507030316772322686
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7694395376745169482}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a62fca1ecd183554aa5287e1f5a4e75b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactionPrompt: Press [e] to get coffee
+  coffee: {fileID: 0}
+  stock: 0
 --- !u!1 &7788865092637683210
 GameObject:
   m_ObjectHideFlags: 0
