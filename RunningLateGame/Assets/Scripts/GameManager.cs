@@ -462,21 +462,21 @@ public class GameManager : MonoBehaviour
     public void ProperlyEndRun()
     {
         SetDisplayState(DisplayState.OverlayCompleteUnderTimeMenu);
-        
+
         var ui = guiCompletedMenuObject.GetComponent<UIDocument>()?.rootVisualElement;
         var timeLabel = ui.Q<Label>("FinalTimeLabel");
         var timeScore = ui.Q<Label>("FinalScoreLabel");
         var timeGrade = ui.Q<Label>("FinalGradeLabel");
-        
+
         // calculate a score between 0-1000 and grade (S, A, B, C, D)
         // if you finish the run in 2.5 minutes, you get a 1000
         // from 2.5 to 5 minutes, the score goes down to 0
-        
+
         // scoring parameters
         const float maxScore = 1000f;
         const float maxTimeForMaxScore = 15f; // 2.5 minutes
         const float maxTimeForMinScore = 180f; // 5 minutes
-        
+
         var score = _elapsedRunTime switch
         {
             <= maxTimeForMaxScore => maxScore,
