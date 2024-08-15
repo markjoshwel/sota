@@ -84,7 +84,12 @@ public class GameManager : MonoBehaviour
     ///     property to check if the game is paused based on the current <c>DisplayState</c>
     /// </summary>
     public bool Paused => _state != DisplayState.Game;
-
+    
+    /// <summary>
+    ///    a property to check how many coffees the player has had
+    /// </summary>
+    public int hadCoffee = 0;
+    
     /// <summary>
     ///     function to set doesn't destroy on load and checks for multiple instances
     /// </summary>
