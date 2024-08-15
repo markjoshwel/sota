@@ -1,5 +1,5 @@
 /*
- * author: ryan lin
+ * author: ryan lin, mark joshwel
  * date: 06/08/2024
  * description: a controller for the car
  */
@@ -12,7 +12,7 @@ using UnityEngine;
 /// <summary>
 ///     a controller for the car
 /// </summary>
-public class CarController : MonoBehaviour
+public class VehicleController : MonoBehaviour
 {
     /// <summary>
     ///     enum for if the wheel is the front or back wheel
@@ -51,12 +51,12 @@ public class CarController : MonoBehaviour
     /// <summary>
     ///     inputs for acceleration
     /// </summary>
-    [SerializeField] private float _currentAcceleration;
+    [SerializeField] private float currentAcceleration;
 
     /// <summary>
     ///     inputs for turning
     /// </summary>
-    [SerializeField] private float _currentTurn;
+    [SerializeField] private float currentTurn;
 
     /// <summary>
     ///     to move the car
@@ -73,23 +73,23 @@ public class CarController : MonoBehaviour
     /// </summary>
     public void SetInputs(float forwardAmount, float turnAmount)
     {
-        _currentAcceleration = forwardAmount * motorTorque;
-        _currentTurn = turnAmount * turnAngle;
+        currentAcceleration = forwardAmount * motorTorque;
+        currentTurn = turnAmount * turnAngle;
     }
 
     /// <summary>
     ///     to move the car forwards or backwards
     /// </summary>
-    public void Move()
+    private void Move()
     {
         foreach (var wheel in wheels)
-            wheel.wheelCollider.motorTorque = _currentAcceleration;
+            wheel.wheelCollider.motorTorque = currentAcceleration;
     }
 
     /// <summary>
     ///     to stop the car
     /// </summary>
-    public void Brake()
+    private void Brake()
     {
         if (braking)
             foreach (var wheel in wheels)
@@ -102,14 +102,10 @@ public class CarController : MonoBehaviour
     /// <summary>
     ///     to turn the car
     /// </summary>
-    public void Steering()
+    private void Steering()
     {
-        foreach (var wheel in wheels)
-            if (wheel.axel == Axel.Front)
-            {
-                wheel.wheelCollider.steerAngle = _currentTurn;
-
-            }
+        foreach (var wheel in wheels.Where(wheel => wheel.axel == Axel.Front))
+            wheel.wheelCollider.steerAngle = currentTurn;
     }
 
     /// <summary>

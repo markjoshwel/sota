@@ -36,6 +36,11 @@ public class AIManager : MonoBehaviour
     public int maxAI;
 
     /// <summary>
+    ///     AI Spawn locations
+    /// </summary>
+    [SerializeField] private List<Transform> aiSpawn;
+
+    /// <summary>
     ///     An array that contains the game objects of the AI objects
     /// </summary>
     private GameObject[] _ais;
@@ -44,10 +49,6 @@ public class AIManager : MonoBehaviour
     ///     a temporary float to find the distance between the player and the AI
     /// </summary>
     private float _distance;
-    /// <summary>
-    ///     AI Spawn locations
-    /// </summary>
-    [SerializeField]private List<Transform> aiSpawn;
 
     /// <summary>
     ///     to start the manager loop
@@ -78,8 +79,8 @@ public class AIManager : MonoBehaviour
             if (_ais.Length < maxAI)
             {
                 var rand = new Random();
-                var spawnNo=rand.Next(0, aiSpawn.Count);
-                
+                var spawnNo = rand.Next(0, aiSpawn.Count);
+
                 var instance = Instantiate(aiPrefab, aiSpawn[spawnNo]);
             }
 

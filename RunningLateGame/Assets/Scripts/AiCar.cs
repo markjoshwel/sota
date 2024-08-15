@@ -48,11 +48,6 @@ public class AICar : MonoBehaviour
     private float _angularDirection;
 
     /// <summary>
-    ///     reference to the car script
-    /// </summary>
-    private CarController _car;
-
-    /// <summary>
     ///     the current state the car is in for fsm
     /// </summary>
     private string _currentState;
@@ -73,6 +68,11 @@ public class AICar : MonoBehaviour
     ///     the turn input for the car script
     /// </summary>
     private float _turnInput;
+
+    /// <summary>
+    ///     reference to the car script
+    /// </summary>
+    private VehicleController _vehicle;
 
     /// <summary>
     ///     the car is in front or behind the target, a positive will be returned if the car is in front
@@ -100,7 +100,7 @@ public class AICar : MonoBehaviour
             }
         }
 
-        _car = GetComponent<CarController>();
+        _vehicle = GetComponent<VehicleController>();
         _nextState = NextState.Stopped;
         _currentState = "Stopped";
         StartCoroutine(_currentState);
@@ -148,7 +148,7 @@ public class AICar : MonoBehaviour
         while (_nextState != NextState.Stopped)
         {
             _distanceToTarget = Vector3.Distance(carPosition.position, _driveTarget.position);
-            _car.braking = true;
+            _vehicle.braking = true;
             _accelerationInput = 0f;
             _turnInput = 0f;
             if (_distanceToTarget > stoppingDistance) _nextState = NextState.Slowed;
@@ -163,7 +163,7 @@ public class AICar : MonoBehaviour
     /// </summary>
     private IEnumerator Slowed()
     {
-        _car.braking = false;
+        _vehicle.braking = false;
         while (_nextState != NextState.Slowed)
         {
             _verticalDirection = Vector3.Dot(carPosition.transform.forward,
@@ -186,7 +186,7 @@ public class AICar : MonoBehaviour
 
             Steering();
             SlowedCheck();
-            _car.SetInputs(_accelerationInput, _turnInput);
+            _vehicle.SetInputs(_accelerationInput, _turnInput);
             yield return new WaitForEndOfFrame();
         }
 
@@ -198,7 +198,7 @@ public class AICar : MonoBehaviour
     /// </summary>
     private IEnumerator Driving()
     {
-        _car.braking = false;
+        _vehicle.braking = false;
         while (_nextState != NextState.Driving)
         {
             _verticalDirection = Vector3.Dot(carPosition.transform.forward,
@@ -209,7 +209,7 @@ public class AICar : MonoBehaviour
 
             Steering();
             if (_distanceToTarget < slowingDistance) _nextState = NextState.Slowed;
-            _car.SetInputs(_accelerationInput, _turnInput);
+            _vehicle.SetInputs(_accelerationInput, _turnInput);
             yield return new WaitForEndOfFrame();
         }
 
