@@ -1,8 +1,10 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
+/*
+ * author: ryan lin
+ * date: 15/8/2024
+ * description: script to handle vending machine behaviour
+ */
+
 using UnityEngine;
-using UnityEngine.Serialization;
 using Random = System.Random;
 
 
@@ -12,15 +14,25 @@ public class VendingMachine : CommonInteractable
     ///     prefab to spawn when the player interacts with the vending machine
     /// </summary>
     public GameObject coffee;
+
     /// <summary>
-    /// the amount of stock the vending machine has
+    ///     the instance of the coffee prefab
+    /// </summary>
+    private GameObject _instance;
+
+    /// <summary>
+    ///     the amount of stock the vending machine has
     /// </summary>
     private int _stock;
-    private GameObject _instance;
+
+    /// <summary>
+    ///     to get the number of stocks the vending machine has
+    /// </summary>
     public void Start()
     {
         var rand = new Random();
-        _stock = rand.Next(1, 3);
+        _stock = rand.Next(0, 4);
+        interactionPrompt = _stock == 0 ? "Out of stock" : "Press [E] to buy coffee";
     }
 
     /// <summary>
@@ -28,12 +40,11 @@ public class VendingMachine : CommonInteractable
     /// </summary>
     public override void Interact()
     {
-        if (_stock > 0)
-        {
-            _instance = Instantiate(coffee, transform.position, Quaternion.identity);
-            _instance.GetComponent<Rigidbody>().AddForce(Vector3.up * 5, ForceMode.Impulse);
-            _instance.GetComponent<Rigidbody>().AddForce(Vector3.forward * 5, ForceMode.Impulse);
-            _stock--;
-        }
+        if (_stock <= 0) return;
+        _instance = Instantiate(coffee, transform.position, transform.rotation);
+        _stock--;
+        //to change the interaction prompt if the vending machine is out of stock
+        if (_stock == 0)
+            interactionPrompt = "Out of stock";
     }
 }

@@ -5,6 +5,7 @@
  */
 
 using System;
+using StarterAssets;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -51,6 +52,11 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject guiCompletedMenuObject;
 
     /// <summary>
+    ///     reference to the player object
+    /// </summary>
+    public GameObject player;
+
+    /// <summary>
     ///     float to keep track of the elapsed play/run/speeder time
     /// </summary>
     private float _elapsedRunTime;
@@ -84,12 +90,7 @@ public class GameManager : MonoBehaviour
     ///     property to check if the game is paused based on the current <c>DisplayState</c>
     /// </summary>
     public bool Paused => _state != DisplayState.Game;
-    
-    /// <summary>
-    ///    a property to check how many coffees the player has had
-    /// </summary>
-    public int hadCoffee = 0;
-    
+
     /// <summary>
     ///     function to set doesn't destroy on load and checks for multiple instances
     /// </summary>
@@ -499,5 +500,15 @@ public class GameManager : MonoBehaviour
             _ => "D"
         };
         timeScore.text = $"Score: {score}";
+    }
+
+    /// <summary>
+    ///     increases the player's speed
+    /// </summary>
+    /// <param name="speedBoost">the amount of speed boosts it increases</param>
+    public void AddSpeed(float speedBoost)
+    {
+        player.GetComponent<ThirdPersonController>().MoveSpeed += speedBoost;
+        player.GetComponent<ThirdPersonController>().SprintSpeed += speedBoost;
     }
 }
