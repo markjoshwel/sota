@@ -38,7 +38,7 @@ public class AIManager : MonoBehaviour
     /// <summary>
     ///     AI Spawn locations
     /// </summary>
-    [SerializeField] private List<Transform> aiSpawn;
+    [SerializeField] private GameObject[] aiSpawn;
 
     /// <summary>
     ///     An array that contains the game objects of the AI objects
@@ -55,7 +55,9 @@ public class AIManager : MonoBehaviour
     /// </summary>
     private void Start()
     {
-        StartCoroutine(Manager());
+        aiSpawn = GameObject.FindGameObjectsWithTag($"AISpawn");
+        StartCoroutine(nameof(Manager));
+        
     }
 
     /// <summary>
@@ -72,6 +74,7 @@ public class AIManager : MonoBehaviour
     /// </summary>
     private IEnumerator Manager()
     {
+        
         while (true)
         {
             // FIXME: feels weird
@@ -79,9 +82,9 @@ public class AIManager : MonoBehaviour
             if (_ais.Length < maxAI)
             {
                 var rand = new Random();
-                var spawnNo = rand.Next(0, aiSpawn.Count);
+                var spawnNo = rand.Next(0, aiSpawn.Length);
 
-                var instance = Instantiate(aiPrefab, aiSpawn[spawnNo]);
+                var instance = Instantiate(aiPrefab, aiSpawn[spawnNo].transform.position, aiSpawn[spawnNo].transform.rotation);
             }
 
             foreach (var i in _ais)
@@ -90,7 +93,7 @@ public class AIManager : MonoBehaviour
                 if (_distance > cullingDistance) Destroy(i.gameObject);
             }
 
-            yield return new WaitForSeconds(1);
+            yield return new WaitForEndOfFrame();
         }
     }
 }

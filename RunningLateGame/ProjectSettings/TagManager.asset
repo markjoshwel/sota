@@ -9,6 +9,7 @@ TagManager:
   - AIs
   - Interfaces
   - GameInterface
+  - AISpawn
   layers:
   - Default
   - TransparentFX
