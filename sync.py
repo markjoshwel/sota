@@ -568,9 +568,9 @@ def main() -> None:
             ]
 
             step(
-                desc=f"7 lfs | filtering {len(sotaignored_files)} file(s)",
+                desc=f"7 lfs | filter repo and {len(sotaignored_files)} file(s)",
                 func=cmd(
-                    "git filter-repo --force --invert-paths "
+                    "git filter-repo --force --strip-blobs-bigger-than 100M --invert-paths "
                     + " ".join(f'--path ""{lf}' "" for lf in sotaignored_files)
                 ),
             )
