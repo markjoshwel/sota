@@ -57,6 +57,11 @@ public class GameManager : MonoBehaviour
     public GameObject player;
 
     /// <summary>
+    ///     color for the stopwatch when the player is running late
+    /// </summary>
+    private readonly Color _colorRunningLateRed = new(193, 39, 45);
+
+    /// <summary>
     ///     float to keep track of the elapsed play/run/speeder time
     /// </summary>
     private float _elapsedRunTime;
@@ -149,12 +154,23 @@ public class GameManager : MonoBehaviour
     private void Update()
     {
         if (Paused) return;
-
         _elapsedRunTime += Time.deltaTime;
-        var minutes = _elapsedRunTime / 60;
-        var seconds = _elapsedRunTime % 60;
-        var milliseconds = _elapsedRunTime * 1000 % 1000;
-        _uiLabelStopwatch.text = $"{minutes:00}:{seconds:00}.{milliseconds:000}";
+
+        var displayedElapsedRunTime = _elapsedRunTime;
+        var stopwatchPrefix = "";
+
+        if (_elapsedRunTime > 299.9999999999f)
+        {
+            stopwatchPrefix = "-";
+            displayedElapsedRunTime -= 10f;
+            _uiLabelStopwatch.style.color = _colorRunningLateRed;
+        }
+
+        var minutes = displayedElapsedRunTime / 60;
+        var seconds = displayedElapsedRunTime % 60;
+        var milliseconds = displayedElapsedRunTime * 1000 % 1000;
+
+        _uiLabelStopwatch.text = $"{stopwatchPrefix}{minutes:00}:{seconds:00}.{milliseconds:000}";
     }
 
     /// <summary>
@@ -459,6 +475,7 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void ClearInteractionPrompt()
     {
+        _uiLabelInteractionPrompt.text = "";
         _uiLabelInteractionPrompt.visible = false;
     }
 
@@ -480,8 +497,8 @@ public class GameManager : MonoBehaviour
 
         // scoring parameters
         const float maxScore = 1000f;
-        const float maxTimeForMaxScore = 15f; // 2.5 minutes
-        const float maxTimeForMinScore = 180f; // 5 minutes
+        const float maxTimeForMaxScore = 120f; // 2.5 minutes
+        const float maxTimeForMinScore = 300f; // 5 minutes
 
         var score = _elapsedRunTime switch
         {

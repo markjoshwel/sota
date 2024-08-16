@@ -74,9 +74,21 @@ public class Player : MonoBehaviour
 
         if (!_raycast) return;
 
+        var interactable = _hit.collider.GetComponent<CommonInteractable>();
+        if (!interactable)
+        {
+            // Debug.Log("not looking at an interactable object");
+            GameManager.Instance.ClearInteractionPrompt();
+            return;
+        }
+
         // show an interaction prompt if we're looking at an interactable object
-        var prompt = _hit.collider.GetComponent<CommonInteractable>()?.interactionPrompt;
-        if (prompt != "") Debug.Log(prompt);
+        var prompt = interactable.interactionPrompt;
+        // Debug.Log(prompt);
+        if (prompt != "")
+            GameManager.Instance.SetInteractionPrompt(prompt);
+        else
+            GameManager.Instance.ClearInteractionPrompt();
     }
 
     /// <summary>
