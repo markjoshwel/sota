@@ -64,9 +64,7 @@ public class AI : MonoBehaviour
     /// </summary>
     public void Awake()
     {
-        _animator = GetComponent<Animator>();
-        _currentState = "Strolling";
-
+        
 
         _agent = GetComponent<NavMeshAgent>();
         _animator = GetComponent<Animator>();
@@ -126,7 +124,7 @@ public class AI : MonoBehaviour
 
             if ((transform.position - destinationCoord).magnitude < 1f) _destinationPointSet = false;
 
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForEndOfFrame();
         }
 
         ChangeState();
