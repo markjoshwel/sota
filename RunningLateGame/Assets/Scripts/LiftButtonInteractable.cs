@@ -4,6 +4,7 @@
  * description: lift button behaviour implementation
  */
 
+using System;
 using UnityEngine;
 
 /// <summary>
@@ -29,5 +30,10 @@ public class LiftButtonInteractable : CommonInteractable
     public override void Interact()
     {
         if (!liftController.moving && !door.isOpen) StartCoroutine(liftController.Move(floorsMoved));
+    }
+
+    public void Awake()
+    {
+        interactionPrompt = "Press [E] to go down";
     }
 }
