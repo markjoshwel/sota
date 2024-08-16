@@ -41,7 +41,7 @@ public class Door : CommonInteractable
     /// <summary>
     ///     a bool to check if the door is open
     /// </summary>
-    [HideInInspector] public bool isOpen;
+    [HideInInspector] public bool isOpen=false;
 
     /// <summary>
     ///     a bool to check if the door is opening

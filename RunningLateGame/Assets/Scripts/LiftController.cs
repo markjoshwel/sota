@@ -91,6 +91,7 @@ public class LiftController : MonoBehaviour
             yield return null;
         }
 
+        _liftDoor.StartCoroutine("OpenDoor");
         moving = false;
     }
 }
