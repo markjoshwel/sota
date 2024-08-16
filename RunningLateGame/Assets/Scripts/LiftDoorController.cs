@@ -22,6 +22,14 @@ public class LiftDoorController : CommonInteractable
     [SerializeField] private LiftController liftController;
 
     /// <summary>
+    ///     set the interaction prompt
+    /// </summary>
+    private void Awake()
+    {
+        interactionPrompt = "Press [E] to call the lift";
+    }
+
+    /// <summary>
     ///     to call the open door function
     /// </summary>
     public override void Interact()

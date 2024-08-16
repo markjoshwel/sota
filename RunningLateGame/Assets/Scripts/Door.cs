@@ -49,6 +49,14 @@ public class Door : CommonInteractable
     [HideInInspector] public bool opening;
 
     /// <summary>
+    ///     set the interaction prompt
+    /// </summary>
+    private void Awake()
+    {
+        interactionPrompt = "Press [E] to open the door";
+    }
+
+    /// <summary>
     ///     to interact with the door
     /// </summary>
     public override void Interact()

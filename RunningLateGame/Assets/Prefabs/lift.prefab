@@ -190,7 +190,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a46a62138bd3774aa62b76560629f46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionPrompt: press [E] to open lift door
+  interactionPrompt: 
   door: {fileID: 0}
   liftController: {fileID: 0}
 --- !u!65 &6504267406812371461
